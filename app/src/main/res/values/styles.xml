@@ -1,0 +1,54 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+
+    <style name="MyAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <!-- Used for the buttons -->
+        <item name="colorAccent">@color/colorPrimary</item>
+        <!-- Used for the title and text -->
+        <item name="android:textColorPrimary">@color/colorPrimaryDark</item>
+        <!-- Used for the background -->
+        <item name="android:background">@color/colorAccent</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+
+    <style name="ItemTextStyle">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/item_text_size</item>
+        <item name="android:textColor">@color/colorTextDark</item>
+    </style>
+
+    <style name="DateTimeTextStyle">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/datatime_text_size</item>
+        <item name="android:textColor">@color/colorTextDark</item>
+    </style>
+
+    <style name="UserDataTextStyle">
+        <!--<item name="android:textStyle">bold</item>-->
+        <item name="android:textSize">@dimen/userdata_text_size</item>
+        <item name="android:textColor">@color/colorTextDescriptionGreen</item>
+    </style>
+
+    <style name="MenuTextStyle">
+        <!--<item name="android:textStyle">bold</item>-->
+        <item name="android:textSize">@dimen/menu_text_size</item>
+        <item name="android:textColor">@color/colorTextMainMenuDarkBlue</item>
+    </style>
+
+    <style name="ButtonsTextStyle">
+        <!--<item name="android:textStyle">bold</item>-->
+        <item name="android:textSize">@dimen/buttons_text_size</item>
+        <item name="android:textColor">@color/colorTextMainMenuDarkBlue</item>
+    </style>
+
+</resources>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+
+    <color name="colorBackgroundMain">#b1bdf2</color>
+    <color name="colorBackgroundWhite">#ffffff</color>
+    <color name="colorBackgroundDisplayDescription">#e3cfc7</color>
+
+    <color name="colorTextRed">#f01305</color>
+    <color name="colorTextDark">#06108e</color>
+    <color name="colorTextDescriptionGreen">#095b0b</color>
+    <color name="colorTextMainMenuDarkBlue">#050737</color>
+
+    <color name="color_btn_calendar_white">#ffffff</color>
+</resources>

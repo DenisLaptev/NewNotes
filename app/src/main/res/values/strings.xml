@@ -3,7 +3,7 @@
     <string name="toolbar_title">NewNotes Beta</string>
     <string name="search_title">Search</string>
 
-    <string name="menu_item_notifications">Напоминания</string>
+    <string name="menu_notes_item_notifications">Напоминания</string>
 
     <string name="tab_item_history">History</string>
     <string name="tab_item_ideas">Ideas</string>
@@ -12,6 +12,19 @@
 
     <string name="view_navigation_open">Open</string>
     <string name="view_navigation_close">Close</string>
+
+
+    <string name="menu_notes_item_todo">TODO</string>
+    <string name="menu_notes_item_ideas">Ideas</string>
+    <string name="menu_notes_item_birthdays">Birthdays</string>
+    <string name="menu_notes_item_different">Different</string>
+    <string name="menu_notes_item_mainmenu">Main menu</string>
+
+
+    <string name="menu_events_item_today">Today</string>
+    <string name="menu_events_item_thisweek">This week</string>
+    <string name="menu_events_item_thismonth">This month</string>
+    <string name="menu_events_item_mainmenu">Main menu</string>
 
     <string-array name="Categories">
         <item>Programming</item>

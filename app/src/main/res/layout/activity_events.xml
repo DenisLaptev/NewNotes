@@ -36,7 +36,7 @@
 
         </android.support.design.widget.AppBarLayout>
 
-        <!--Выезжающее меню слева-->
+
         <android.support.v4.view.ViewPager
             android:id="@+id/viewpager"
             android:layout_width="match_parent"
@@ -55,14 +55,14 @@
             app:backgroundTint="@color/colorPrimary" />
     </android.support.design.widget.CoordinatorLayout>
 
-
+    <!--Выезжающее меню слева-->
     <android.support.design.widget.NavigationView
         android:id="@+id/navigation"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:headerLayout="@layout/navigation_header"
-        app:menu="@menu/menu_navigation" />
+        app:menu="@menu/menu_navigation_events" />
 
 
 </android.support.v4.widget.DrawerLayout>

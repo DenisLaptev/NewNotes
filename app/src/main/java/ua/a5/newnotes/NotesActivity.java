@@ -1,5 +1,6 @@
 package ua.a5.newnotes;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -10,6 +11,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class NotesActivity extends AppCompatActivity {
     private static final int LAYOUT = R.layout.activity_notes;
@@ -39,11 +41,23 @@ public class NotesActivity extends AppCompatActivity {
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
+
+                switch (item.getItemId()) {
+
+                    case R.id.search:
+                        //showNotificationTab();
+                        Toast.makeText(getApplicationContext(), "search", Toast.LENGTH_SHORT).show();
+
+                        Intent intent = new Intent(NotesActivity.this, CreateNoteActivity.class);
+                        startActivity(intent);
+                        break;
+                }
+
                 return false;
             }
         });
 
-        toolbar.inflateMenu(R.menu.menu);
+        toolbar.inflateMenu(R.menu.menu_notes);
     }
 
 
@@ -68,6 +82,36 @@ public class NotesActivity extends AppCompatActivity {
                 switch (menuItem.getItemId()) {
                     case R.id.actionNotificationItem:
                         //showNotificationTab();
+                        Toast.makeText(getApplicationContext(), "Notification", Toast.LENGTH_SHORT).show();
+                        break;
+
+                    case R.id.todoItem:
+                        //showNotificationTab();
+                        Toast.makeText(getApplicationContext(), "TODO", Toast.LENGTH_SHORT).show();
+                        break;
+
+                    case R.id.ideasItem:
+                        //showNotificationTab();
+                        Toast.makeText(getApplicationContext(), "Ideas", Toast.LENGTH_SHORT).show();
+                        break;
+
+                    case R.id.birthdaysItem:
+                        //showNotificationTab();
+                        Toast.makeText(getApplicationContext(), "Birthdays", Toast.LENGTH_SHORT).show();
+                        break;
+
+                    case R.id.differentItem:
+                        //showNotificationTab();
+                        Toast.makeText(getApplicationContext(), "Different", Toast.LENGTH_SHORT).show();
+                        break;
+
+                    case R.id.mainmenuItem:
+                        //showNotificationTab();
+                        Toast.makeText(getApplicationContext(), "Main menu_notes", Toast.LENGTH_SHORT).show();
+
+                        Intent intent = new Intent(NotesActivity.this, StartMenuActivity.class);
+                        startActivity(intent);
+                        finish();
                         break;
                 }
                 return true;
@@ -97,4 +141,9 @@ public class NotesActivity extends AppCompatActivity {
 
 */
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }

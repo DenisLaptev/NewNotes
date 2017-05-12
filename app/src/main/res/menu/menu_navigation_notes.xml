@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/actionNotificationItem"
+        android:icon="@drawable/ic_message_text"
+        android:orderInCategory="1"
+        android:title="@string/menu_notes_item_notifications" />
+
+    <item
+        android:id="@+id/todoItem"
+        android:icon="@drawable/ic_message_text"
+        android:orderInCategory="1"
+        android:title="@string/menu_notes_item_todo" />
+
+    <item
+        android:id="@+id/ideasItem"
+        android:icon="@drawable/ic_message_text"
+        android:orderInCategory="1"
+        android:title="@string/menu_notes_item_ideas" />
+
+    <item
+        android:id="@+id/birthdaysItem"
+        android:icon="@drawable/ic_message_text"
+        android:orderInCategory="1"
+        android:title="@string/menu_notes_item_birthdays" />
+
+    <item
+        android:id="@+id/differentItem"
+        android:icon="@drawable/ic_message_text"
+        android:orderInCategory="1"
+        android:title="@string/menu_notes_item_different" />
+
+    <item
+        android:id="@+id/mainmenuItem"
+        android:icon="@drawable/ic_message_text"
+        android:orderInCategory="1"
+        android:title="@string/menu_notes_item_mainmenu" />
+</menu>

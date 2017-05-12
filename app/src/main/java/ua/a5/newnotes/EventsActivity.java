@@ -1,5 +1,6 @@
 package ua.a5.newnotes;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -10,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class EventsActivity extends AppCompatActivity {
     private static final int LAYOUT = R.layout.activity_events;
@@ -38,11 +40,21 @@ public class EventsActivity extends AppCompatActivity {
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+
+                    case R.id.search:
+                        //showNotificationTab();
+                        Toast.makeText(getApplicationContext(), "search", Toast.LENGTH_SHORT).show();
+
+                        Intent intent = new Intent(EventsActivity.this, CreateEventActivity.class);
+                        startActivity(intent);
+                        break;
+                }
                 return false;
             }
         });
 
-        toolbar.inflateMenu(R.menu.menu);
+        toolbar.inflateMenu(R.menu.menu_events);
     }
 
 
@@ -67,6 +79,31 @@ public class EventsActivity extends AppCompatActivity {
                 switch (menuItem.getItemId()) {
                     case R.id.actionNotificationItem:
                         //showNotificationTab();
+                        Toast.makeText(getApplicationContext(), "Notification", Toast.LENGTH_SHORT).show();
+                        break;
+
+                    case R.id.todayItem:
+                        //showNotificationTab();
+                        Toast.makeText(getApplicationContext(), "Today", Toast.LENGTH_SHORT).show();
+                        break;
+
+                    case R.id.thisWeekItem:
+                        //showNotificationTab();
+                        Toast.makeText(getApplicationContext(), "This week", Toast.LENGTH_SHORT).show();
+                        break;
+
+                    case R.id.thisMonthItem:
+                        //showNotificationTab();
+                        Toast.makeText(getApplicationContext(), "This month", Toast.LENGTH_SHORT).show();
+                        break;
+
+                    case R.id.mainmenuItem:
+                        //showNotificationTab();
+                        Toast.makeText(getApplicationContext(), "Main menu_notes", Toast.LENGTH_SHORT).show();
+
+                        Intent intent = new Intent(EventsActivity.this, StartMenuActivity.class);
+                        startActivity(intent);
+                        finish();
                         break;
                 }
                 return true;
@@ -96,4 +133,9 @@ public class EventsActivity extends AppCompatActivity {
 
 */
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }

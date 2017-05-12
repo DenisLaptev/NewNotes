@@ -1,5 +1,17 @@
 <resources>
     <string name="app_name">NewNotes</string>
+    <string name="toolbar_title">NewNotes Beta</string>
+    <string name="search_title">Search</string>
+
+    <string name="menu_item_notifications">Напоминания</string>
+
+    <string name="tab_item_history">History</string>
+    <string name="tab_item_ideas">Ideas</string>
+    <string name="tab_item_todo">TODO</string>
+    <string name="tab_item_birthdays">Birthdays</string>
+
+    <string name="view_navigation_open">Open</string>
+    <string name="view_navigation_close">Close</string>
 
     <string-array name="Categories">
         <item>Programming</item>

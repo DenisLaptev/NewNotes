@@ -1,6 +1,7 @@
 package ua.a5.newnotes;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -8,10 +9,12 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import ua.a5.newnotes.adapter.TabsFragmentAdapter;
+import ua.a5.newnotes.utils.Constants;
 
 public class EventsActivity extends AppCompatActivity {
     private static final int LAYOUT = R.layout.activity_events;
@@ -21,7 +24,7 @@ public class EventsActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private TabLayout tabLayout;
 
-    //TabsFragmentAdapter adapter;
+    TabsFragmentAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +34,7 @@ public class EventsActivity extends AppCompatActivity {
 
         initToolbar();
         initNavigationView();
-        //initTabs();
+        initTabs();
     }
 
     private void initToolbar() {
@@ -78,7 +81,7 @@ public class EventsActivity extends AppCompatActivity {
                 drawerLayout.closeDrawers();
                 switch (menuItem.getItemId()) {
                     case R.id.actionNotificationItem:
-                        //showNotificationTab();
+                        showNotificationTab();
                         Toast.makeText(getApplicationContext(), "Notification", Toast.LENGTH_SHORT).show();
                         break;
 
@@ -112,26 +115,26 @@ public class EventsActivity extends AppCompatActivity {
 
     }
 
-/*
+
     private void initTabs() {
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         adapter = new TabsFragmentAdapter(this, getSupportFragmentManager());
         viewPager.setAdapter(adapter);
 
-        new RemindMeTask().execute();
+        //new RemindMeTask().execute();
 
         tabLayout = (TabLayout) findViewById(R.id.tablayout);
         tabLayout.setupWithViewPager(viewPager);
     }
-   */
 
-/*
+
+
 
     private void showNotificationTab() {
         viewPager.setCurrentItem(Constants.TAB_TWO);
     }
 
-*/
+
 
     @Override
     public void onBackPressed() {

@@ -5,7 +5,14 @@ package ua.a5.newnotes.utils;
  */
 
 public class Constants {
-    public static final int TAB_ONE = 0;
-    public static final int TAB_TWO = 1;
-    public static final int TAB_THREE = 2;
+
+    public static final int TAB_NOTES_TODO = 10;
+    public static final int TAB_NOTES_IDEAS = 11;
+    public static final int TAB_NOTES_BIRTHDAYS = 12;
+    public static final int TAB_NOTES_DIFFERENT = 13;
+
+    public static final int TAB_EVENTS_TODAY = 20;
+    public static final int TAB_EVENTS_THIS_WEEK = 21;
+    public static final int TAB_EVENTS_THIS_MONTH = 22;
+
 }

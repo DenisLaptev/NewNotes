@@ -13,15 +13,20 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import ua.a5.newnotes.adapter.tabsFragmentAdapters.NotesTabsFragmentAdapter;
+import ua.a5.newnotes.utils.Constants;
+
+import static ua.a5.newnotes.R.id.toolbar_notes;
+
 public class NotesActivity extends AppCompatActivity {
     private static final int LAYOUT = R.layout.activity_notes;
 
-    private Toolbar toolbar;
-    private DrawerLayout drawerLayout;
-    private ViewPager viewPager;
-    private TabLayout tabLayout;
+    private Toolbar toolbarNotes;
+    private DrawerLayout drawerLayoutNotes;
+    private ViewPager viewPagerNotes;
+    private TabLayout tabLayoutNotes;
 
-    //TabsFragmentAdapter adapter;
+    NotesTabsFragmentAdapter adapterNotes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,14 +36,14 @@ public class NotesActivity extends AppCompatActivity {
 
         initToolbar();
         initNavigationView();
-        //initTabs();
+        initTabs();
     }
 
 
     private void initToolbar() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle(R.string.toolbar_title);
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+        toolbarNotes = (Toolbar) findViewById(toolbar_notes);
+        toolbarNotes.setTitle(R.string.toolbar_title);
+        toolbarNotes.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
 
@@ -57,28 +62,28 @@ public class NotesActivity extends AppCompatActivity {
             }
         });
 
-        toolbar.inflateMenu(R.menu.menu_notes);
+        toolbarNotes.inflateMenu(R.menu.menu_notes);
     }
 
 
     private void initNavigationView() {
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerLayoutNotes = (DrawerLayout) findViewById(R.id.drawer_layout_notes);
         ActionBarDrawerToggle toggle =
                 new ActionBarDrawerToggle(
                         this,
-                        drawerLayout,
-                        toolbar,
+                        drawerLayoutNotes,
+                        toolbarNotes,
                         R.string.view_navigation_open,
                         R.string.view_navigation_close
                 );
-        drawerLayout.setDrawerListener(toggle);
+        drawerLayoutNotes.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation);
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+        NavigationView navigationViewNotes = (NavigationView) findViewById(R.id.navigation_view_notes);
+        navigationViewNotes.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                drawerLayout.closeDrawers();
+                drawerLayoutNotes.closeDrawers();
                 switch (menuItem.getItemId()) {
                     case R.id.actionNotificationItem:
                         //showNotificationTab();
@@ -120,26 +125,25 @@ public class NotesActivity extends AppCompatActivity {
 
     }
 
-/*
+
     private void initTabs() {
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
-        adapter = new TabsFragmentAdapter(this, getSupportFragmentManager());
-        viewPager.setAdapter(adapter);
+        viewPagerNotes = (ViewPager) findViewById(R.id.viewpager_notes);
+        adapterNotes = new NotesTabsFragmentAdapter(this, getSupportFragmentManager());
+        viewPagerNotes.setAdapter(adapterNotes);
 
-        new RemindMeTask().execute();
-
-        tabLayout = (TabLayout) findViewById(R.id.tablayout);
-        tabLayout.setupWithViewPager(viewPager);
+        
+        tabLayoutNotes = (TabLayout) findViewById(R.id.tablayout_notes);
+        tabLayoutNotes.setupWithViewPager(viewPagerNotes);
     }
-   */
+   
 
-/*
 
-    private void showNotificationTab() {
-        viewPager.setCurrentItem(Constants.TAB_TWO);
+
+    private void showIdeasTab() {
+        viewPagerNotes.setCurrentItem(Constants.TAB_NOTES_IDEAS);
     }
 
-*/
+
 
     @Override
     public void onBackPressed() {

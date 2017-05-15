@@ -13,18 +13,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import ua.a5.newnotes.adapter.TabsFragmentAdapter;
+import ua.a5.newnotes.adapter.tabsFragmentAdapters.EventsTabsFragmentAdapter;
 import ua.a5.newnotes.utils.Constants;
 
 public class EventsActivity extends AppCompatActivity {
     private static final int LAYOUT = R.layout.activity_events;
 
-    private Toolbar toolbar;
-    private DrawerLayout drawerLayout;
-    private ViewPager viewPager;
-    private TabLayout tabLayout;
+    private Toolbar toolbarEvents;
+    private DrawerLayout drawerLayoutEvents;
+    private ViewPager viewPagerEvents;
+    private TabLayout tabLayoutEvents;
 
-    TabsFragmentAdapter adapter;
+    EventsTabsFragmentAdapter adapterEvents;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,15 +38,15 @@ public class EventsActivity extends AppCompatActivity {
     }
 
     private void initToolbar() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle(R.string.toolbar_title);
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+        toolbarEvents = (Toolbar) findViewById(R.id.toolbar_events);
+        toolbarEvents.setTitle(R.string.toolbar_title);
+        toolbarEvents.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
 
                     case R.id.search:
-                        //showNotificationTab();
+                        //showTodayTab();
                         Toast.makeText(getApplicationContext(), "search", Toast.LENGTH_SHORT).show();
 
                         Intent intent = new Intent(EventsActivity.this, CreateEventActivity.class);
@@ -57,51 +57,51 @@ public class EventsActivity extends AppCompatActivity {
             }
         });
 
-        toolbar.inflateMenu(R.menu.menu_events);
+        toolbarEvents.inflateMenu(R.menu.menu_events);
     }
 
 
     private void initNavigationView() {
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerLayoutEvents = (DrawerLayout) findViewById(R.id.drawer_layout_events);
         ActionBarDrawerToggle toggle =
                 new ActionBarDrawerToggle(
                         this,
-                        drawerLayout,
-                        toolbar,
+                        drawerLayoutEvents,
+                        toolbarEvents,
                         R.string.view_navigation_open,
                         R.string.view_navigation_close
                 );
-        drawerLayout.setDrawerListener(toggle);
+        drawerLayoutEvents.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation);
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+        NavigationView navigationViewEvents = (NavigationView) findViewById(R.id.navigation_view_events);
+        navigationViewEvents.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                drawerLayout.closeDrawers();
+                drawerLayoutEvents.closeDrawers();
                 switch (menuItem.getItemId()) {
                     case R.id.actionNotificationItem:
-                        showNotificationTab();
+                        showTodayTab();
                         Toast.makeText(getApplicationContext(), "Notification", Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.todayItem:
-                        //showNotificationTab();
+                        //showTodayTab();
                         Toast.makeText(getApplicationContext(), "Today", Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.thisWeekItem:
-                        //showNotificationTab();
+                        //showTodayTab();
                         Toast.makeText(getApplicationContext(), "This week", Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.thisMonthItem:
-                        //showNotificationTab();
+                        //showTodayTab();
                         Toast.makeText(getApplicationContext(), "This month", Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.mainmenuItem:
-                        //showNotificationTab();
+                        //showTodayTab();
                         Toast.makeText(getApplicationContext(), "Main menu_notes", Toast.LENGTH_SHORT).show();
 
                         Intent intent = new Intent(EventsActivity.this, StartMenuActivity.class);
@@ -117,21 +117,21 @@ public class EventsActivity extends AppCompatActivity {
 
 
     private void initTabs() {
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
-        adapter = new TabsFragmentAdapter(this, getSupportFragmentManager());
-        viewPager.setAdapter(adapter);
+        viewPagerEvents = (ViewPager) findViewById(R.id.viewpager_events);
+        adapterEvents = new EventsTabsFragmentAdapter(this, getSupportFragmentManager());
+        viewPagerEvents.setAdapter(adapterEvents);
 
         //new RemindMeTask().execute();
 
-        tabLayout = (TabLayout) findViewById(R.id.tablayout);
-        tabLayout.setupWithViewPager(viewPager);
+        tabLayoutEvents = (TabLayout) findViewById(R.id.tablayout_events);
+        tabLayoutEvents.setupWithViewPager(viewPagerEvents);
     }
 
 
 
 
-    private void showNotificationTab() {
-        viewPager.setCurrentItem(Constants.TAB_TWO);
+    private void showTodayTab() {
+        viewPagerEvents.setCurrentItem(Constants.TAB_EVENTS_TODAY);
     }
 
 

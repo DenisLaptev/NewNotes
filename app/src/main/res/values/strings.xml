@@ -5,7 +5,7 @@
 
     <string name="menu_notes_item_notifications">Напоминания</string>
 
-    <string name="tab_item_history">History</string>
+    <string name="tab_item_different">Different</string>
     <string name="tab_item_ideas">Ideas</string>
     <string name="tab_item_todo">TODO</string>
     <string name="tab_item_birthdays">Birthdays</string>
@@ -25,6 +25,8 @@
     <string name="menu_events_item_thisweek">This week</string>
     <string name="menu_events_item_thismonth">This month</string>
     <string name="menu_events_item_mainmenu">Main menu</string>
+
+    <string name="menu_events_item">Events</string>
 
     <string-array name="Categories">
         <item>Programming</item>

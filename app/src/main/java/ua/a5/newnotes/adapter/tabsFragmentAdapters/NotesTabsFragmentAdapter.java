@@ -9,10 +9,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ua.a5.newnotes.fragments.AbstractTabFragment;
-import ua.a5.newnotes.fragments.notesFragments.BirthdaysFragment;
-import ua.a5.newnotes.fragments.notesFragments.DifferentFragment;
-import ua.a5.newnotes.fragments.notesFragments.IdeasFragment;
-import ua.a5.newnotes.fragments.notesFragments.TodoFragment;
+import ua.a5.newnotes.fragments.notes_fragments.BirthdaysFragment;
+import ua.a5.newnotes.fragments.notes_fragments.DifferentFragment;
+import ua.a5.newnotes.fragments.notes_fragments.IdeasFragment;
+import ua.a5.newnotes.fragments.notes_fragments.TodoFragment;
 
 import static ua.a5.newnotes.utils.Constants.MAP_INDEX_BIRTHDAYS;
 import static ua.a5.newnotes.utils.Constants.MAP_INDEX_DIFFERENT;

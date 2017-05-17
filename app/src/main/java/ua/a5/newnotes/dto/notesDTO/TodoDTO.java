@@ -1,13 +1,24 @@
 package ua.a5.newnotes.dto.notesDTO;
 
+import java.io.Serializable;
+
 /**
  * Created by A5 Android Intern 2 on 15.05.2017.
  */
 
-public class TodoDTO {
+public class TodoDTO implements Serializable {
     private String title;
     private String todo;
     private String date;
+    private String description;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public TodoDTO(String title, String todo, String date) {
         this.title = title;

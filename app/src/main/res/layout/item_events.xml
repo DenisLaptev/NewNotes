@@ -24,14 +24,24 @@
             android:text="EVENT"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:textColor="#f40a0a"/>
+            android:textColor="@color/color_marker_event" />
 
+        <!--
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top|right"
             android:layout_margin="8dp"
             android:src="@drawable/ic_dots_vertical" />
+        -->
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|right"
+            android:layout_margin="12dp"
+            android:src="@drawable/ic_pillar" />
+
 
         <LinearLayout
             android:layout_width="match_parent"

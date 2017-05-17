@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".StartMenuActivity"
+            android:name=".activities.StartMenuActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
@@ -22,16 +22,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".NotesActivity"
+            android:name=".activities.NotesActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-
-
         <activity
-            android:name=".CreateNoteActivity"
+            android:name=".activities.CreateNoteActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-
 
         <!--
         <activity
@@ -41,16 +38,13 @@
         -->
 
         <activity
-            android:name=".EventsActivity"
+            android:name=".activities.EventsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-
-
         <activity
-            android:name=".CreateEventActivity"
+            android:name=".activities.CreateEventActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-
 
         <!--
         <activity
@@ -60,7 +54,7 @@
         -->
 
         <activity
-            android:name=".LoadLogoActivity"
+            android:name=".activities.LoadLogoActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
@@ -69,6 +63,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity android:name=".activities.events_activities.EventActivity" />
+        <activity android:name=".activities.notes_activities.TodoActivity" />
+        <activity android:name=".activities.notes_activities.IdeaActivity" />
+        <activity android:name=".activities.notes_activities.DifferentActivity" />
+        <activity android:name=".activities.notes_activities.BirthdayActivity"></activity>
     </application>
+
 </manifest>

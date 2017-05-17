@@ -18,4 +18,20 @@
     <color name="colorTextMainMenuDarkBlue">#050737</color>
 
     <color name="color_btn_calendar_white">#ffffff</color>
+
+    <!--item color markers-->
+    <color name="color_marker_event">#f40a0a</color>
+
+    <color name="color_marker_todo">#de2a2a</color>
+    <color name="color_marker_ideas">#10b840</color>
+    <color name="color_marker_birthdays">#107db8</color>
+    <color name="color_marker_different">#f0a51b</color>
+    <!--item color markers-->
+
+
+    <!--Colors in item activities-->
+    <color name="color_item_activity_description">#191919</color>
+    <color name="color_item_activity_date">#f01305</color>
+    <!--Colors in item activities-->
+
 </resources>

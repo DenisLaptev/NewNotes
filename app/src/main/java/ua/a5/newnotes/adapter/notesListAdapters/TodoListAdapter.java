@@ -1,5 +1,6 @@
 package ua.a5.newnotes.adapter.notesListAdapters;
 
+import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -19,22 +20,45 @@ import ua.a5.newnotes.dto.notesDTO.TodoDTO;
 
 public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoViewHolder> {
 
-    //хранилище данных.
-    private List<TodoDTO> todoData;
+    public interface TodoClickListener {
+        void onClick(TodoDTO todoDTO);
+    }
 
-    public TodoListAdapter(List<TodoDTO> todoData) {
-        this.todoData = todoData;
+    //Локальный слушатель для адаптера.
+    public interface ItemClickListener {
+        void onClick(int position);
+    }
+
+    private Context context;
+    //хранилище данных.
+    private List<TodoDTO> todoDTOList;
+    private TodoClickListener todoClickListener;
+    private ItemClickListener itemClickListener = new ItemClickListener() {
+        @Override
+        public void onClick(int position) {
+            //TODO
+            todoClickListener.onClick(todoDTOList.get(position));
+        }
+    };
+
+    public TodoListAdapter(Context context,
+                           List<TodoDTO> todoDTOList,
+                           TodoClickListener todoClickListener
+    ) {
+        this.context = context;
+        this.todoDTOList = todoDTOList;
+        this.todoClickListener = todoClickListener;
     }
 
     @Override
     public TodoListAdapter.TodoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_notes_todo, parent, false);
-        return new TodoListAdapter.TodoViewHolder(view);
+        return new TodoListAdapter.TodoViewHolder(view, itemClickListener);
     }
 
     @Override
     public void onBindViewHolder(TodoListAdapter.TodoViewHolder holder, int position) {
-        TodoDTO item = todoData.get(position);
+        TodoDTO item = todoDTOList.get(position);
         holder.tvTitle.setText(item.getTitle());
         holder.chbxTodo.setText(item.getTodo());
         holder.tvDate.setText(item.getDate());
@@ -42,7 +66,7 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoVi
 
     @Override
     public int getItemCount() {
-        return todoData.size();
+        return todoDTOList.size();
     }
 
     public static class TodoViewHolder extends RecyclerView.ViewHolder {
@@ -52,17 +76,28 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoVi
         CheckBox chbxTodo;
         TextView tvDate;
 
-        public TodoViewHolder(View itemView) {
+        ItemClickListener itemClickListener;
+
+        public TodoViewHolder(View itemView, final ItemClickListener itemClickListener) {
             super(itemView);
 
             cardView = (CardView) itemView.findViewById(R.id.card_view_todo);
             tvTitle = (TextView) itemView.findViewById(R.id.title_todo);
             chbxTodo = (CheckBox)itemView.findViewById(R.id.chbx_todo);
             tvDate = (TextView)itemView.findViewById(R.id.tv_date_todo);
+
+            this.itemClickListener = itemClickListener;
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    itemClickListener.onClick(getAdapterPosition());
+                }
+            });
         }
     }
 
-    public void setData(List<TodoDTO> todoData) {
-        this.todoData = todoData;
+    public void setData(List<TodoDTO> todoDTOList) {
+        this.todoDTOList = todoDTOList;
     }
 }

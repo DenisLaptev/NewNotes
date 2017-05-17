@@ -9,9 +9,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ua.a5.newnotes.fragments.AbstractTabFragment;
-import ua.a5.newnotes.fragments.eventsFragments.ThisMonthFragment;
-import ua.a5.newnotes.fragments.eventsFragments.ThisWeekFragment;
-import ua.a5.newnotes.fragments.eventsFragments.TodayFragment;
+import ua.a5.newnotes.fragments.events_fragments.ThisMonthFragment;
+import ua.a5.newnotes.fragments.events_fragments.ThisWeekFragment;
+import ua.a5.newnotes.fragments.events_fragments.TodayFragment;
 
 import static ua.a5.newnotes.utils.Constants.MAP_INDEX_THIS_MONTH;
 import static ua.a5.newnotes.utils.Constants.MAP_INDEX_THIS_WEEK;

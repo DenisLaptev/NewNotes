@@ -1,5 +1,6 @@
 package ua.a5.newnotes.adapter.notesListAdapters;
 
+import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,22 +19,46 @@ import ua.a5.newnotes.dto.notesDTO.DifferentDTO;
 
 public class DifferentListAdapter extends RecyclerView.Adapter<DifferentListAdapter.DifferentViewHolder> {
 
-    //хранилище данных.
-    private List<DifferentDTO> differentData;
+    public interface DifferentClickListener {
+        void onClick(DifferentDTO differentDTO);
+    }
 
-    public DifferentListAdapter(List<DifferentDTO> differentData) {
-        this.differentData = differentData;
+    //Локальный слушатель для адаптера.
+    public interface ItemClickListener {
+        void onClick(int position);
+    }
+
+    private Context context;
+    //хранилище данных.
+    private List<DifferentDTO> differentDTOList;
+    private DifferentClickListener differentClickListener;
+    private ItemClickListener itemClickListener = new ItemClickListener() {
+        @Override
+        public void onClick(int position) {
+            //TODO
+            differentClickListener.onClick(differentDTOList.get(position));
+        }
+    };
+
+
+    public DifferentListAdapter(Context context,
+                                List<DifferentDTO> differentDTOList,
+                                DifferentClickListener differentClickListener
+    ) {
+        this.context = context;
+        this.differentDTOList = differentDTOList;
+        this.differentClickListener = differentClickListener;
     }
 
     @Override
     public DifferentListAdapter.DifferentViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_notes_different, parent, false);
-        return new DifferentListAdapter.DifferentViewHolder(view);
+        return new DifferentListAdapter.DifferentViewHolder(view, itemClickListener);
     }
 
     @Override
     public void onBindViewHolder(DifferentListAdapter.DifferentViewHolder holder, int position) {
-        DifferentDTO item = differentData.get(position);
+        DifferentDTO item = differentDTOList.get(position);
         holder.tvTitle.setText(item.getTitle());
         holder.tvDescription.setText(item.getDescription());
         holder.tvDate.setText(item.getDate());
@@ -41,7 +66,7 @@ public class DifferentListAdapter extends RecyclerView.Adapter<DifferentListAdap
 
     @Override
     public int getItemCount() {
-        return differentData.size();
+        return differentDTOList.size();
     }
 
     public static class DifferentViewHolder extends RecyclerView.ViewHolder {
@@ -51,17 +76,28 @@ public class DifferentListAdapter extends RecyclerView.Adapter<DifferentListAdap
         TextView tvDescription;
         TextView tvDate;
 
-        public DifferentViewHolder(View itemView) {
+        ItemClickListener itemClickListener;
+
+        public DifferentViewHolder(View itemView, final ItemClickListener itemClickListener) {
             super(itemView);
 
             cardView = (CardView) itemView.findViewById(R.id.card_view_different);
             tvTitle = (TextView) itemView.findViewById(R.id.title_different);
             tvDescription = (TextView) itemView.findViewById(R.id.tv_description_different);
             tvDate = (TextView) itemView.findViewById(R.id.tv_date_different);
+
+            this.itemClickListener = itemClickListener;
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    itemClickListener.onClick(getAdapterPosition());
+                }
+            });
         }
     }
 
-    public void setDifferentData(List<DifferentDTO> differentData) {
-        this.differentData = differentData;
+    public void setDifferentDTOList(List<DifferentDTO> differentDTOList) {
+        this.differentDTOList = differentDTOList;
     }
 }

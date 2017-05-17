@@ -8,19 +8,19 @@
 
     <item
         android:id="@+id/todayItem"
-        android:icon="@drawable/ic_message_text"
+        android:icon="@drawable/ic_pillar"
         android:orderInCategory="1"
         android:title="@string/menu_events_item_today" />
 
     <item
         android:id="@+id/thisWeekItem"
-        android:icon="@drawable/ic_message_text"
+        android:icon="@drawable/ic_pillar"
         android:orderInCategory="1"
         android:title="@string/menu_events_item_thisweek" />
 
     <item
         android:id="@+id/thisMonthItem"
-        android:icon="@drawable/ic_message_text"
+        android:icon="@drawable/ic_pillar"
         android:orderInCategory="1"
         android:title="@string/menu_events_item_thismonth" />
 

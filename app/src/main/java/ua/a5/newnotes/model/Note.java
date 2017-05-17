@@ -1,10 +1,12 @@
 package ua.a5.newnotes.model;
 
+import java.io.Serializable;
+
 /**
  * Created by A5 Android Intern 2 on 12.05.2017.
  */
 
-public class Note {
+public class Note implements Serializable {
 
     private String date;
     private String time;

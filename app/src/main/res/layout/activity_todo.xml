@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_todo"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="ua.a5.newnotes.activities.events_activities.EventActivity">
+
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_check_circle_outline" />
+
+        <TextView
+            android:id="@+id/tv_todo_activity_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:hint="Todo Title"
+            android:textColor="@color/color_marker_todo"
+            android:textSize="@dimen/item_activity_title_size"
+            android:gravity="center" />
+
+
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/tv_todo_activity_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Todo Date"
+        android:textColor="@color/color_item_activity_date"
+        android:textSize="@dimen/item_activity_date_size"
+        android:gravity="center"
+        android:layout_below="@+id/linearLayout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="30dp" />
+
+    <CheckBox
+        android:id="@+id/chbx_todo_activity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="done"
+        android:textSize="@dimen/item_activity_description_size"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/tv_todo_activity_date"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/tv_todo_activity_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Todo Description"
+        android:textColor="@color/color_item_activity_description"
+        android:textSize="@dimen/item_activity_description_size"
+        android:gravity="center"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/chbx_todo_activity"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="11dp"
+        android:layout_marginEnd="11dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:gravity="bottom|center"
+        android:text="TODO"
+        android:textColor="@color/color_marker_todo"
+        android:textSize="40sp"
+        android:textStyle="bold" />
+
+</RelativeLayout>

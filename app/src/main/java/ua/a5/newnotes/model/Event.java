@@ -1,10 +1,12 @@
 package ua.a5.newnotes.model;
 
+import java.io.Serializable;
+
 /**
  * Created by A5 Android Intern 2 on 12.05.2017.
  */
 
-public class Event {
+public class Event implements Serializable {
     private String title;
     private String location;
     private int isImportant;

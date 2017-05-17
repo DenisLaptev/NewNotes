@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
     <!--<item
         android:id="@+id/actionNotificationItem"
         android:icon="@drawable/ic_message_text"
@@ -8,25 +10,25 @@
 
     <item
         android:id="@+id/todoItem"
-        android:icon="@drawable/ic_message_text"
+        android:icon="@drawable/ic_check_circle_outline"
         android:orderInCategory="1"
         android:title="@string/menu_notes_item_todo" />
 
     <item
         android:id="@+id/ideasItem"
-        android:icon="@drawable/ic_message_text"
+        android:icon="@drawable/ic_lightbulb_on"
         android:orderInCategory="1"
         android:title="@string/menu_notes_item_ideas" />
 
     <item
         android:id="@+id/birthdaysItem"
-        android:icon="@drawable/ic_message_text"
+        android:icon="@drawable/ic_cake_variant"
         android:orderInCategory="1"
         android:title="@string/menu_notes_item_birthdays" />
 
     <item
         android:id="@+id/differentItem"
-        android:icon="@drawable/ic_message_text"
+        android:icon="@drawable/ic_star"
         android:orderInCategory="1"
         android:title="@string/menu_notes_item_different" />
 

@@ -4,7 +4,7 @@
     android:id="@+id/activity_load_logo"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ua.a5.newnotes.LoadLogoActivity">
+    tools:context="ua.a5.newnotes.activities.LoadLogoActivity">
 
 
     <ImageView

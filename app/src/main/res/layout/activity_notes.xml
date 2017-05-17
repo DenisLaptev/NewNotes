@@ -2,12 +2,18 @@
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:fab="http://schemas.android.com/apk/res-auto"
+
+
     android:id="@+id/drawer_layout_notes"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/mainBackground"
     android:fitsSystemWindows="true">
+    <!--
+    xmlns:fab="http://schemas.android.com/apk/res/android"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
 
+    -->
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -47,29 +53,128 @@
 
         <!--Плюсик в кружке-->
         <!--
-        <android.support.design.widget.FloatingActionButton xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/floating_action_bar_notes"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:src="@drawable/ic_plus"
-            app:backgroundTint="@color/colorPrimary" />
+                <com.melnykov.fab.FloatingActionButton
+                    android:id="@+id/fab_notes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|right"
+                    android:layout_margin="16dp"
+                    android:src="@drawable/ic_plus"
+                    fab:fab_colorNormal="@color/colorPrimary"
+                    fab:fab_colorPressed="@color/colorPrimaryDark"
+                    fab:fab_colorRipple="@color/colorAccent" />
         -->
 
-        <com.melnykov.fab.FloatingActionButton
-            android:id="@+id/fab_notes"
+        <!--FloatingActionsMenu-->
+        <!--
+               <com.getbase.floatingactionbutton.FloatingActionsMenu
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/multiple_actions_notes"
+                    android:layout_margin="16dp"
+                    android:layout_gravity="bottom|right"
+                    >
+
+                    <com.getbase.floatingactionbutton.FloatingActionButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/action_a"
+                        fab:fab_size="normal"
+                        fab:fab_icon="@drawable/ic_check_circle_outline"
+                        fab:fab_colorNornal="@color/color_marker_todo"
+                        fab:fab_colorPressed="@color/colorPrimaryDark"
+                        />
+
+                </com.getbase.floatingactionbutton.FloatingActionsMenu>
+
+        -->
+
+        <!--
+                <com.getbase.floatingactionbutton.FloatingActionsMenu
+                    android:id="@+id/multiple_actions_notes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    fab:fab_addButtonColorNormal="@color/color_white"
+                    fab:fab_addButtonColorPressed="@color/color_white"
+                    fab:fab_addButtonPlusIconColor="@color/color_white"
+
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginEnd="16dp">
+
+                    <com.getbase.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/action_aa"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        fab:fab_icon="@drawable/ic_check_circle_outline"
+                        fab:fab_colorNormal="@color/color_marker_todo"
+                        fab:fab_title="Action AA"
+                        fab:fab_colorPressed="@color/colorPrimaryDark"/>
+
+                    <com.getbase.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/action_b"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        fab:fab_icon="@drawable/ic_star"
+                        fab:fab_colorNormal="@color/color_marker_todo"
+                        fab:fab_title="Action with a very long name that won\'t fit on the screen"
+                        fab:fab_colorPressed="@color/colorPrimaryDark"/>
+
+                </com.getbase.floatingactionbutton.FloatingActionsMenu>
+        -->
+
+
+        <com.getbase.floatingactionbutton.FloatingActionsMenu
+            android:id="@+id/multiple_actions_notes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
             android:layout_margin="16dp"
-            android:src="@drawable/ic_plus"
-            fab:fab_colorNormal="@color/colorPrimary"
-            fab:fab_colorPressed="@color/colorPrimaryDark"
-            fab:fab_colorRipple="@color/colorAccent" />
+            android:layout_gravity="bottom|right"
+            fab:fab_addButtonColorNormal="@color/colorPrimary"
+            fab:fab_addButtonColorPressed="@color/colorPrimaryDark"
+            fab:fab_addButtonPlusIconColor="@color/color_white"
+            fab:fab_labelStyle="@style/menu_labels_style">
 
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/action_todo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                fab:fab_size="normal"
+                fab:fab_icon="@drawable/ic_check_circle_outline_white"
+                fab:fab_colorNormal="@color/color_marker_todo"
+                fab:fab_title="TODO"
+                fab:fab_colorPressed="@color/colorPrimaryDark" />
 
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/action_ideas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                fab:fab_icon="@drawable/ic_lightbulb_on_white"
+                fab:fab_colorNormal="@color/color_marker_ideas"
+                fab:fab_title="IDEAS"
+                fab:fab_colorPressed="@color/colorPrimaryDark" />
+
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/action_birthdays"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                fab:fab_icon="@drawable/ic_cake_variant_white"
+                fab:fab_colorNormal="@color/color_marker_birthdays"
+                fab:fab_title="BIRTHDAYS"
+                fab:fab_colorPressed="@color/colorPrimaryDark" />
+
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/action_different"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                fab:fab_icon="@drawable/ic_star_white"
+                fab:fab_colorNormal="@color/color_marker_different"
+                fab:fab_title="DIFFERENT"
+                fab:fab_colorPressed="@color/colorPrimaryDark" />
+        </com.getbase.floatingactionbutton.FloatingActionsMenu>
     </android.support.design.widget.CoordinatorLayout>
 
 

@@ -11,12 +11,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.melnykov.fab.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import ua.a5.newnotes.R;
+import ua.a5.newnotes.activities.CreateNoteActivity;
 import ua.a5.newnotes.activities.notes_activities.TodoActivity;
 import ua.a5.newnotes.adapter.notesListAdapters.TodoListAdapter;
 import ua.a5.newnotes.dto.notesDTO.TodoDTO;
@@ -52,8 +54,65 @@ public class TodoFragment extends AbstractTabFragment implements TodoListAdapter
         TodoListAdapter adapter = new TodoListAdapter(context, createMockTodoListData(), this);
         recyclerView.setAdapter(adapter);
 
+        /*
         FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab_notes);
         fab.attachToRecyclerView(recyclerView);
+        */
+
+
+        FloatingActionButton actionTodo = (FloatingActionButton) getActivity().findViewById(R.id.action_todo);
+        actionTodo.setTitle("new TODO Note");
+        actionTodo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(), "search", Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(getContext(), CreateNoteActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        FloatingActionButton actionIdea = (FloatingActionButton) getActivity().findViewById(R.id.action_ideas);
+        actionIdea.setTitle("new IDEA Note");
+        actionIdea.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(), "search", Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(getContext(), CreateNoteActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        FloatingActionButton actionBirthday = (FloatingActionButton) getActivity().findViewById(R.id.action_birthdays);
+        actionBirthday.setTitle("new BIRTHDAY Note");
+        actionBirthday.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(), "search", Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(getContext(), CreateNoteActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        FloatingActionButton actionDifferent = (FloatingActionButton) getActivity().findViewById(R.id.action_different);
+        actionDifferent.setTitle("new DIFFERENT Note");
+        actionDifferent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(), "search", Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(getContext(), CreateNoteActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        FloatingActionsMenu menuMultipleActions = (FloatingActionsMenu) getActivity().findViewById(R.id.multiple_actions_notes);
+        //menuMultipleActions.addButton(actionTodo);
+        //menuMultipleActions.addButton(actionIdea);
+        //menuMultipleActions.addButton(actionBirthday);
+        //menuMultipleActions.addButton(actionDifferent);
 
         return view;
     }

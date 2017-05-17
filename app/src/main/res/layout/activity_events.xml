@@ -50,20 +50,6 @@
 
         <!--Плюсик в кружке-->
 
-        <!--
-        <android.support.design.widget.FloatingActionButton
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/floating_action_bar_events"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:src="@drawable/ic_plus"
-            app:backgroundTint="@color/colorPrimary" />
-        -->
-
-
         <com.melnykov.fab.FloatingActionButton
             android:id="@+id/fab_events"
             android:layout_width="wrap_content"

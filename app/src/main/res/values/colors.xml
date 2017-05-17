@@ -34,4 +34,6 @@
     <color name="color_item_activity_date">#f01305</color>
     <!--Colors in item activities-->
 
+    <color name="black_semi_transparent">#B2000000</color>
+
 </resources>

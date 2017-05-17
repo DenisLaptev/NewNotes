@@ -41,6 +41,8 @@ public class NotesActivity extends AppCompatActivity {
         initToolbar();
         initNavigationView();
         initTabs();
+
+
     }
 
 

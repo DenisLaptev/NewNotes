@@ -57,7 +57,6 @@ public class ThisWeekFragment extends AbstractTabFragment implements EventsListA
         FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab_events);
         fab.attachToRecyclerView(recyclerView);
 
-
         return view;
     }
 

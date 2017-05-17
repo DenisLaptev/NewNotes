@@ -26,12 +26,12 @@ public class TodayFragment extends AbstractTabFragment {
     private static final int LAYOUT = R.layout.fragment_events;
 
 
-    public static ThisMonthFragment getInstance(Context context) {
+    public static TodayFragment getInstance(Context context) {
         Bundle args = new Bundle();
-        ThisMonthFragment fragment = new ThisMonthFragment();
+        TodayFragment fragment = new TodayFragment();
         fragment.setArguments(args);
         fragment.setContext(context);
-        fragment.setTitle(context.getString(R.string.menu_events_item));
+        fragment.setTitle(context.getString(R.string.menu_events_item_today));
         return fragment;
     }
 

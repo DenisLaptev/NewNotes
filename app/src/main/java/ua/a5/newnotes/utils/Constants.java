@@ -5,14 +5,12 @@ package ua.a5.newnotes.utils;
  */
 
 public class Constants {
+    public static final int MAP_INDEX_TODO = 0;
+    public static final int MAP_INDEX_IDEAS = 1;
+    public static final int MAP_INDEX_BIRTHDAYS = 2;
+    public static final int MAP_INDEX_DIFFERENT = 3;
 
-    public static final int TAB_NOTES_TODO = 10;
-    public static final int TAB_NOTES_IDEAS = 11;
-    public static final int TAB_NOTES_BIRTHDAYS = 12;
-    public static final int TAB_NOTES_DIFFERENT = 13;
-
-    public static final int TAB_EVENTS_TODAY = 20;
-    public static final int TAB_EVENTS_THIS_WEEK = 21;
-    public static final int TAB_EVENTS_THIS_MONTH = 22;
-
+    public static final int MAP_INDEX_TODAY = 0;
+    public static final int MAP_INDEX_THIS_WEEK = 1;
+    public static final int MAP_INDEX_THIS_MONTH = 2;
 }

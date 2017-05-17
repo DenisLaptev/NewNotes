@@ -2,7 +2,6 @@ package ua.a5.newnotes;
 
 import android.app.Activity;
 import android.content.ContentValues;
-import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -216,8 +215,9 @@ public class CreateNoteActivity extends AppCompatActivity implements TextWatcher
         btnCreateNoteNotesMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(CreateNoteActivity.this, NotesActivity.class);
-                startActivity(intent);
+                //Intent intent = new Intent(CreateNoteActivity.this, NotesActivity.class);
+                //startActivity(intent);
+                onBackPressed();
                 finish();
             }
         });

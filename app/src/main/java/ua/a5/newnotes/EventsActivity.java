@@ -14,10 +14,14 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import ua.a5.newnotes.adapter.tabsFragmentAdapters.EventsTabsFragmentAdapter;
-import ua.a5.newnotes.utils.Constants;
+
+import static ua.a5.newnotes.utils.Constants.MAP_INDEX_THIS_MONTH;
+import static ua.a5.newnotes.utils.Constants.MAP_INDEX_THIS_WEEK;
+import static ua.a5.newnotes.utils.Constants.MAP_INDEX_TODAY;
 
 public class EventsActivity extends AppCompatActivity {
     private static final int LAYOUT = R.layout.activity_events;
+
 
     private Toolbar toolbarEvents;
     private DrawerLayout drawerLayoutEvents;
@@ -46,7 +50,6 @@ public class EventsActivity extends AppCompatActivity {
                 switch (item.getItemId()) {
 
                     case R.id.search:
-                        //showTodayTab();
                         Toast.makeText(getApplicationContext(), "search", Toast.LENGTH_SHORT).show();
 
                         Intent intent = new Intent(EventsActivity.this, CreateEventActivity.class);
@@ -80,32 +83,32 @@ public class EventsActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 drawerLayoutEvents.closeDrawers();
                 switch (menuItem.getItemId()) {
-                    case R.id.actionNotificationItem:
-                        showTodayTab();
+                   /* case R.id.actionNotificationItem:
+                        viewPagerEvents.setCurrentItem(0);
                         Toast.makeText(getApplicationContext(), "Notification", Toast.LENGTH_SHORT).show();
-                        break;
+                        break;*/
 
                     case R.id.todayItem:
-                        //showTodayTab();
+                        viewPagerEvents.setCurrentItem(MAP_INDEX_TODAY);
                         Toast.makeText(getApplicationContext(), "Today", Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.thisWeekItem:
-                        //showTodayTab();
+                        viewPagerEvents.setCurrentItem(MAP_INDEX_THIS_WEEK);
                         Toast.makeText(getApplicationContext(), "This week", Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.thisMonthItem:
-                        //showTodayTab();
+                        viewPagerEvents.setCurrentItem(MAP_INDEX_THIS_MONTH);
                         Toast.makeText(getApplicationContext(), "This month", Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.mainmenuItem:
-                        //showTodayTab();
                         Toast.makeText(getApplicationContext(), "Main menu_notes", Toast.LENGTH_SHORT).show();
 
-                        Intent intent = new Intent(EventsActivity.this, StartMenuActivity.class);
-                        startActivity(intent);
+                        onBackPressed();
+                        //Intent intent = new Intent(EventsActivity.this, StartMenuActivity.class);
+                        //startActivity(intent);
                         finish();
                         break;
                 }
@@ -121,7 +124,6 @@ public class EventsActivity extends AppCompatActivity {
         adapterEvents = new EventsTabsFragmentAdapter(this, getSupportFragmentManager());
         viewPagerEvents.setAdapter(adapterEvents);
 
-        //new RemindMeTask().execute();
 
         tabLayoutEvents = (TabLayout) findViewById(R.id.tablayout_events);
         tabLayoutEvents.setupWithViewPager(viewPagerEvents);
@@ -129,11 +131,13 @@ public class EventsActivity extends AppCompatActivity {
 
 
 
+/*
 
     private void showTodayTab() {
         viewPagerEvents.setCurrentItem(Constants.TAB_EVENTS_TODAY);
     }
 
+*/
 
 
     @Override

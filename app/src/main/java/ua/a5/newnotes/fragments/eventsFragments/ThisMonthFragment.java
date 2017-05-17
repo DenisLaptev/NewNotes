@@ -31,7 +31,7 @@ public class ThisMonthFragment extends AbstractTabFragment {
         ThisMonthFragment fragment = new ThisMonthFragment();
         fragment.setArguments(args);
         fragment.setContext(context);
-        fragment.setTitle(context.getString(R.string.menu_events_item));
+        fragment.setTitle(context.getString(R.string.menu_events_item_thismonth));
         return fragment;
     }
 

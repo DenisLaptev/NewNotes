@@ -363,8 +363,9 @@ public class CreateEventActivity extends AppCompatActivity implements TextWatche
         btnCreateEventEventsMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(CreateEventActivity.this, EventsActivity.class);
-                startActivity(intent);
+                //Intent intent = new Intent(CreateEventActivity.this, EventsActivity.class);
+                //startActivity(intent);
+                onBackPressed();
                 finish();
             }
         });
@@ -411,6 +412,7 @@ public class CreateEventActivity extends AppCompatActivity implements TextWatche
                             calDateEnd.getTimeInMillis() + Integer.parseInt(endHour) * 60 * 60 * 1000 + Integer.parseInt(endMinute) * 60 * 1000);
 
                     startActivity(calIntent);
+                    finish();
                 } catch (Exception e) {
                     e.printStackTrace();
 
@@ -425,6 +427,7 @@ public class CreateEventActivity extends AppCompatActivity implements TextWatche
                             calDateEnd.getTimeInMillis() + Integer.parseInt(endHour) * 60 * 60 * 1000 + Integer.parseInt(endMinute) * 60 * 1000);
 
                     startActivity(calIntent);
+                    finish();
                 }
 
                 /*

@@ -14,13 +14,18 @@ import ua.a5.newnotes.fragments.notesFragments.DifferentFragment;
 import ua.a5.newnotes.fragments.notesFragments.IdeasFragment;
 import ua.a5.newnotes.fragments.notesFragments.TodoFragment;
 
+import static ua.a5.newnotes.utils.Constants.MAP_INDEX_BIRTHDAYS;
+import static ua.a5.newnotes.utils.Constants.MAP_INDEX_DIFFERENT;
+import static ua.a5.newnotes.utils.Constants.MAP_INDEX_IDEAS;
+import static ua.a5.newnotes.utils.Constants.MAP_INDEX_TODO;
+
 /**
  * Created by A5 Android Intern 2 on 12.05.2017.
  */
 
 public class NotesTabsFragmentAdapter extends FragmentPagerAdapter {
 
-    private Map<Integer, AbstractTabFragment> notesTabs;
+    private Map<Integer, AbstractTabFragment> notesTabs = new HashMap<>();
 
     public NotesTabsFragmentAdapter(Context context, FragmentManager fm) {
         super(fm);
@@ -43,10 +48,10 @@ public class NotesTabsFragmentAdapter extends FragmentPagerAdapter {
     }
 
     private void initNotesTabsMap(Context context) {
-        notesTabs = new HashMap<>();
-        notesTabs.put(0, TodoFragment.getInstance(context));
-        notesTabs.put(1, IdeasFragment.getInstance(context));
-        notesTabs.put(2, BirthdaysFragment.getInstance(context));
-        notesTabs.put(3, DifferentFragment.getInstance(context));
+        //notesTabs = new HashMap<>();
+        notesTabs.put(MAP_INDEX_TODO, TodoFragment.getInstance(context));
+        notesTabs.put(MAP_INDEX_IDEAS, IdeasFragment.getInstance(context));
+        notesTabs.put(MAP_INDEX_BIRTHDAYS, BirthdaysFragment.getInstance(context));
+        notesTabs.put(MAP_INDEX_DIFFERENT, DifferentFragment.getInstance(context));
     }
 }

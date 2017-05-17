@@ -14,9 +14,12 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import ua.a5.newnotes.adapter.tabsFragmentAdapters.NotesTabsFragmentAdapter;
-import ua.a5.newnotes.utils.Constants;
 
 import static ua.a5.newnotes.R.id.toolbar_notes;
+import static ua.a5.newnotes.utils.Constants.MAP_INDEX_BIRTHDAYS;
+import static ua.a5.newnotes.utils.Constants.MAP_INDEX_DIFFERENT;
+import static ua.a5.newnotes.utils.Constants.MAP_INDEX_IDEAS;
+import static ua.a5.newnotes.utils.Constants.MAP_INDEX_TODO;
 
 public class NotesActivity extends AppCompatActivity {
     private static final int LAYOUT = R.layout.activity_notes;
@@ -50,7 +53,6 @@ public class NotesActivity extends AppCompatActivity {
                 switch (item.getItemId()) {
 
                     case R.id.search:
-                        //showNotificationTab();
                         Toast.makeText(getApplicationContext(), "search", Toast.LENGTH_SHORT).show();
 
                         Intent intent = new Intent(NotesActivity.this, CreateNoteActivity.class);
@@ -85,44 +87,44 @@ public class NotesActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 drawerLayoutNotes.closeDrawers();
                 switch (menuItem.getItemId()) {
+                    /*
                     case R.id.actionNotificationItem:
-                        //showNotificationTab();
+                        viewPagerNotes.setCurrentItem(MAP_INDEX_TODO);
                         Toast.makeText(getApplicationContext(), "Notification", Toast.LENGTH_SHORT).show();
                         break;
-
+*/
                     case R.id.todoItem:
-                        //showNotificationTab();
+                        viewPagerNotes.setCurrentItem(MAP_INDEX_TODO);
                         Toast.makeText(getApplicationContext(), "TODO", Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.ideasItem:
-                        //showNotificationTab();
+                        viewPagerNotes.setCurrentItem(MAP_INDEX_IDEAS);
                         Toast.makeText(getApplicationContext(), "Ideas", Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.birthdaysItem:
-                        //showNotificationTab();
+                        viewPagerNotes.setCurrentItem(MAP_INDEX_BIRTHDAYS);
                         Toast.makeText(getApplicationContext(), "Birthdays", Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.differentItem:
-                        //showNotificationTab();
+                        viewPagerNotes.setCurrentItem(MAP_INDEX_DIFFERENT);
                         Toast.makeText(getApplicationContext(), "Different", Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.mainmenuItem:
-                        //showNotificationTab();
-                        Toast.makeText(getApplicationContext(), "Main menu_notes", Toast.LENGTH_SHORT).show();
 
-                        Intent intent = new Intent(NotesActivity.this, StartMenuActivity.class);
-                        startActivity(intent);
+                        Toast.makeText(getApplicationContext(), "Main menu_notes", Toast.LENGTH_SHORT).show();
+                        onBackPressed();
+                        //Intent intent = new Intent(NotesActivity.this, StartMenuActivity.class);
+                        //startActivity(intent);
                         finish();
                         break;
                 }
                 return true;
             }
         });
-
     }
 
 
@@ -138,11 +140,13 @@ public class NotesActivity extends AppCompatActivity {
    
 
 
+/*
 
     private void showIdeasTab() {
         viewPagerNotes.setCurrentItem(Constants.TAB_NOTES_IDEAS);
     }
 
+*/
 
 
     @Override

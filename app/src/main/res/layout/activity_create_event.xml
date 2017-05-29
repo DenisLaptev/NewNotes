@@ -225,23 +225,20 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="250dp"
         android:background="@drawable/custom_et_background">
-        <!--
-        android:background="@drawable/stickynote"-->
 
-        <AutoCompleteTextView
-            android:id="@+id/event_actvCreateEventEvent"
-            style="@style/UserDataTextStyle"
-            android:layout_width="match_parent"
+        <EditText
+            android:id="@+id/et_event_description"
+            android:inputType="textNoSuggestions|textMultiLine"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:autoLink="all"
-            android:clickable="true"
-            android:completionThreshold="1"
-            android:hint="Type Your Note..."
+            android:hint="enter some text"
+            android:linksClickable="true"
+            android:textSize="25sp"
             android:background="@null"
-            android:layout_margin="5dp"
-            android:textSize="20sp" />
+            android:layout_margin="5dp" />
 
     </ScrollView>
 
@@ -249,25 +246,7 @@
         android:layout_width="match_parent"
         android:layout_height="10dp" />
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="25dp"
-        android:layout_weight="1"
-        android:background="@drawable/custom_tv_background">
 
-        <TextView
-            android:id="@+id/note_tvCreateNoteNote"
-            style="@style/UserDataTextStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:autoLink="all"
-            android:clickable="true"
-            android:hint="Your Event..."
-            android:textColor="@color/colorTextDescriptionGreen"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_margin="5dp" />
-    </ScrollView>
 
 
     <LinearLayout

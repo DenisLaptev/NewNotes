@@ -113,20 +113,18 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="300dp"
         android:background="@drawable/custom_et_background">
 
-        <AutoCompleteTextView
-            android:id="@+id/note_actvCreateNoteNote"
-            android:layout_width="match_parent"
+        <EditText
+            android:id="@+id/et_note_description"
+            android:inputType="textNoSuggestions|textMultiLine"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:autoLink="all"
-            android:clickable="true"
+            android:hint="enter some text"
             android:linksClickable="true"
-            android:completionThreshold="1"
-            android:text=""
-            android:textSize="20sp"
-            android:hint="Type Your Note..."
+            android:textSize="25sp"
             android:background="@null"
             android:layout_margin="5dp" />
 
@@ -135,25 +133,6 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="10dp" />
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:background="@drawable/custom_tv_background"
-        android:layout_weight="1">
-
-        <TextView
-            android:id="@+id/note_tvCreateNoteNote"
-            style="@style/UserDataTextStyle"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:autoLink="all"
-            android:clickable="true"
-            android:text="Your Note..."
-            android:layout_weight="1"
-            android:layout_margin="5dp" />
-    </ScrollView>
-
 
     <LinearLayout
         android:id="@+id/event_buttons_linear_layout"
@@ -177,8 +156,5 @@
             android:layout_weight="1"
             android:text="Notes Menu" />
 
-
     </LinearLayout>
-
-
 </LinearLayout>

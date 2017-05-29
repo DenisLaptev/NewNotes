@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.melnykov.fab.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,8 +54,7 @@ public class ThisMonthFragment extends AbstractTabFragment implements EventsList
         //adapter = new EventsListAdapter(data);
         recyclerView.setAdapter(adapter);
 
-        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab_events);
-        fab.attachToRecyclerView(recyclerView);
+        FloatingActionsMenu fab = (FloatingActionsMenu) getActivity().findViewById(R.id.multiple_actions_events);
 
         return view;
     }

@@ -11,12 +11,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.melnykov.fab.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import ua.a5.newnotes.R;
+import ua.a5.newnotes.activities.CreateEventActivity;
 import ua.a5.newnotes.activities.events_activities.EventActivity;
 import ua.a5.newnotes.adapter.eventsListAdapters.EventsListAdapter;
 import ua.a5.newnotes.dto.eventsDTO.EventDTO;
@@ -51,11 +53,36 @@ public class TodayFragment extends AbstractTabFragment implements EventsListAdap
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycle_view_events);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         EventsListAdapter adapter = new EventsListAdapter(context, createMockEventsListData(), this);
-        //adapter = new EventsListAdapter(data);
         recyclerView.setAdapter(adapter);
 
-        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab_events);
-        fab.attachToRecyclerView(recyclerView);
+
+        FloatingActionButton actionEvent = (FloatingActionButton) getActivity().findViewById(R.id.action_event);
+        actionEvent.setTitle("new EVENT");
+        actionEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), CreateEventActivity.class);
+                startActivity(intent);
+                getActivity().finish();
+            }
+        });
+
+
+        FloatingActionButton actionMainmenu = (FloatingActionButton) getActivity().findViewById(R.id.action_events_mainmenu);
+        actionMainmenu.setTitle("Main Menu");
+        actionMainmenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().onBackPressed();
+            }
+        });
+
+        FloatingActionsMenu menuMultipleActions = (FloatingActionsMenu) getActivity().findViewById(R.id.multiple_actions_notes);
+        //menuMultipleActions.addButton(actionTodo);
+        //menuMultipleActions.addButton(actionIdea);
+        //menuMultipleActions.addButton(actionBirthday);
+        //menuMultipleActions.addButton(actionDifferent);
+
 
 
         return view;

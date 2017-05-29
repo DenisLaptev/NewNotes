@@ -65,10 +65,11 @@ public class TodoFragment extends AbstractTabFragment implements TodoListAdapter
         actionTodo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "search", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "search", Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(getContext(), CreateNoteActivity.class);
                 startActivity(intent);
+                getActivity().finish();
             }
         });
 
@@ -77,10 +78,11 @@ public class TodoFragment extends AbstractTabFragment implements TodoListAdapter
         actionIdea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "search", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "search", Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(getContext(), CreateNoteActivity.class);
                 startActivity(intent);
+                getActivity().finish();
             }
         });
 
@@ -89,10 +91,11 @@ public class TodoFragment extends AbstractTabFragment implements TodoListAdapter
         actionBirthday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "search", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "search", Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(getContext(), CreateNoteActivity.class);
                 startActivity(intent);
+                getActivity().finish();
             }
         });
 
@@ -101,10 +104,25 @@ public class TodoFragment extends AbstractTabFragment implements TodoListAdapter
         actionDifferent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "search", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "search", Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(getContext(), CreateNoteActivity.class);
                 startActivity(intent);
+                getActivity().finish();
+            }
+        });
+
+        FloatingActionButton actionMainmenu = (FloatingActionButton) getActivity().findViewById(R.id.action_notes_mainmenu);
+        actionMainmenu.setTitle("Main Menu");
+        actionMainmenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Toast.makeText(getContext(), "search", Toast.LENGTH_SHORT).show();
+
+                //Intent intent = new Intent(getContext(), StartMenuActivity.class);
+                //startActivity(intent);
+                //getActivity().finish();
+                getActivity().onBackPressed();
             }
         });
 

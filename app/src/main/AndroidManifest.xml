@@ -67,7 +67,7 @@
         <activity android:name=".activities.notes_activities.TodoActivity" />
         <activity android:name=".activities.notes_activities.IdeaActivity" />
         <activity android:name=".activities.notes_activities.DifferentActivity" />
-        <activity android:name=".activities.notes_activities.BirthdayActivity"></activity>
+        <activity android:name=".activities.notes_activities.BirthdayActivity" />
     </application>
 
 </manifest>

@@ -50,19 +50,53 @@
 
         <!--Плюсик в кружке-->
 
-        <com.melnykov.fab.FloatingActionButton
-            android:id="@+id/fab_events"
+        <!--
+                <com.melnykov.fab.FloatingActionButton
+                    android:id="@+id/fab_events"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|right"
+                    android:layout_margin="16dp"
+                    android:src="@drawable/ic_plus"
+                    fab:fab_colorNormal="@color/colorPrimary"
+                    fab:fab_colorPressed="@color/colorPrimaryDark"
+                    fab:fab_colorRipple="@color/colorAccent" />
+        -->
+
+
+        <com.getbase.floatingactionbutton.FloatingActionsMenu
+            android:id="@+id/multiple_actions_events"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
             android:layout_margin="16dp"
-            android:src="@drawable/ic_plus"
-            fab:fab_colorNormal="@color/colorPrimary"
-            fab:fab_colorPressed="@color/colorPrimaryDark"
-            fab:fab_colorRipple="@color/colorAccent" />
+            android:layout_gravity="bottom|right"
+            fab:fab_addButtonColorNormal="@color/colorPrimary"
+            fab:fab_addButtonColorPressed="@color/colorPrimaryDark"
+            fab:fab_addButtonPlusIconColor="@color/color_white"
+            fab:fab_labelStyle="@style/menu_labels_style">
 
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/action_event"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                fab:fab_size="normal"
+                fab:fab_icon="@drawable/ic_pillar_white"
+                fab:fab_colorNormal="@color/color_marker_event"
+                fab:fab_title="EVENT"
+                fab:fab_colorPressed="@color/colorPrimaryDark" />
 
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/action_events_mainmenu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                fab:fab_icon="@drawable/ic_message_text_white"
+                fab:fab_colorNormal="@color/colorPrimaryDark"
+                fab:fab_title="MAIN MENU"
+                fab:fab_colorPressed="@color/colorPrimaryDark" />
+
+        </com.getbase.floatingactionbutton.FloatingActionsMenu>
     </android.support.design.widget.CoordinatorLayout>
+
 
     <!--Выезжающее меню слева-->
     <android.support.design.widget.NavigationView

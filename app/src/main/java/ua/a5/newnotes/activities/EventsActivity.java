@@ -84,11 +84,6 @@ public class EventsActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 drawerLayoutEvents.closeDrawers();
                 switch (menuItem.getItemId()) {
-                   /* case R.id.actionNotificationItem:
-                        viewPagerEvents.setCurrentItem(0);
-                        Toast.makeText(getApplicationContext(), "Notification", Toast.LENGTH_SHORT).show();
-                        break;*/
-
                     case R.id.todayItem:
                         viewPagerEvents.setCurrentItem(MAP_INDEX_TODAY);
                         Toast.makeText(getApplicationContext(), "Today", Toast.LENGTH_SHORT).show();
@@ -108,8 +103,6 @@ public class EventsActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Main menu_notes", Toast.LENGTH_SHORT).show();
 
                         onBackPressed();
-                        //Intent intent = new Intent(EventsActivity.this, StartMenuActivity.class);
-                        //startActivity(intent);
                         finish();
                         break;
                 }

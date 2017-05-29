@@ -174,6 +174,16 @@
                 fab:fab_colorNormal="@color/color_marker_different"
                 fab:fab_title="DIFFERENT"
                 fab:fab_colorPressed="@color/colorPrimaryDark" />
+
+
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/action_notes_mainmenu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                fab:fab_icon="@drawable/ic_message_text_white"
+                fab:fab_colorNormal="@color/colorPrimaryDark"
+                fab:fab_title="MAIN MENU"
+                fab:fab_colorPressed="@color/colorPrimaryDark" />
         </com.getbase.floatingactionbutton.FloatingActionsMenu>
     </android.support.design.widget.CoordinatorLayout>
 

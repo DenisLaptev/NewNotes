@@ -8,23 +8,21 @@ import java.io.Serializable;
 
 public class TodoDTO implements Serializable {
     private String title;
-    private String todo;
-    private String date;
+    private int isDone;
+    private int day;
+    private int month;
+    private int year;
     private String description;
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
+    public TodoDTO(String title, int isDone, int day, int month, int year, String description) {
+        this.title = title;
+        this.isDone = isDone;
+        this.day = day;
+        this.month = month;
+        this.year = year;
         this.description = description;
     }
 
-    public TodoDTO(String title, String todo, String date) {
-        this.title = title;
-        this.todo = todo;
-        this.date = date;
-    }
 
     public String getTitle() {
         return title;
@@ -34,19 +32,43 @@ public class TodoDTO implements Serializable {
         this.title = title;
     }
 
-    public String getTodo() {
-        return todo;
+    public int getIsDone() {
+        return isDone;
     }
 
-    public void setTodo(String todo) {
-        this.todo = todo;
+    public void setIsDone(int isDone) {
+        this.isDone = isDone;
     }
 
-    public String getDate() {
-        return date;
+    public int getDay() {
+        return day;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setDay(int day) {
+        this.day = day;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

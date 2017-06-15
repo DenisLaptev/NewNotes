@@ -22,26 +22,27 @@
             android:layout_gravity="bottom|right"
             android:layout_margin="16dp"
             android:text="Different"
+            android:textColor="@color/color_marker_different"
             android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="@color/color_marker_different" />
+            android:textStyle="bold" />
 
-        <!--
+
         <ImageView
+            android:id="@+id/different_card_menu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top|right"
             android:layout_margin="8dp"
             android:src="@drawable/ic_dots_vertical" />
+
+        <!--
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|right"
+                    android:layout_margin="12dp"
+                    android:src="@drawable/ic_star" />
         -->
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top|right"
-            android:layout_margin="12dp"
-            android:src="@drawable/ic_star" />
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -53,21 +54,24 @@
                 android:id="@+id/title_different"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:maxLines="3"
                 android:paddingBottom="5dp"
                 android:text="Title"
-                android:textColor="@color/color_black"
+                android:textColor="@color/color_marker_different"
                 android:textSize="8pt" />
 
             <TextView
                 android:id="@+id/tv_description_different"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="description"/>
+                android:maxLines="3"
+                android:text="description" />
 
             <TextView
                 android:id="@+id/tv_date_different"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:maxLines="3"
                 android:text="21.04.2017" />
 
         </LinearLayout>

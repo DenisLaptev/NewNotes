@@ -9,7 +9,6 @@ import java.io.Serializable;
 public class Event implements Serializable {
     private String title;
     private String location;
-    private int isImportant;
     private String beginDay;
     private String beginMonth;
     private String beginHour;
@@ -21,10 +20,9 @@ public class Event implements Serializable {
     private String description;
 
 
-    public Event(String title, String location, int isImportant, String beginDay, String beginMonth, String beginHour, String beginMinute, String endDay, String endMonth, String endHour, String endMinute, String description) {
+    public Event(String title, String location, String beginDay, String beginMonth, String beginHour, String beginMinute, String endDay, String endMonth, String endHour, String endMinute, String description) {
         this.title = title;
         this.location = location;
-        this.isImportant = isImportant;
         this.beginDay = beginDay;
         this.beginMonth = beginMonth;
         this.beginHour = beginHour;
@@ -50,14 +48,6 @@ public class Event implements Serializable {
 
     public void setLocation(String location) {
         this.location = location;
-    }
-
-    public int getIsImportant() {
-        return isImportant;
-    }
-
-    public void setIsImportant(int isImportant) {
-        this.isImportant = isImportant;
     }
 
     public String getBeginDay() {
@@ -138,7 +128,6 @@ public class Event implements Serializable {
         return "Event{" +
                 "title=" + title +
                 ", location=" + location +
-                ", isImportant=" + isImportant +
                 ", begin=" + beginDay + "." + beginMonth +
                 ", (" + beginHour + " : " + beginMinute + ")" +
                 ", end=" + endDay + "." + endMonth +

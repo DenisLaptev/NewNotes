@@ -9,13 +9,18 @@ import java.io.Serializable;
 public class EventDTO implements Serializable {
     private String title;
     private String description;
-    private String date;
+    private int day;
+    private int month;
+    private int year;
 
-    public EventDTO(String title, String description, String date) {
+    public EventDTO(String title, String description, int day, int month, int year) {
         this.title = title;
         this.description = description;
-        this.date = date;
+        this.day = day;
+        this.month = month;
+        this.year = year;
     }
+
 
     public String getTitle() {
         return title;
@@ -33,11 +38,86 @@ public class EventDTO implements Serializable {
         this.description = description;
     }
 
-    public String getDate() {
-        return date;
+    public int getDay() {
+        return day;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setDay(int day) {
+        this.day = day;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+
+
+
+
+
+    public String generateStringMonth(int month){
+        String stringMonth = null;
+        switch (month){
+            case 0:
+                stringMonth = "января";
+                break;
+
+            case 1:
+                stringMonth = "февраля";
+                break;
+
+            case 2:
+                stringMonth = "марта";
+                break;
+
+            case 3:
+                stringMonth = "апреля";
+                break;
+
+            case 4:
+                stringMonth = "мая";
+                break;
+
+            case 5:
+                stringMonth = "июня";
+                break;
+
+            case 6:
+                stringMonth = "июля";
+                break;
+
+            case 7:
+                stringMonth = "августа";
+                break;
+
+            case 8:
+                stringMonth = "сентября";
+                break;
+
+            case 9:
+                stringMonth = "октября";
+                break;
+
+            case 10:
+                stringMonth = "ноября";
+                break;
+
+            case 11:
+                stringMonth = "декабря";
+                break;
+        }
+        return stringMonth;
     }
 }

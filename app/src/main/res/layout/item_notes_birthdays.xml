@@ -27,14 +27,16 @@
             android:textStyle="bold"
             android:textColor="@color/color_marker_birthdays" />
 
-        <!--
+
         <ImageView
+            android:id="@+id/birthdays_card_menu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top|right"
             android:layout_margin="8dp"
             android:src="@drawable/ic_dots_vertical" />
-        -->
+
+<!--
 
         <ImageView
             android:layout_width="wrap_content"
@@ -43,6 +45,7 @@
             android:layout_margin="12dp"
             android:src="@drawable/ic_cake_variant" />
 
+-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -56,14 +59,16 @@
                 android:layout_height="wrap_content"
                 android:paddingBottom="5dp"
                 android:text="Title"
-                android:textColor="@color/color_black"
-                android:textSize="8pt" />
+                android:textColor="@color/color_marker_birthdays"
+                android:textSize="8pt"
+                android:maxLines="3"/>
 
             <TextView
                 android:id="@+id/tv_date_birthdays"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="21.04.2017" />
+                android:text="21.04.2017"
+                android:maxLines="3"/>
 
         </LinearLayout>
     </android.support.v7.widget.CardView>

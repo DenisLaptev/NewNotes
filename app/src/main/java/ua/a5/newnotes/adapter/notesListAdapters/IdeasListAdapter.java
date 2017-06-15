@@ -1,23 +1,41 @@
 package ua.a5.newnotes.adapter.notesListAdapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
+import ua.a5.newnotes.DAO.DBHelper;
 import ua.a5.newnotes.R;
+import ua.a5.newnotes.activities.CreateNoteIdeasActivity;
 import ua.a5.newnotes.dto.notesDTO.IdeaDTO;
+
+import static ua.a5.newnotes.DAO.DBHelper.TABLE_NOTES_IDEAS_KEY_DATE;
+import static ua.a5.newnotes.DAO.DBHelper.TABLE_NOTES_IDEAS_KEY_DESCRIPTION;
+import static ua.a5.newnotes.DAO.DBHelper.TABLE_NOTES_IDEAS_KEY_TITLE;
+import static ua.a5.newnotes.DAO.DBHelper.TABLE_NOTES_IDEAS_NAME;
+import static ua.a5.newnotes.R.id.delete_item;
+import static ua.a5.newnotes.R.id.update_item;
+import static ua.a5.newnotes.utils.Constants.isCardForUpdate;
 
 /**
  * Created by A5 Android Intern 2 on 15.05.2017.
  */
 
 public class IdeasListAdapter extends RecyclerView.Adapter<IdeasListAdapter.IdeasViewHolder> {
+
+    public static final String KEY_UPDATE_IDEAS = "key_update_ideas";
 
     public interface IdeaClickListener {
         void onClick(IdeaDTO ideaDTO);
@@ -56,11 +74,80 @@ public class IdeasListAdapter extends RecyclerView.Adapter<IdeasListAdapter.Idea
     }
 
     @Override
-    public void onBindViewHolder(IdeasListAdapter.IdeasViewHolder holder, int position) {
-        IdeaDTO item = ideasDTOList.get(position);
+    public void onBindViewHolder(final IdeasListAdapter.IdeasViewHolder holder, final int position) {
+        final IdeaDTO item = ideasDTOList.get(position);
         holder.tvTitle.setText(item.getTitle());
         holder.tvDescription.setText(item.getDescription());
         holder.tvDate.setText(item.getDate());
+        holder.ivPictureIdeaMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //deleteItem(position, ideasDTOList);
+                PopupMenu cardPopupMenu = new PopupMenu(context, holder.ivPictureIdeaMenu);
+                cardPopupMenu.getMenuInflater().inflate(R.menu.menu_card, cardPopupMenu.getMenu());
+
+                cardPopupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem it) {
+
+                        switch (it.getItemId()) {
+                            case delete_item:
+                                Toast.makeText(context, "delete", Toast.LENGTH_SHORT).show();
+                                deleteItem(position, ideasDTOList);
+                                break;
+
+                            case update_item:
+                                Toast.makeText(context, "update", Toast.LENGTH_SHORT).show();
+
+                                isCardForUpdate = true;
+                                Intent intent = new Intent(context, CreateNoteIdeasActivity.class);
+                                intent.putExtra(KEY_UPDATE_IDEAS, item);
+                                context.startActivity(intent);
+                                Toast.makeText(context, it.getTitle(), Toast.LENGTH_SHORT).show();
+
+
+
+                                break;
+                        }
+                        return true;
+                    }
+                });
+                cardPopupMenu.show();
+            }
+        });
+    }
+
+    private void deleteItem(int position, List<IdeaDTO> ideasDTOList) {
+        int currentPosition = position;
+        //
+        deleteItemFromTable(position, ideasDTOList);
+        notifyItemRemoved(currentPosition);
+        ideasDTOList.remove(currentPosition);
+        notifyItemRemoved(currentPosition);
+    }
+
+
+    private void deleteItemFromTable(int position, List<IdeaDTO> ideasDTOList) {
+        int currentPosition = position;
+
+        //////////////////---------------------->
+        //для работы с БД.
+        DBHelper dbHelper = new DBHelper(context);
+        SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
+
+        sqLiteDatabase.delete(TABLE_NOTES_IDEAS_NAME,
+                TABLE_NOTES_IDEAS_KEY_TITLE + " = ? AND "
+                        + TABLE_NOTES_IDEAS_KEY_DATE + " = ? AND "
+                        + TABLE_NOTES_IDEAS_KEY_DESCRIPTION + " = ? ",
+                new String[]{
+                        ideasDTOList.get(currentPosition).getTitle(),
+                        String.valueOf(ideasDTOList.get(currentPosition).getDate()),
+                        String.valueOf(ideasDTOList.get(currentPosition).getDescription())
+                });
+
+        //закрываем соединение с БД.
+        dbHelper.close();
+//////////////////---------------------->
     }
 
     @Override
@@ -74,6 +161,7 @@ public class IdeasListAdapter extends RecyclerView.Adapter<IdeasListAdapter.Idea
         TextView tvTitle;
         TextView tvDescription;
         TextView tvDate;
+        ImageView ivPictureIdeaMenu;
 
         ItemClickListener itemClickListener;
 
@@ -84,6 +172,8 @@ public class IdeasListAdapter extends RecyclerView.Adapter<IdeasListAdapter.Idea
             tvTitle = (TextView) itemView.findViewById(R.id.title_ideas);
             tvDescription = (TextView) itemView.findViewById(R.id.tv_description_ideas);
             tvDate = (TextView) itemView.findViewById(R.id.tv_date_ideas);
+            ivPictureIdeaMenu = (ImageView) itemView.findViewById(R.id.ideas_card_menu);
+
 
             this.itemClickListener = itemClickListener;
 

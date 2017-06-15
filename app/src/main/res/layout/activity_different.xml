@@ -12,32 +12,6 @@
     tools:context="ua.a5.newnotes.activities.events_activities.EventActivity">
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/linearLayout"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp">
-
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/ic_star" />
-
-        <TextView
-            android:id="@+id/tv_different_activity_title"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="Different Title"
-            android:textColor="@color/color_marker_different"
-            android:textSize="@dimen/item_activity_title_size"
-            android:gravity="center"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-    </LinearLayout>
-
-
     <TextView
         android:id="@+id/tv_different_activity_date"
         android:layout_width="match_parent"
@@ -75,5 +49,30 @@
         android:textColor="@color/color_marker_different"
         android:textSize="40sp"
         android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_star" />
+
+        <TextView
+            android:id="@+id/tv_different_activity_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Different Title"
+            android:textColor="@color/color_marker_different"
+            android:textSize="@dimen/item_activity_title_size"
+            android:gravity="center"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+    </LinearLayout>
 
 </RelativeLayout>

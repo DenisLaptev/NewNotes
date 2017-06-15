@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.util.Calendar;
@@ -96,14 +97,14 @@ public class StartMenuActivity extends AppCompatActivity {
         int dayofmonth = cal.get(Calendar.DAY_OF_MONTH);
         System.out.println("Date: (" + dayofweek + ") " + dayofmonth + "-" + (++month) + "-" + year);
 //Date and Time
-
-
     }
 
     @Override
     public void onResume() {
         super.onResume();
         quitIntFlag = 0;
+        RelativeLayout rl = (RelativeLayout)findViewById(R.id.start_menu_relative_layout);
+        rl.setBackgroundColor(getResources().getColor(R.color.colorBackgroundWhite));
     }
 
     @Override

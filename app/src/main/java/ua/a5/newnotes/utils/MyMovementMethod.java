@@ -1,3 +1,4 @@
+/*
 package ua.a5.newnotes.utils;
 
 import android.text.Layout;
@@ -9,9 +10,7 @@ import android.text.style.ClickableSpan;
 import android.view.MotionEvent;
 import android.widget.TextView;
 
-/**
- * Created by A5 Android Intern 2 on 12.05.2017.
- */
+
 
 public class MyMovementMethod extends ArrowKeyMovementMethod {
 
@@ -54,13 +53,8 @@ public class MyMovementMethod extends ArrowKeyMovementMethod {
 
                 return true;
             }
-            /*else {
-                that's the line we need to remove
-                Selection.removeSelection(buffer);
-            }*/
         }
-
         return super.onTouchEvent(widget, buffer, event);
     }
-
 }
+*/

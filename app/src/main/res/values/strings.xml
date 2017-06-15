@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">NewNotes</string>
-    <string name="toolbar_title">NewNotes Beta</string>
+    <string name="toolbar_title">My Business Plan</string>
     <string name="search_title">Search</string>
 
     <string name="menu_notes_item_notifications">Напоминания</string>
@@ -22,8 +22,8 @@
 
 
     <string name="menu_events_item_today">Today</string>
-    <string name="menu_events_item_thisweek">This week</string>
     <string name="menu_events_item_thismonth">This month</string>
+    <string name="menu_events_item_all_events">All events</string>
     <string name="menu_events_item_mainmenu">Main menu</string>
 
     <string name="menu_events_item">Events</string>

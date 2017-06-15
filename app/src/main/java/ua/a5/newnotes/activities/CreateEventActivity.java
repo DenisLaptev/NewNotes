@@ -1,6 +1,8 @@
 package ua.a5.newnotes.activities;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -20,7 +22,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -31,20 +35,22 @@ import java.util.regex.Pattern;
 
 import ua.a5.newnotes.DAO.DBHelper;
 import ua.a5.newnotes.R;
-import ua.a5.newnotes.model.Event;
+import ua.a5.newnotes.dto.eventsDTO.EventDTO;
 
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_BEGIN_DAY;
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_BEGIN_HOUR;
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_BEGIN_MINUTE;
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_BEGIN_MONTH;
+import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_BEGIN_YEAR;
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_DESCRIPTION;
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_END_DAY;
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_END_HOUR;
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_END_MINUTE;
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_END_MONTH;
-import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_IMPORTANCE;
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_LOCATION;
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_TITLE;
+import static ua.a5.newnotes.adapter.eventsListAdapters.EventsListAdapter.KEY_UPDATE_EVENTS;
+import static ua.a5.newnotes.utils.Constants.isCardForUpdate;
 import static ua.a5.newnotes.utils.utils_spannable_string.UtilsDates.DATE_REGEXPS;
 import static ua.a5.newnotes.utils.utils_spannable_string.UtilsDates.DAYS_OF_THE_WEEK;
 import static ua.a5.newnotes.utils.utils_spannable_string.UtilsDates.TIME_WORDS;
@@ -58,6 +64,13 @@ import static ua.a5.newnotes.utils.utils_spannable_string.UtilsWords.getIntMonth
 
 public class CreateEventActivity extends AppCompatActivity {
 
+    private int mYear;
+    private int mMonth;
+    private int mDay;
+    private TextView tvEventsDeadline;
+    private Button btnEventsDeadline;
+    static final int DATE_DIALOG_ID = 2;
+
     public static final String LOG_TAG = "log";
 
     public static SpannableString bufferSpannableString = null;
@@ -65,28 +78,7 @@ public class CreateEventActivity extends AppCompatActivity {
     String initialWord;
     String strRegExp;
 
-    public static String DEFAULT_DAY = String.valueOf(Calendar.getInstance().get(Calendar.DATE));
-    public static String DEFAULT_MONTH = String.valueOf(Calendar.getInstance().get(Calendar.MONTH) + 1);
-    public static String DEFAULT_YEAR = String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
-
-    public static String DEFAULT_HOUR = String.valueOf(Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
-    public static String DEFAULT_MINUTE = String.valueOf(Calendar.getInstance().get(Calendar.MINUTE));
-
-
     EditText etCreateEventTitle;
-    EditText etCreateEventLocation;
-
-    EditText etCreateEventBeginDay;
-    EditText etCreateEventBeginMonth;
-    EditText etCreateEventBeginHour;
-    EditText etCreateEventBeginMinute;
-
-    EditText etCreateEventEndDay;
-    EditText etCreateEventEndMonth;
-    EditText etCreateEventEndHour;
-    EditText etCreateEventEndMinute;
-
-
     EditText etEventDescription;
 
 
@@ -98,38 +90,32 @@ public class CreateEventActivity extends AppCompatActivity {
     //для работы с БД.
     DBHelper dbHelper;
 
-    Event event;
+    EventDTO event;
     String title;
     String location;
-    int isImportant;
 
-    String beginDay = DEFAULT_DAY;
-    String beginMonth = DEFAULT_MONTH;
+    int beginDay = getCurrentDay();
+    int beginMonth = getCurrentMonth();
+    String stringBeginMonth = null;
+    int beginYear = getCurrentYear();
 
-    String beginHour = DEFAULT_HOUR;
-    String beginMinute = DEFAULT_MINUTE;
+    String beginHour = String.valueOf(getCurrentHour());
+    String beginMinute = String.valueOf(getCurrentMinute());
 
-    String endDay = DEFAULT_DAY;
-    String endMonth = DEFAULT_MONTH;
+    int endDay = getCurrentDay();
+    int endMonth = getCurrentMonth();
 
-    String endHour = DEFAULT_HOUR;
-    String endMinute = DEFAULT_MINUTE;
-
+    String endHour = String.valueOf(getCurrentHour());
+    String endMinute = String.valueOf(getCurrentMinute());
 
     String description;
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_event);
         description = null;
-        setDefaulDateAndTime();
 
         //для работы с БД.
         dbHelper = new DBHelper(this);
@@ -147,116 +133,22 @@ public class CreateEventActivity extends AppCompatActivity {
         });
 
 
-        etCreateEventLocation = (EditText) findViewById(R.id.event_etCreateEventLocation);
-        //этот слушатель позволяет убирать клавиатуру EditText
-        //при нажатии на пустое пространство.
-        etCreateEventLocation.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    hideKeyboard(v);
-                }
+        btnEventsDeadline = (Button) findViewById(R.id.btn_events_date_picker);
+        btnEventsDeadline.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                showDialog(DATE_DIALOG_ID);
             }
         });
 
+        // get the current date
+        final Calendar c = Calendar.getInstance();
+        mYear = c.get(Calendar.YEAR);
+        mMonth = c.get(Calendar.MONTH);
+        mDay = c.get(Calendar.DAY_OF_MONTH);
 
-
-        etCreateEventBeginDay = (EditText) findViewById(R.id.event_etCreateEventBeginDay);
-        //этот слушатель позволяет убирать клавиатуру EditText
-        //при нажатии на пустое пространство.
-        etCreateEventBeginDay.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    hideKeyboard(v);
-                }
-            }
-        });
-
-        etCreateEventBeginMonth = (EditText) findViewById(R.id.event_etCreateEventBeginMonth);
-        //этот слушатель позволяет убирать клавиатуру EditText
-        //при нажатии на пустое пространство.
-        etCreateEventBeginMonth.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    hideKeyboard(v);
-                }
-            }
-        });
-
-        etCreateEventBeginHour = (EditText) findViewById(R.id.event_etCreateEventBeginHour);
-        //этот слушатель позволяет убирать клавиатуру EditText
-        //при нажатии на пустое пространство.
-        etCreateEventBeginHour.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    hideKeyboard(v);
-                }
-            }
-        });
-
-        etCreateEventBeginMinute = (EditText) findViewById(R.id.event_etCreateEventBeginMinute);
-        //этот слушатель позволяет убирать клавиатуру EditText
-        //при нажатии на пустое пространство.
-        etCreateEventBeginMinute.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    hideKeyboard(v);
-                }
-            }
-        });
-
-        etCreateEventEndDay = (EditText) findViewById(R.id.event_etCreateEventEndDay);
-        //этот слушатель позволяет убирать клавиатуру EditText
-        //при нажатии на пустое пространство.
-        etCreateEventEndDay.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    hideKeyboard(v);
-                }
-            }
-        });
-
-        etCreateEventEndMonth = (EditText) findViewById(R.id.event_etCreateEventEndMonth);
-        //этот слушатель позволяет убирать клавиатуру EditText
-        //при нажатии на пустое пространство.
-        etCreateEventEndMonth.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    hideKeyboard(v);
-                }
-            }
-        });
-
-        etCreateEventEndHour = (EditText) findViewById(R.id.event_etCreateEventEndHour);
-        //этот слушатель позволяет убирать клавиатуру EditText
-        //при нажатии на пустое пространство.
-        etCreateEventEndHour.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    hideKeyboard(v);
-                }
-            }
-        });
-
-        etCreateEventEndMinute = (EditText) findViewById(R.id.event_etCreateEventEndMinute);
-        //этот слушатель позволяет убирать клавиатуру EditText
-        //при нажатии на пустое пространство.
-        etCreateEventEndMinute.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    hideKeyboard(v);
-                }
-            }
-        });
-
+        tvEventsDeadline = (TextView) findViewById(R.id.tv_events_deadline_date);
+        // display the current date
+        updateDisplay();
 
         etEventDescription = (EditText) findViewById(R.id.et_event_description);
         etEventDescription.addTextChangedListener(onTextChangedListener());
@@ -271,11 +163,23 @@ public class CreateEventActivity extends AppCompatActivity {
             }
         });
 
+        if (isCardForUpdate == true && getIntent() != null) {
+            EventDTO eventDTO = (EventDTO) getIntent().getSerializableExtra(KEY_UPDATE_EVENTS);
+            etCreateEventTitle.setText(eventDTO.getTitle());
+            etEventDescription.setText(eventDTO.getDescription());
+            tvEventsDeadline.setText(
+                    new StringBuilder()
+                            // Month is 0 based so add 1
+                            .append(eventDTO.getDay()).append("-")
+                            .append(eventDTO.getMonth() + 1).append("-")
+                            .append(eventDTO.getYear()).append(" "));
 
+        }
         btnCreateEventSave = (Button) findViewById(R.id.event_btnCreateEventSave);
         btnCreateEventSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                isCardForUpdate = false;
                 ////////////////
                 //заполняем БД данными.
 
@@ -295,39 +199,29 @@ public class CreateEventActivity extends AppCompatActivity {
 
 
                 title = etCreateEventTitle.getText().toString();
-                location = etCreateEventLocation.getText().toString();
+
+                beginDay = mDay;
+                beginMonth = mMonth;
+                beginYear = mYear;
+                beginHour = String.valueOf(getCurrentHour());
+                beginMinute = String.valueOf(getCurrentMinute());
 
 
-                beginDay = etCreateEventBeginDay.getText().toString();
-                beginMonth = etCreateEventBeginMonth.getText().toString();
-
-
-                beginHour = etCreateEventBeginHour.getText().toString();
-                beginMinute = etCreateEventBeginMinute.getText().toString();
-
-
-                endDay = etCreateEventEndDay.getText().toString();
-                endMonth = etCreateEventEndMonth.getText().toString();
-
-
-                endHour = etCreateEventEndHour.getText().toString();
-                endMinute = etCreateEventEndMinute.getText().toString();
-
+                endDay = mDay;
+                endMonth = mMonth;
+                endHour = String.valueOf(getCurrentHour());
+                endMinute = String.valueOf(getCurrentMinute());
 
                 description = etEventDescription.getText().toString();
 
-
-                event = new Event(title, location, isImportant,
-                        beginDay, beginMonth, beginHour, beginMinute,
-                        endDay, endMonth, endHour, endMinute, description);
-                System.out.println(event);
+                event = new EventDTO(title, description, beginDay, beginMonth, beginYear);
 
 
                 contentValues.put(TABLE_EVENTS_KEY_TITLE, title);
                 contentValues.put(TABLE_EVENTS_KEY_LOCATION, location);
-                contentValues.put(TABLE_EVENTS_KEY_IMPORTANCE, isImportant);
                 contentValues.put(TABLE_EVENTS_KEY_BEGIN_DAY, beginDay);
                 contentValues.put(TABLE_EVENTS_KEY_BEGIN_MONTH, beginMonth);
+                contentValues.put(TABLE_EVENTS_KEY_BEGIN_YEAR, beginYear);
                 contentValues.put(TABLE_EVENTS_KEY_BEGIN_HOUR, beginHour);
                 contentValues.put(TABLE_EVENTS_KEY_BEGIN_MINUTE, beginMinute);
                 contentValues.put(TABLE_EVENTS_KEY_END_DAY, endDay);
@@ -341,11 +235,14 @@ public class CreateEventActivity extends AppCompatActivity {
                 //второй аргумент используется для вставки пустой строки,
                 //сейчас он нам не нужен, поэтому он = null.
                 sqLiteDatabase.insert(DBHelper.TABLE_EVENTS_NAME, null, contentValues);
+
+
                 Log.d(LOG_TAG, "Date inserted");
 
                 System.out.println(contentValues);
                 //закрываем соединение с БД.
                 dbHelper.close();
+
 ////////////////////////
             }
         });
@@ -354,6 +251,7 @@ public class CreateEventActivity extends AppCompatActivity {
         btnCreateEventEventsMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                isCardForUpdate = false;
                 //Intent intent = new Intent(CreateEventActivity.this, EventsActivity.class);
                 //startActivity(intent);
                 onBackPressed();
@@ -368,34 +266,33 @@ public class CreateEventActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 title = etCreateEventTitle.getText().toString();
-                location = etCreateEventLocation.getText().toString();
+
+                beginDay = mDay;
+                beginMonth = mMonth + 1;
+                beginYear = mYear;
+                beginHour = String.valueOf(getCurrentHour());
+                beginMinute = String.valueOf(getCurrentMinute());
+
+
+                endDay = mDay;
+                endMonth = mMonth + 1;
+                endHour = String.valueOf(getCurrentHour());
+                endMinute = String.valueOf(getCurrentMinute());
+
+
                 description = etEventDescription.getText().toString();
-
-
-                beginDay = etCreateEventBeginDay.getText().toString();
-                beginMonth = etCreateEventBeginMonth.getText().toString();
-
-                beginHour = etCreateEventBeginHour.getText().toString();
-                beginMinute = etCreateEventBeginMinute.getText().toString();
-
-                endDay = etCreateEventEndDay.getText().toString();
-                endMonth = etCreateEventEndMonth.getText().toString();
-
-                endHour = etCreateEventEndHour.getText().toString();
-                endMinute = etCreateEventEndMinute.getText().toString();
 
 
                 //The intent to create a calendar event.
                 Intent calIntent = new Intent(Intent.ACTION_INSERT);
                 calIntent.setType("vnd.android.cursor.item/event");
                 calIntent.putExtra(CalendarContract.Events.TITLE, title);
-                calIntent.putExtra(CalendarContract.Events.EVENT_LOCATION, location);
                 calIntent.putExtra(CalendarContract.Events.DESCRIPTION, description);
 
 
                 try {
-                    GregorianCalendar calDateBegin = new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR), Integer.parseInt(beginMonth) - 1, Integer.parseInt(beginDay));
-                    GregorianCalendar calDateEnd = new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR), Integer.parseInt(endMonth) - 1, Integer.parseInt(endDay));
+                    GregorianCalendar calDateBegin = new GregorianCalendar(mYear, beginMonth, beginDay);
+                    GregorianCalendar calDateEnd = new GregorianCalendar(mYear, endMonth, endDay);
 
                     calIntent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME,
                             calDateBegin.getTimeInMillis() + Integer.parseInt(beginHour) * 60 * 60 * 1000 + Integer.parseInt(beginMinute) * 60 * 1000);
@@ -407,10 +304,9 @@ public class CreateEventActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
 
-                    setDefaulDateAndTime();
 
-                    GregorianCalendar calDateBegin = new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR), Integer.parseInt(beginMonth) - 1, Integer.parseInt(beginDay));
-                    GregorianCalendar calDateEnd = new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR), Integer.parseInt(endMonth) - 1, Integer.parseInt(endDay));
+                    GregorianCalendar calDateBegin = new GregorianCalendar(mYear, beginMonth, beginDay);
+                    GregorianCalendar calDateEnd = new GregorianCalendar(mYear, endMonth, endDay);
 
                     calIntent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME,
                             calDateBegin.getTimeInMillis() + Integer.parseInt(beginHour) * 60 * 60 * 1000 + Integer.parseInt(beginMinute) * 60 * 1000);
@@ -426,25 +322,6 @@ public class CreateEventActivity extends AppCompatActivity {
 
     }
 
-    private void setDefaulDateAndTime() {
-        //Устанавливаем дефолтные константы даты и времени.
-        //Если не выбрали дату и время события, то ставим текущую дату и время.
-        DEFAULT_DAY = String.valueOf(Calendar.getInstance().get(Calendar.DATE));
-        DEFAULT_MONTH = String.valueOf(Calendar.getInstance().get(Calendar.MONTH) + 1);
-        DEFAULT_YEAR = String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
-        DEFAULT_HOUR = String.valueOf(Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
-        DEFAULT_MINUTE = String.valueOf(Calendar.getInstance().get(Calendar.MINUTE));
-
-
-        beginDay = DEFAULT_DAY;
-        beginMonth = DEFAULT_MONTH;
-        beginHour = DEFAULT_HOUR;
-        beginMinute = DEFAULT_MINUTE;
-        endDay = DEFAULT_DAY;
-        endMonth = DEFAULT_MONTH;
-        endHour = DEFAULT_HOUR;
-        endMinute = DEFAULT_MINUTE;
-    }
 
     //метод, для убирания клавиатуры EditText при нажатии на пустое пространство.
     public void hideKeyboard(View view) {
@@ -693,5 +570,44 @@ public class CreateEventActivity extends AppCompatActivity {
             }
         }
         return indexesOfFirstLetters;
+    }
+
+
+    //For DatePicker
+    private void updateDisplay() {
+        this.tvEventsDeadline.setText(
+                new StringBuilder()
+                        // Month is 0 based so add 1
+                        .append(mDay).append("-")
+                        .append(mMonth + 1).append("-")
+                        .append(mYear).append(" "));
+    }
+
+    private DatePickerDialog.OnDateSetListener mDateSetListener =
+            new DatePickerDialog.OnDateSetListener() {
+                public void onDateSet(DatePicker view, int year,
+                                      int monthOfYear, int dayOfMonth) {
+                    mYear = year;
+                    mMonth = monthOfYear;
+                    mDay = dayOfMonth;
+                    updateDisplay();
+                }
+            };
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        switch (id) {
+            case DATE_DIALOG_ID:
+                return new DatePickerDialog(this,
+                        mDateSetListener,
+                        mYear, mMonth, mDay);
+        }
+        return null;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        isCardForUpdate = false;
     }
 }

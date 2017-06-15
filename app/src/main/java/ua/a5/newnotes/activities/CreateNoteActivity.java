@@ -92,7 +92,6 @@ public class CreateNoteActivity extends AppCompatActivity {
         setDateAndTime();
 
         spinnerCreateNoteCategory = (Spinner) findViewById(R.id.note_spinnerCreateNoteCategory);
-        //ArrayAdapter<?> adapter = ArrayAdapter.createFromResource(this, R.array.Categories, android.R.layout.simple_spinner_item);
         ArrayAdapter<?> adapter = ArrayAdapter.createFromResource(this, R.array.Categories, R.layout.spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerCreateNoteCategory.setAdapter(adapter);
@@ -102,7 +101,6 @@ public class CreateNoteActivity extends AppCompatActivity {
                 String[] array = getResources().getStringArray(R.array.Categories);
 
                 noteCategory = array[position];
-                //Toast.makeText(getApplicationContext(), "noteCategory=" + array[position], Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -165,8 +163,6 @@ public class CreateNoteActivity extends AppCompatActivity {
                 noteFullText = etNoteDescription.getText().toString();
 
                 note = new Note(noteCategory, noteTitle, noteImportance, noteFullText);
-                System.out.println(note);
-
 
                 contentValues.put(TABLE_NOTES_KEY_CATEGORY, noteCategory);
                 contentValues.put(TABLE_NOTES_KEY_TITLE, noteTitle);
@@ -205,7 +201,6 @@ public class CreateNoteActivity extends AppCompatActivity {
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
 
             }
 
@@ -381,7 +376,6 @@ public class CreateNoteActivity extends AppCompatActivity {
 
                     Intent calIntent = new Intent(Intent.ACTION_INSERT);
                     calIntent.setType("vnd.android.cursor.item/event");
-
 
                     int beginDay = getCurrentDay();
                     int beginMonth = getCurrentMonth();

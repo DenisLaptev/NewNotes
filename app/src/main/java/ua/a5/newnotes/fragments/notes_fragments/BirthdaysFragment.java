@@ -2,10 +2,13 @@ package ua.a5.newnotes.fragments.notes_fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +19,7 @@ import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import java.util.ArrayList;
 import java.util.List;
 
+import ua.a5.newnotes.DAO.DBHelper;
 import ua.a5.newnotes.R;
 import ua.a5.newnotes.activities.notes_activities.BirthdayActivity;
 import ua.a5.newnotes.adapter.notesListAdapters.BirthdaysListAdapter;
@@ -29,8 +33,21 @@ import ua.a5.newnotes.fragments.AbstractTabFragment;
 
 public class BirthdaysFragment extends AbstractTabFragment implements BirthdaysListAdapter.BirthdayClickListener {
     public static final String KEY_BIRTHDAY_DTO = "key birthday dto";
+    public static final String LOG_TAG = "log";
+
+    FloatingActionsMenu menuMultipleActions;
 
     private static final int LAYOUT = R.layout.fragment_birthdays;
+
+    //для работы с БД.
+    DBHelper dbHelper;
+    SQLiteDatabase sqLiteDatabase;
+    Cursor cursor;
+    String orderBy;
+    String strConsoleOutput = "";
+
+    RecyclerView recyclerView;
+    BirthdaysListAdapter adapter;
 
 
     public static BirthdaysFragment getInstance(Context context) {
@@ -42,39 +59,86 @@ public class BirthdaysFragment extends AbstractTabFragment implements BirthdaysL
         return fragment;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        adapter = new BirthdaysListAdapter(context, createBirthdaysNotesList(), this);
+        recyclerView.setAdapter(adapter);
+    }
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(LAYOUT, container, false);
 
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycle_view_birthdays);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recycle_view_birthdays);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        BirthdaysListAdapter adapter = new BirthdaysListAdapter(context, createMockBirthdaysListData(), this);
-        //adapter = new EventsListAdapter(data);
+        adapter = new BirthdaysListAdapter(context, createBirthdaysNotesList(), this);
         recyclerView.setAdapter(adapter);
 
-        /*
-        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab_notes);
-        fab.attachToRecyclerView(recyclerView);
-        */
-
-        FloatingActionsMenu fab = (FloatingActionsMenu) getActivity().findViewById(R.id.multiple_actions_notes);
-        //
+        menuMultipleActions = (FloatingActionsMenu) getActivity().findViewById(R.id.multiple_actions_notes);
 
         return view;
     }
 
-    //Метод заглушка, возвращает некий список, в последствии список будет из сервера.
-    private List<BirthdayDTO> createMockBirthdaysListData() {
-        List<BirthdayDTO> birthdaysData = new ArrayList<>();
-        birthdaysData.add(new BirthdayDTO("Name 1", "Date 1"));
-        birthdaysData.add(new BirthdayDTO("Name 2", "Date 2"));
-        birthdaysData.add(new BirthdayDTO("Name 3", "Date 3"));
-        birthdaysData.add(new BirthdayDTO("Name 4", "Date 4"));
-        birthdaysData.add(new BirthdayDTO("Name 5", "Date 5"));
-        birthdaysData.add(new BirthdayDTO("Name 6", "Date 6"));
-        return birthdaysData;
+    private List<BirthdayDTO> createBirthdaysNotesList() {
+        List<BirthdayDTO> birthdaysNotes = new ArrayList<>();
+
+        //////////////////---------------------->
+
+        //для работы с БД.
+        dbHelper = new DBHelper(getActivity());
+
+
+        //класс SQLiteDatabase предназначен для управления БД SQLite.
+        //если БД не существует, dbHelper вызовет метод onCreate(),
+        //если версия БД изменилась, dbHelper вызовет метод onUpgrade().
+
+        //в любом случае вернётся существующая, толькочто созданная или обновлённая БД.
+        sqLiteDatabase = dbHelper.getWritableDatabase();
+
+        //метод rawQuery() возвращает объект типа Cursor,
+        //его можно рассматривать как набор строк с данными.
+
+        cursor = sqLiteDatabase.query(dbHelper.TABLE_NOTES_BIRTHDAYS_NAME, null, null, null, null, null, null);
+        //метод cursor.moveToFirst() делает 1-ю запись в cursor активной
+        //и проверяет, есть ли в cursor что-то.
+        if (cursor.moveToFirst()) {
+
+            //получаем порядковые номера столбцов по их именам.
+            int idIndex = cursor.getColumnIndex(dbHelper.TABLE_NOTES_BIRTHDAYS_KEY_ID);
+            int nameIndex = cursor.getColumnIndex(dbHelper.TABLE_NOTES_BIRTHDAYS_KEY_NAME);
+            int dayIndex = cursor.getColumnIndex(dbHelper.TABLE_NOTES_BIRTHDAYS_KEY_DAY);
+            int monthIndex = cursor.getColumnIndex(dbHelper.TABLE_NOTES_BIRTHDAYS_KEY_MONTH);
+            int yearIndex = cursor.getColumnIndex(dbHelper.TABLE_NOTES_BIRTHDAYS_KEY_YEAR);
+
+
+            //с помощью метода .moveToNext() перебираем все строки в cursor-е.
+            do {
+                birthdaysNotes.add(new BirthdayDTO(
+                        cursor.getString(nameIndex),
+                        cursor.getInt(dayIndex),
+                        cursor.getInt(monthIndex),
+                        cursor.getInt(yearIndex)
+
+                ));
+            } while (cursor.moveToNext());
+
+        } else {
+            Log.d(LOG_TAG, "0 rows");
+        }
+
+        //в конце закрываем cursor. Освобождаем ресурс.
+        cursor.close();
+
+        //закрываем соединение с БД.
+        dbHelper.close();
+
+//////////////////---------------------->
+
+
+        return birthdaysNotes;
     }
 
     @Override
@@ -83,5 +147,11 @@ public class BirthdaysFragment extends AbstractTabFragment implements BirthdaysL
         intent.putExtra(KEY_BIRTHDAY_DTO, birthdayDTO);
         startActivity(intent);
         Toast.makeText(getContext(), birthdayDTO.getName(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        menuMultipleActions.collapse();
     }
 }

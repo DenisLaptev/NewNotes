@@ -2,20 +2,23 @@ package ua.a5.newnotes.fragments.notes_fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import ua.a5.newnotes.DAO.DBHelper;
 import ua.a5.newnotes.R;
 import ua.a5.newnotes.activities.notes_activities.DifferentActivity;
 import ua.a5.newnotes.adapter.notesListAdapters.DifferentListAdapter;
@@ -28,8 +31,22 @@ import ua.a5.newnotes.fragments.AbstractTabFragment;
 
 public class DifferentFragment extends AbstractTabFragment implements DifferentListAdapter.DifferentClickListener {
     public static final String KEY_DIFFERENT_DTO = "key different dto";
+    public static final String LOG_TAG = "log";
+
+    FloatingActionsMenu menuMultipleActions;
 
     private static final int LAYOUT = R.layout.fragment_different;
+
+    //для работы с БД.
+    DBHelper dbHelper;
+    SQLiteDatabase sqLiteDatabase;
+    Cursor cursor;
+    String orderBy;
+    String strConsoleOutput = "";
+
+    RecyclerView recyclerView;
+    DifferentListAdapter adapter;
+
 
     public static DifferentFragment getInstance(Context context) {
         Bundle args = new Bundle();
@@ -40,45 +57,94 @@ public class DifferentFragment extends AbstractTabFragment implements DifferentL
         return fragment;
     }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        adapter = new DifferentListAdapter(context, createDifferentNotesList(), this);
+        recyclerView.setAdapter(adapter);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(LAYOUT, container, false);
 
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycle_view_different);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recycle_view_different);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        DifferentListAdapter adapter = new DifferentListAdapter(context, createMockDifferentListData(), this);
-        //adapter = new EventsListAdapter(data);
+        adapter = new DifferentListAdapter(context, createDifferentNotesList(), this);
         recyclerView.setAdapter(adapter);
 
-        /*
-        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab_notes);
-        fab.attachToRecyclerView(recyclerView);
-        */
-
-        FloatingActionsMenu fab = (FloatingActionsMenu) getActivity().findViewById(R.id.multiple_actions_notes);
-        //
+        menuMultipleActions = (FloatingActionsMenu) getActivity().findViewById(R.id.multiple_actions_notes);
         return view;
     }
 
+    private List<DifferentDTO> createDifferentNotesList() {
+        List<DifferentDTO> differentNotes = new ArrayList<>();
 
-    //Метод заглушка, возвращает некий список, в последствии список будет из сервера.
-    private List<DifferentDTO> createMockDifferentListData() {
-        List<DifferentDTO> differentData = new ArrayList<>();
-        differentData.add(new DifferentDTO("Title 1", "description 1", "Date 1"));
-        differentData.add(new DifferentDTO("Title 2", "description 2", "Date 2"));
-        differentData.add(new DifferentDTO("Title 3", "description 3", "Date 3"));
-        differentData.add(new DifferentDTO("Title 4", "description 4", "Date 4"));
-        differentData.add(new DifferentDTO("Title 5", "description 5", "Date 5"));
-        differentData.add(new DifferentDTO("Title 6", "description 6", "Date 6"));
-        return differentData;
+        //////////////////---------------------->
+
+        //для работы с БД.
+        dbHelper = new DBHelper(getActivity());
+
+
+        //класс SQLiteDatabase предназначен для управления БД SQLite.
+        //если БД не существует, dbHelper вызовет метод onCreate(),
+        //если версия БД изменилась, dbHelper вызовет метод onUpgrade().
+
+        //в любом случае вернётся существующая, толькочто созданная или обновлённая БД.
+        sqLiteDatabase = dbHelper.getWritableDatabase();
+
+        //метод rawQuery() возвращает объект типа Cursor,
+        //его можно рассматривать как набор строк с данными.
+
+        cursor = sqLiteDatabase.query(dbHelper.TABLE_NOTES_DIFFERENT_NAME, null, null, null, null, null, null);
+        //метод cursor.moveToFirst() делает 1-ю запись в cursor активной
+        //и проверяет, есть ли в cursor что-то.
+        if (cursor.moveToFirst()) {
+
+            //получаем порядковые номера столбцов по их именам.
+            int idIndex = cursor.getColumnIndex(dbHelper.TABLE_NOTES_DIFFERENT_KEY_ID);
+            int titleIndex = cursor.getColumnIndex(dbHelper.TABLE_NOTES_DIFFERENT_KEY_TITLE);
+            int dateIndex = cursor.getColumnIndex(dbHelper.TABLE_NOTES_DIFFERENT_KEY_DATE);
+            int descriptionIndex = cursor.getColumnIndex(dbHelper.TABLE_NOTES_DIFFERENT_KEY_DESCRIPTION);
+
+
+            //с помощью метода .moveToNext() перебираем все строки в cursor-е.
+            do {
+                differentNotes.add(new DifferentDTO(
+                        cursor.getString(titleIndex),
+                        cursor.getString(descriptionIndex),
+                        cursor.getString(dateIndex)));
+            } while (cursor.moveToNext());
+
+        } else {
+            Log.d(LOG_TAG, "0 rows");
+        }
+
+        //в конце закрываем cursor. Освобождаем ресурс.
+        cursor.close();
+
+        //закрываем соединение с БД.
+        dbHelper.close();
+
+//////////////////---------------------->
+
+
+        return differentNotes;
     }
+
 
     @Override
     public void onClick(DifferentDTO differentDTO) {
         Intent intent = new Intent(getContext(), DifferentActivity.class);
         intent.putExtra(KEY_DIFFERENT_DTO, differentDTO);
         startActivity(intent);
-        Toast.makeText(getContext(), differentDTO.getTitle(), Toast.LENGTH_SHORT).show();
+        }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        menuMultipleActions.collapse();
     }
 }

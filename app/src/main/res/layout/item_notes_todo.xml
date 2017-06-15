@@ -26,52 +26,57 @@
             android:textStyle="bold"
             android:textColor="@color/color_marker_todo" />
 
-        <!--
+
         <ImageView
+            android:id="@+id/todo_card_menu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top|right"
             android:layout_margin="8dp"
             android:src="@drawable/ic_dots_vertical" />
+
+        <!--
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|right"
+                    android:layout_margin="12dp"
+                    android:src="@drawable/ic_check_circle_outline" />
+
         -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top|right"
-            android:layout_margin="12dp"
-            android:src="@drawable/ic_check_circle_outline" />
+                    <TextView
+                        android:id="@+id/title_todo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="5dp"
+                        android:text="Title"
+                        android:textSize="8pt"
+                        android:maxLines="3"
+                        android:textColor="@color/color_marker_todo"/>
 
+                    <CheckBox
+                        android:id="@+id/chbx_todo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="todo1"
+                        android:button="@drawable/abc_btn_check_material"
+                        android:buttonTint="@color/colorAccent"
+                        />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+                    <TextView
+                        android:id="@+id/tv_date_todo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="21.04.2017"
+                        android:maxLines="3"/>
 
-            <TextView
-                android:id="@+id/title_todo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingBottom="5dp"
-                android:text="Title"
-                android:textColor="@color/color_black"
-                android:textSize="8pt" />
-
-            <CheckBox
-                android:id="@+id/chbx_todo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="todo1"
-                android:shadowColor="@color/color_black"/>
-
-            <TextView
-                android:id="@+id/tv_date_todo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="21.04.2017" />
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
 
         </LinearLayout>
-    </android.support.v7.widget.CardView>
-
-</LinearLayout>

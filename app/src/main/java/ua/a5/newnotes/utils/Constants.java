@@ -11,6 +11,9 @@ public class Constants {
     public static final int MAP_INDEX_DIFFERENT = 3;
 
     public static final int MAP_INDEX_TODAY = 0;
-    public static final int MAP_INDEX_THIS_WEEK = 1;
-    public static final int MAP_INDEX_THIS_MONTH = 2;
+    public static final int MAP_INDEX_THIS_MONTH = 1;
+    public static final int MAP_INDEX_ALL_EVENTS = 2;
+
+
+    public static boolean isCardForUpdate = false;
 }

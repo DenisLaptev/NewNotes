@@ -29,7 +29,8 @@ public class BirthdayActivity extends AppCompatActivity {
         if (getIntent() != null) {
             BirthdayDTO birthdayDTO = (BirthdayDTO) getIntent().getSerializableExtra(KEY_BIRTHDAY_DTO);
             tvTitle.setText(birthdayDTO.getName());
-            tvDate.setText(birthdayDTO.getDate());
+            tvDate.setText(birthdayDTO.getDay() + " " + birthdayDTO.getStringMonth());
+
         }
     }
 

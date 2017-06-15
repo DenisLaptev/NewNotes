@@ -1,23 +1,43 @@
 package ua.a5.newnotes.adapter.eventsListAdapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
+import ua.a5.newnotes.DAO.DBHelper;
 import ua.a5.newnotes.R;
+import ua.a5.newnotes.activities.CreateEventActivity;
 import ua.a5.newnotes.dto.eventsDTO.EventDTO;
+
+import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_BEGIN_DAY;
+import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_BEGIN_MONTH;
+import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_BEGIN_YEAR;
+import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_DESCRIPTION;
+import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_TITLE;
+import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_NAME;
+import static ua.a5.newnotes.R.id.delete_item;
+import static ua.a5.newnotes.R.id.update_item;
+import static ua.a5.newnotes.utils.Constants.isCardForUpdate;
 
 /**
  * Created by A5 Android Intern 2 on 15.05.2017.
  */
 
 public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventsViewHolder> {
+
+    public static final String KEY_UPDATE_EVENTS = "key_update_event";
 
     public interface EventClickListener {
         void onClick(EventDTO eventDTO);
@@ -53,16 +73,91 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Ev
     public EventsListAdapter.EventsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_events, parent, false);
         return new EventsListAdapter.EventsViewHolder(view, itemClickListener);
+
     }
 
     @Override
-    public void onBindViewHolder(EventsListAdapter.EventsViewHolder holder, int position) {
+    public void onBindViewHolder(final EventsListAdapter.EventsViewHolder holder, final int position) {
 
-        EventDTO item = eventsDTOList.get(position);
+        final EventDTO item = eventsDTOList.get(position);
         holder.tvTitle.setText(item.getTitle());
         holder.tvDescription.setText(item.getDescription());
-        holder.tvDate.setText(item.getDate());
+        holder.tvDate.setText(item.getDay() + "-" + (item.getMonth() + 1) + "-" + item.getYear());
+        holder.ivPictureEventMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //deleteItem(position, eventsDTOList);
+
+                PopupMenu cardPopupMenu = new PopupMenu(context, holder.ivPictureEventMenu);
+                cardPopupMenu.getMenuInflater().inflate(R.menu.menu_card, cardPopupMenu.getMenu());
+
+                cardPopupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem it) {
+
+                        switch (it.getItemId()) {
+                            case delete_item:
+                                Toast.makeText(context, "delete", Toast.LENGTH_SHORT).show();
+                                deleteItem(position, eventsDTOList);
+                                break;
+
+                            case update_item:
+                                Toast.makeText(context, "update", Toast.LENGTH_SHORT).show();
+                                isCardForUpdate = true;
+                                Intent intent = new Intent(context, CreateEventActivity.class);
+                                intent.putExtra(KEY_UPDATE_EVENTS, item);
+                                context.startActivity(intent);
+                                Toast.makeText(context, it.getTitle(), Toast.LENGTH_SHORT).show();
+
+                                break;
+                        }
+                        return true;
+                    }
+                });
+                cardPopupMenu.show();
+            }
+        });
     }
+
+
+    private void deleteItem(int position, List<EventDTO> eventsDTOList) {
+        int currentPosition = position;
+        //
+        deleteItemFromTable(position, eventsDTOList);
+        notifyItemRemoved(currentPosition);
+        eventsDTOList.remove(currentPosition);
+        notifyItemRemoved(currentPosition);
+    }
+
+
+    private void deleteItemFromTable(int position, List<EventDTO> eventsDTOList) {
+        int currentPosition = position;
+
+        //////////////////---------------------->
+        //для работы с БД.
+        DBHelper dbHelper = new DBHelper(context);
+        SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
+
+        sqLiteDatabase.delete(TABLE_EVENTS_NAME,
+                TABLE_EVENTS_KEY_TITLE + " = ? AND "
+                        + TABLE_EVENTS_KEY_BEGIN_DAY + " = ? AND "
+                        + TABLE_EVENTS_KEY_BEGIN_MONTH + " = ? AND "
+                        + TABLE_EVENTS_KEY_BEGIN_YEAR + " = ? AND "
+                        + TABLE_EVENTS_KEY_DESCRIPTION + " = ? ",
+                new String[]{
+                        eventsDTOList.get(currentPosition).getTitle(),
+                        String.valueOf(eventsDTOList.get(currentPosition).getDay()),
+                        String.valueOf(eventsDTOList.get(currentPosition).getMonth()),
+                        String.valueOf(eventsDTOList.get(currentPosition).getYear()),
+                        eventsDTOList.get(currentPosition).getDescription()
+                });
+
+        //закрываем соединение с БД.
+        dbHelper.close();
+//////////////////---------------------->
+    }
+
 
     @Override
     public int getItemCount() {
@@ -75,6 +170,7 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Ev
         TextView tvTitle;
         TextView tvDescription;
         TextView tvDate;
+        ImageView ivPictureEventMenu;
 
         ItemClickListener itemClickListener;
 
@@ -85,6 +181,7 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Ev
             tvTitle = (TextView) itemView.findViewById(R.id.title_events);
             tvDescription = (TextView) itemView.findViewById(R.id.tv_description_events);
             tvDate = (TextView) itemView.findViewById(R.id.tv_date_events);
+            ivPictureEventMenu = (ImageView) itemView.findViewById(R.id.event_card_menu);
 
             this.itemClickListener = itemClickListener;
 

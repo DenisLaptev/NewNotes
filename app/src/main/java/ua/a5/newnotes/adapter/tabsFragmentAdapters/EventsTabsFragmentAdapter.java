@@ -9,12 +9,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ua.a5.newnotes.fragments.AbstractTabFragment;
+import ua.a5.newnotes.fragments.events_fragments.AllEventsFragment;
 import ua.a5.newnotes.fragments.events_fragments.ThisMonthFragment;
-import ua.a5.newnotes.fragments.events_fragments.ThisWeekFragment;
 import ua.a5.newnotes.fragments.events_fragments.TodayFragment;
 
+import static ua.a5.newnotes.utils.Constants.MAP_INDEX_ALL_EVENTS;
 import static ua.a5.newnotes.utils.Constants.MAP_INDEX_THIS_MONTH;
-import static ua.a5.newnotes.utils.Constants.MAP_INDEX_THIS_WEEK;
+
 import static ua.a5.newnotes.utils.Constants.MAP_INDEX_TODAY;
 
 /**
@@ -48,7 +49,7 @@ public class EventsTabsFragmentAdapter extends FragmentPagerAdapter {
     private void initEventsTabsMap(Context context) {
         //eventsTabs = new HashMap<>();
         eventsTabs.put(MAP_INDEX_TODAY, TodayFragment.getInstance(context));
-        eventsTabs.put(MAP_INDEX_THIS_WEEK, ThisWeekFragment.getInstance(context));
         eventsTabs.put(MAP_INDEX_THIS_MONTH, ThisMonthFragment.getInstance(context));
+        eventsTabs.put(MAP_INDEX_ALL_EVENTS, AllEventsFragment.getInstance(context));
     }
 }

@@ -65,7 +65,7 @@ public class UtilsWords {
         //////////////////////////////////////////////////////////////////////
 
 
-        timeWords.put("завтра", getCurrentDay() + 1);
+        timeWords.put(" завтра", getCurrentDay() + 1);
         timeWords.put("Завтра", getCurrentDay() + 1);
         timeWords.put("ЗАВТРА", getCurrentDay() + 1);
 
@@ -113,7 +113,7 @@ public class UtilsWords {
         daysOfTheWeek.put("MONDAY", 1);
         //////////////////////////////////////////////////////////////////////
 
-
+        /*
         daysOfTheWeek.put("вт", 2);
         daysOfTheWeek.put("вто", 2);
         daysOfTheWeek.put("втр", 2);
@@ -140,6 +140,65 @@ public class UtilsWords {
         daysOfTheWeek.put("TUES", 2);
         daysOfTheWeek.put("TUESDAY", 2);
         //////////////////////////////////////////////////////////////////////
+        */
+
+        daysOfTheWeek.put(" вт", 2);
+        daysOfTheWeek.put(" вто", 2);
+        daysOfTheWeek.put(" втр", 2);
+        daysOfTheWeek.put(" вторник", 2);
+        daysOfTheWeek.put(" вторника", 2);
+        daysOfTheWeek.put(" вторнику", 2);
+        daysOfTheWeek.put(" Вт", 2);
+        daysOfTheWeek.put(" Вто", 2);
+        daysOfTheWeek.put(" Втр", 2);
+        daysOfTheWeek.put(" Вторник", 2);
+        daysOfTheWeek.put(" ВТ", 2);
+        daysOfTheWeek.put(" ВТО", 2);
+        daysOfTheWeek.put(" ВТР", 2);
+        daysOfTheWeek.put(" ВТОРНИК", 2);
+
+        daysOfTheWeek.put(" Tu", 2);
+        daysOfTheWeek.put(" tue", 2);
+        daysOfTheWeek.put(" tues", 2);
+        daysOfTheWeek.put(" tuesday", 2);
+        daysOfTheWeek.put(" Tue", 2);
+        daysOfTheWeek.put(" Tues", 2);
+        daysOfTheWeek.put(" Tuesday", 2);
+        daysOfTheWeek.put(" TUE", 2);
+        daysOfTheWeek.put(" TUES", 2);
+        daysOfTheWeek.put(" TUESDAY", 2);
+
+
+
+
+        daysOfTheWeek.put("вт ", 2);
+        daysOfTheWeek.put("вто ", 2);
+        daysOfTheWeek.put("втр ", 2);
+        daysOfTheWeek.put("вторник ", 2);
+        daysOfTheWeek.put("вторника ", 2);
+        daysOfTheWeek.put("вторнику ", 2);
+        daysOfTheWeek.put("Вт ", 2);
+        daysOfTheWeek.put("Вто ", 2);
+        daysOfTheWeek.put("Втр ", 2);
+        daysOfTheWeek.put("Вторник ", 2);
+        daysOfTheWeek.put("ВТ ", 2);
+        daysOfTheWeek.put("ВТО ", 2);
+        daysOfTheWeek.put("ВТР ", 2);
+        daysOfTheWeek.put("ВТОРНИК ", 2);
+
+        daysOfTheWeek.put("Tu ", 2);
+        daysOfTheWeek.put("tue ", 2);
+        daysOfTheWeek.put("tues ", 2);
+        daysOfTheWeek.put("tuesday ", 2);
+        daysOfTheWeek.put("Tue ", 2);
+        daysOfTheWeek.put("Tues ", 2);
+        daysOfTheWeek.put("Tuesday ", 2);
+        daysOfTheWeek.put("TUE ", 2);
+        daysOfTheWeek.put("TUES ", 2);
+        daysOfTheWeek.put("TUESDAY ", 2);
+        //////////////////////////////////////////////////////////////////////
+
+
 
 
         daysOfTheWeek.put("ср", 3);
@@ -385,7 +444,7 @@ public class UtilsWords {
                 intMonth = 6;
                 break;
             }
-            case "071": {
+            case "07": {
                 intMonth = 6;
                 break;
             }

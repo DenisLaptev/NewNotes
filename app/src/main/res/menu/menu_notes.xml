@@ -2,9 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/search"
+        android:id="@+id/btn_calendar_notes"
         android:title="@string/search_title"
         android:orderInCategory="1"
-        android:icon="@drawable/magnify"
+        android:icon="@drawable/ic_calendar_clock_white"
         app:showAsAction="ifRoom" />
 </menu>

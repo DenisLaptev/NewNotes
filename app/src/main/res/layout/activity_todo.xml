@@ -13,7 +13,7 @@
 
 
     <LinearLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/top_linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
@@ -28,65 +28,75 @@
             android:id="@+id/tv_todo_activity_title"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
+            android:gravity="center"
             android:hint="Todo Title"
             android:textColor="@color/color_marker_todo"
-            android:textSize="@dimen/item_activity_title_size"
-            android:gravity="center" />
-
+            android:textSize="@dimen/item_activity_title_size" />
 
     </LinearLayout>
 
 
-    <TextView
-        android:id="@+id/tv_todo_activity_date"
+    <LinearLayout
+        android:id="@+id/deadline_linearlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Todo Date"
-        android:textColor="@color/color_item_activity_date"
-        android:textSize="@dimen/item_activity_date_size"
-        android:gravity="center"
-        android:layout_below="@+id/linearLayout"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="30dp" />
+        android:layout_below="@+id/top_linearLayout"
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="DEADLINE:"
+            android:textSize="@dimen/item_activity_date_size" />
+
+        <TextView
+            android:id="@+id/tv_todo_activity_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Todo Date"
+            android:textColor="@color/color_item_activity_date"
+            android:textSize="@dimen/item_activity_date_size" />
+    </LinearLayout>
 
     <CheckBox
         android:id="@+id/chbx_todo_activity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="done"
-        android:textSize="@dimen/item_activity_description_size"
+        android:layout_below="@+id/deadline_linearlayout"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
         android:layout_marginTop="30dp"
-        android:layout_below="@+id/tv_todo_activity_date"
-        android:layout_centerHorizontal="true" />
+        android:text="ВЫПОЛНЕНО"
+        android:textSize="@dimen/item_activity_description_size" />
 
     <TextView
         android:id="@+id/tv_todo_activity_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/chbx_todo_activity"
+        android:layout_marginTop="30dp"
+        android:gravity="center"
         android:hint="Todo Description"
         android:textColor="@color/color_item_activity_description"
-        android:textSize="@dimen/item_activity_description_size"
-        android:gravity="center"
-        android:layout_marginTop="30dp"
-        android:layout_below="@+id/chbx_todo_activity"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="11dp"
-        android:layout_marginEnd="11dp" />
+        android:textSize="@dimen/item_activity_description_size" />
 
     <TextView
+        android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:gravity="bottom|center"
         android:text="TODO"
         android:textColor="@color/color_marker_todo"
         android:textSize="40sp"
         android:textStyle="bold" />
+
 
 </RelativeLayout>

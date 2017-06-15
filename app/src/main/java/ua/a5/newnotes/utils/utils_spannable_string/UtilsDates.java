@@ -1,5 +1,6 @@
 package ua.a5.newnotes.utils.utils_spannable_string;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +28,12 @@ public class UtilsDates {
         int currentDayOfWeek;
         currentDayOfWeek = java.util.Calendar.getInstance().get(java.util.Calendar.DAY_OF_WEEK) - 1;
         return currentDayOfWeek;
+    }
+
+    public static int getCurrentWeek() {
+        int currentDay;
+        currentDay = java.util.Calendar.getInstance().get(Calendar.WEEK_OF_YEAR);
+        return currentDay;
     }
 
     public static int getDifferenceBetweenPlannedDayAndToday(String strDay) {
@@ -70,5 +77,4 @@ public class UtilsDates {
         currentMinute = java.util.Calendar.getInstance().get(java.util.Calendar.MINUTE);
         return currentMinute;
     }
-
 }

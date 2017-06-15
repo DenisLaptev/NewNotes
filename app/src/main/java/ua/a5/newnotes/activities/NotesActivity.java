@@ -2,6 +2,7 @@ package ua.a5.newnotes.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -11,7 +12,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.widget.Toast;
+
+import java.util.GregorianCalendar;
 
 import ua.a5.newnotes.R;
 import ua.a5.newnotes.adapter.tabsFragmentAdapters.NotesTabsFragmentAdapter;
@@ -21,6 +23,9 @@ import static ua.a5.newnotes.utils.Constants.MAP_INDEX_BIRTHDAYS;
 import static ua.a5.newnotes.utils.Constants.MAP_INDEX_DIFFERENT;
 import static ua.a5.newnotes.utils.Constants.MAP_INDEX_IDEAS;
 import static ua.a5.newnotes.utils.Constants.MAP_INDEX_TODO;
+import static ua.a5.newnotes.utils.utils_spannable_string.UtilsDates.getCurrentDay;
+import static ua.a5.newnotes.utils.utils_spannable_string.UtilsDates.getCurrentMonth;
+import static ua.a5.newnotes.utils.utils_spannable_string.UtilsDates.getCurrentYear;
 
 public class NotesActivity extends AppCompatActivity {
     private static final int LAYOUT = R.layout.activity_notes;
@@ -41,9 +46,8 @@ public class NotesActivity extends AppCompatActivity {
         initToolbar();
         initNavigationView();
         initTabs();
-
-
     }
+
 
 
     private void initToolbar() {
@@ -55,11 +59,22 @@ public class NotesActivity extends AppCompatActivity {
 
                 switch (item.getItemId()) {
 
-                    case R.id.search:
-                        Toast.makeText(getApplicationContext(), "search", Toast.LENGTH_SHORT).show();
+                    case R.id.btn_calendar_notes:
 
-                        Intent intent = new Intent(NotesActivity.this, CreateNoteActivity.class);
-                        startActivity(intent);
+                        //The intent to create a calendar event.
+                        Intent calIntent = new Intent(Intent.ACTION_INSERT);
+                        calIntent.setType("vnd.android.cursor.item/event");
+
+                        try {
+                            GregorianCalendar calDateBegin = new GregorianCalendar(getCurrentYear(), getCurrentMonth(), getCurrentDay());
+                            calIntent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME,
+                                    calDateBegin.getTimeInMillis());
+
+                            startActivity(calIntent);
+                            finish();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         break;
                 }
 
@@ -90,39 +105,25 @@ public class NotesActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 drawerLayoutNotes.closeDrawers();
                 switch (menuItem.getItemId()) {
-                    /*
-                    case R.id.actionNotificationItem:
-                        viewPagerNotes.setCurrentItem(MAP_INDEX_TODO);
-                        Toast.makeText(getApplicationContext(), "Notification", Toast.LENGTH_SHORT).show();
-                        break;
-*/
+
                     case R.id.todoItem:
                         viewPagerNotes.setCurrentItem(MAP_INDEX_TODO);
-                        Toast.makeText(getApplicationContext(), "TODO", Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.ideasItem:
                         viewPagerNotes.setCurrentItem(MAP_INDEX_IDEAS);
-                        Toast.makeText(getApplicationContext(), "Ideas", Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.birthdaysItem:
                         viewPagerNotes.setCurrentItem(MAP_INDEX_BIRTHDAYS);
-                        Toast.makeText(getApplicationContext(), "Birthdays", Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.differentItem:
                         viewPagerNotes.setCurrentItem(MAP_INDEX_DIFFERENT);
-                        Toast.makeText(getApplicationContext(), "Different", Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.mainmenuItem:
-
-                        Toast.makeText(getApplicationContext(), "Main menu_notes", Toast.LENGTH_SHORT).show();
                         onBackPressed();
-                        //Intent intent = new Intent(NotesActivity.this, StartMenuActivity.class);
-                        //startActivity(intent);
-                        finish();
                         break;
                 }
                 return true;
@@ -136,20 +137,10 @@ public class NotesActivity extends AppCompatActivity {
         adapterNotes = new NotesTabsFragmentAdapter(this, getSupportFragmentManager());
         viewPagerNotes.setAdapter(adapterNotes);
 
-        
         tabLayoutNotes = (TabLayout) findViewById(R.id.tablayout_notes);
         tabLayoutNotes.setupWithViewPager(viewPagerNotes);
     }
    
-
-
-/*
-
-    private void showIdeasTab() {
-        viewPagerNotes.setCurrentItem(Constants.TAB_NOTES_IDEAS);
-    }
-
-*/
 
 
     @Override

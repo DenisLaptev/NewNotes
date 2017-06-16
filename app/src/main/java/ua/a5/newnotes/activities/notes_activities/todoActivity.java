@@ -1,19 +1,26 @@
 package ua.a5.newnotes.activities.notes_activities;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.PopupMenu;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
@@ -23,10 +30,23 @@ import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import ua.a5.newnotes.DAO.DBHelper;
 import ua.a5.newnotes.R;
+import ua.a5.newnotes.activities.CreateNoteTODOActivity;
 import ua.a5.newnotes.dto.notesDTO.TodoDTO;
 
-import static ua.a5.newnotes.fragments.notes_fragments.TodoFragment.KEY_TODO_DTO;
+import static ua.a5.newnotes.DAO.DBHelper.TABLE_NOTES_TODO_KEY_DAY;
+import static ua.a5.newnotes.DAO.DBHelper.TABLE_NOTES_TODO_KEY_DESCRIPTION;
+import static ua.a5.newnotes.DAO.DBHelper.TABLE_NOTES_TODO_KEY_ISDONE;
+import static ua.a5.newnotes.DAO.DBHelper.TABLE_NOTES_TODO_KEY_MONTH;
+import static ua.a5.newnotes.DAO.DBHelper.TABLE_NOTES_TODO_KEY_TITLE;
+import static ua.a5.newnotes.DAO.DBHelper.TABLE_NOTES_TODO_KEY_YEAR;
+import static ua.a5.newnotes.DAO.DBHelper.TABLE_NOTES_TODO_NAME;
+import static ua.a5.newnotes.R.id.delete_item;
+import static ua.a5.newnotes.R.id.update_item;
+import static ua.a5.newnotes.utils.Constants.KEY_TODO_DTO;
+import static ua.a5.newnotes.utils.Constants.KEY_UPDATE_TODO;
+import static ua.a5.newnotes.utils.Constants.isCardForUpdate;
 import static ua.a5.newnotes.utils.utils_spannable_string.UtilsDates.DATE_REGEXPS;
 import static ua.a5.newnotes.utils.utils_spannable_string.UtilsDates.DAYS_OF_THE_WEEK;
 import static ua.a5.newnotes.utils.utils_spannable_string.UtilsDates.TIME_WORDS;
@@ -61,6 +81,9 @@ public class TodoActivity extends AppCompatActivity {
     @BindView(R.id.tv_todo_activity_description)
     TextView tvDescription;
 
+    @BindView(R.id.iv_todo_menu)
+    ImageView ivTodoMenu;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +92,7 @@ public class TodoActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         if (getIntent() != null) {
-            TodoDTO todoDTO = (TodoDTO) getIntent().getSerializableExtra(KEY_TODO_DTO);
+            final TodoDTO todoDTO = (TodoDTO) getIntent().getSerializableExtra(KEY_TODO_DTO);
             tvTitle.setText(todoDTO.getTitle());
             tvDate.setText(todoDTO.getDay() + "-" + todoDTO.getMonth() + "-" + todoDTO.getYear());
             isDone = todoDTO.getIsDone();
@@ -80,6 +103,20 @@ public class TodoActivity extends AppCompatActivity {
                 chbxIsDone.setChecked(true);
             }
             chbxIsDone.setText("ВЫПОЛНЕНО");
+            chbxIsDone.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        todoDTO.setIsDone(1);
+                        updateTodoCheckboxUIandDB(todoDTO);
+
+                    } else {
+                        todoDTO.setIsDone(0);
+                        updateTodoCheckboxUIandDB(todoDTO);
+
+                    }
+                }
+            });
 
 
             try {
@@ -111,7 +148,85 @@ public class TodoActivity extends AppCompatActivity {
             tvDescription.setText(bufferSpannableString);
             tvDescription.setLinksClickable(true);
             tvDescription.setMovementMethod(LinkMovementMethod.getInstance());
+
+
+            ivTodoMenu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //deleteItem(position, todoDTOList);
+                    PopupMenu cardPopupMenu = new PopupMenu(TodoActivity.this, ivTodoMenu);
+                    cardPopupMenu.getMenuInflater().inflate(R.menu.menu_card, cardPopupMenu.getMenu());
+
+                    cardPopupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem it) {
+
+                            switch (it.getItemId()) {
+                                case delete_item:
+                                    Toast.makeText(TodoActivity.this, "delete", Toast.LENGTH_SHORT).show();
+                                    deleteItemFromTable(todoDTO);
+                                    TodoActivity.this.finish();
+                                    break;
+
+                                case update_item:
+                                    Toast.makeText(TodoActivity.this, "update", Toast.LENGTH_SHORT).show();
+
+
+                                    isCardForUpdate = true;
+                                    Intent intent = new Intent(TodoActivity.this, CreateNoteTODOActivity.class);
+                                    intent.putExtra(KEY_UPDATE_TODO, todoDTO);
+                                    startActivity(intent);
+                                    Toast.makeText(TodoActivity.this, it.getTitle(), Toast.LENGTH_SHORT).show();
+                                    finish();
+                                    break;
+                            }
+                            return true;
+                        }
+                    });
+                    cardPopupMenu.show();
+                }
+            });
         }
+    }
+
+
+    private void updateTodoCheckboxUIandDB(TodoDTO item) {
+        DBHelper dbHelper = new DBHelper(this);
+        SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
+
+        ContentValues newValues = new ContentValues();
+        newValues.put(TABLE_NOTES_TODO_KEY_ISDONE, item.getIsDone());
+
+        sqLiteDatabase.update(DBHelper.TABLE_NOTES_TODO_NAME, newValues, TABLE_NOTES_TODO_KEY_TITLE + " = ? ", new String[]{item.getTitle()});
+
+        //закрываем соединение с БД.
+        dbHelper.close();
+    }
+
+    private void deleteItemFromTable(TodoDTO todoDTO) {
+
+        //////////////////---------------------->
+        //для работы с БД.
+        DBHelper dbHelper = new DBHelper(this);
+        SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
+
+        sqLiteDatabase.delete(TABLE_NOTES_TODO_NAME,
+                TABLE_NOTES_TODO_KEY_TITLE + " = ? AND "
+                        + TABLE_NOTES_TODO_KEY_DAY + " = ? AND "
+                        + TABLE_NOTES_TODO_KEY_MONTH + " = ? AND "
+                        + TABLE_NOTES_TODO_KEY_YEAR + " = ? AND "
+                        + TABLE_NOTES_TODO_KEY_DESCRIPTION + " = ? ",
+                new String[]{
+                        todoDTO.getTitle(),
+                        String.valueOf(todoDTO.getDay()),
+                        String.valueOf(todoDTO.getMonth()),
+                        String.valueOf(todoDTO.getYear()),
+                        String.valueOf(todoDTO.getDescription())
+                });
+
+        //закрываем соединение с БД.
+        dbHelper.close();
+//////////////////---------------------->
     }
 
     @Override

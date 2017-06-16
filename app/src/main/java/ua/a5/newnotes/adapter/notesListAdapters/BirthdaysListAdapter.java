@@ -28,6 +28,7 @@ import static ua.a5.newnotes.DAO.DBHelper.TABLE_NOTES_BIRTHDAYS_KEY_YEAR;
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_NOTES_BIRTHDAYS_NAME;
 import static ua.a5.newnotes.R.id.delete_item;
 import static ua.a5.newnotes.R.id.update_item;
+import static ua.a5.newnotes.utils.Constants.KEY_UPDATE_BIRTHDAYS;
 import static ua.a5.newnotes.utils.Constants.isCardForUpdate;
 
 /**
@@ -36,7 +37,7 @@ import static ua.a5.newnotes.utils.Constants.isCardForUpdate;
 
 public class BirthdaysListAdapter extends RecyclerView.Adapter<BirthdaysListAdapter.BirthdaysViewHolder> {
 
-    public static final String KEY_UPDATE_BIRTHDAYS = "key_update_birthdays";
+
 
     public interface BirthdayClickListener {
         void onClick(BirthdayDTO birthdayDTO);

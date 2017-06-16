@@ -26,14 +26,15 @@ import ua.a5.newnotes.adapter.notesListAdapters.IdeasListAdapter;
 import ua.a5.newnotes.dto.notesDTO.IdeaDTO;
 import ua.a5.newnotes.fragments.AbstractTabFragment;
 
+import static ua.a5.newnotes.utils.Constants.KEY_IDEA_DTO;
+import static ua.a5.newnotes.utils.Constants.LOG_TAG;
+
 
 /**
  * Created by A5 Android Intern 2 on 28.04.2017.
  */
 
 public class IdeasFragment extends AbstractTabFragment implements IdeasListAdapter.IdeaClickListener {
-    public static final String KEY_IDEA_DTO = "key idea dto";
-    public static final String LOG_TAG = "log";
 
     FloatingActionsMenu menuMultipleActions;
 

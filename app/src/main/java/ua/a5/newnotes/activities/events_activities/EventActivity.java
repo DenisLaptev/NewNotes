@@ -1,18 +1,23 @@
 package ua.a5.newnotes.activities.events_activities;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.PopupMenu;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
@@ -22,11 +27,22 @@ import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import ua.a5.newnotes.DAO.DBHelper;
 import ua.a5.newnotes.R;
+import ua.a5.newnotes.activities.CreateEventActivity;
 import ua.a5.newnotes.dto.eventsDTO.EventDTO;
 
-
-import static ua.a5.newnotes.fragments.events_fragments.TodayFragment.KEY_EVENT_DTO;
+import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_BEGIN_DAY;
+import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_BEGIN_MONTH;
+import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_BEGIN_YEAR;
+import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_DESCRIPTION;
+import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_TITLE;
+import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_NAME;
+import static ua.a5.newnotes.R.id.delete_item;
+import static ua.a5.newnotes.R.id.update_item;
+import static ua.a5.newnotes.utils.Constants.KEY_EVENT_DTO;
+import static ua.a5.newnotes.utils.Constants.KEY_UPDATE_EVENTS;
+import static ua.a5.newnotes.utils.Constants.isCardForUpdate;
 import static ua.a5.newnotes.utils.utils_spannable_string.UtilsDates.DATE_REGEXPS;
 import static ua.a5.newnotes.utils.utils_spannable_string.UtilsDates.DAYS_OF_THE_WEEK;
 import static ua.a5.newnotes.utils.utils_spannable_string.UtilsDates.TIME_WORDS;
@@ -39,6 +55,8 @@ import static ua.a5.newnotes.utils.utils_spannable_string.UtilsDates.getDifferen
 import static ua.a5.newnotes.utils.utils_spannable_string.UtilsWords.getIntMonthFromString;
 
 public class EventActivity extends AppCompatActivity {
+
+
 
     public static SpannableString bufferSpannableString = null;
 
@@ -56,6 +74,9 @@ public class EventActivity extends AppCompatActivity {
     @BindView(R.id.tv_event_activity_description)
     TextView tvDescription;
 
+    @BindView(R.id.iv_event_menu)
+    ImageView ivEventMenu;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +86,7 @@ public class EventActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         if (getIntent() != null) {
-            EventDTO eventDTO = (EventDTO) getIntent().getSerializableExtra(KEY_EVENT_DTO);
+            final EventDTO eventDTO = (EventDTO) getIntent().getSerializableExtra(KEY_EVENT_DTO);
             tvTitle.setText(eventDTO.getTitle());
             tvDate.setText(eventDTO.getDay() + "-" + eventDTO.generateStringMonth(eventDTO.getMonth()) + "-" + eventDTO.getYear());
 
@@ -99,7 +120,73 @@ public class EventActivity extends AppCompatActivity {
             tvDescription.setText(bufferSpannableString);
             tvDescription.setLinksClickable(true);
             tvDescription.setMovementMethod(LinkMovementMethod.getInstance());
+
+
+            ivEventMenu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //deleteItem(position, todoDTOList);
+                    PopupMenu cardPopupMenu = new PopupMenu(EventActivity.this, ivEventMenu);
+                    cardPopupMenu.getMenuInflater().inflate(R.menu.menu_card, cardPopupMenu.getMenu());
+
+                    cardPopupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem it) {
+
+                            switch (it.getItemId()) {
+                                case delete_item:
+                                    Toast.makeText(EventActivity.this, "delete", Toast.LENGTH_SHORT).show();
+                                    deleteItemFromTable(eventDTO);
+                                    EventActivity.this.finish();
+
+                                    break;
+
+                                case update_item:
+                                    Toast.makeText(EventActivity.this, "update", Toast.LENGTH_SHORT).show();
+
+
+                                    isCardForUpdate = true;
+                                    Intent intent = new Intent(EventActivity.this, CreateEventActivity.class);
+                                    intent.putExtra(KEY_UPDATE_EVENTS, eventDTO);
+                                    startActivity(intent);
+                                    Toast.makeText(EventActivity.this, it.getTitle(), Toast.LENGTH_SHORT).show();
+                                    finish();
+                                    break;
+                            }
+                            return true;
+                        }
+                    });
+                    cardPopupMenu.show();
+                }
+            });
         }
+    }
+
+
+    private void deleteItemFromTable(EventDTO eventDTO) {
+
+        //////////////////---------------------->
+        //для работы с БД.
+        DBHelper dbHelper = new DBHelper(this);
+        SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
+
+        sqLiteDatabase.delete(TABLE_EVENTS_NAME,
+                TABLE_EVENTS_KEY_TITLE + " = ? AND "
+                        + TABLE_EVENTS_KEY_BEGIN_DAY + " = ? AND "
+                        + TABLE_EVENTS_KEY_BEGIN_MONTH + " = ? AND "
+                        + TABLE_EVENTS_KEY_BEGIN_YEAR + " = ? AND "
+                        + TABLE_EVENTS_KEY_DESCRIPTION + " = ? ",
+                new String[]{
+                        eventDTO.getTitle(),
+                        String.valueOf(eventDTO.getDay()),
+                        String.valueOf(eventDTO.getMonth()),
+                        String.valueOf(eventDTO.getYear()),
+                        eventDTO.getDescription()
+                });
+
+        //закрываем соединение с БД.
+        dbHelper.close();
+//////////////////---------------------->
     }
 
     @Override

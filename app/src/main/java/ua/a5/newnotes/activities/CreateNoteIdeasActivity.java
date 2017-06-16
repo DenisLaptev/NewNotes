@@ -22,6 +22,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -32,12 +33,16 @@ import java.util.regex.Pattern;
 
 import ua.a5.newnotes.DAO.DBHelper;
 import ua.a5.newnotes.R;
+import ua.a5.newnotes.activities.notes_activities.IdeaActivity;
 import ua.a5.newnotes.dto.notesDTO.IdeaDTO;
 
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_NOTES_IDEAS_KEY_DATE;
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_NOTES_IDEAS_KEY_DESCRIPTION;
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_NOTES_IDEAS_KEY_TITLE;
-import static ua.a5.newnotes.adapter.notesListAdapters.IdeasListAdapter.KEY_UPDATE_IDEAS;
+import static ua.a5.newnotes.DAO.DBHelper.TABLE_NOTES_IDEAS_NAME;
+import static ua.a5.newnotes.utils.Constants.KEY_IDEA_DTO;
+import static ua.a5.newnotes.utils.Constants.KEY_UPDATE_IDEAS;
+import static ua.a5.newnotes.utils.Constants.LOG_TAG;
 import static ua.a5.newnotes.utils.Constants.isCardForUpdate;
 import static ua.a5.newnotes.utils.utils_spannable_string.UtilsDates.DATE_REGEXPS;
 import static ua.a5.newnotes.utils.utils_spannable_string.UtilsDates.DAYS_OF_THE_WEEK;
@@ -52,7 +57,8 @@ import static ua.a5.newnotes.utils.utils_spannable_string.UtilsWords.getIntMonth
 
 public class CreateNoteIdeasActivity extends AppCompatActivity {
 
-    public static final String LOG_TAG = "log";
+    boolean isSavedFlagIdea;
+
 
     public static SpannableString bufferSpannableString = null;
 
@@ -77,11 +83,15 @@ public class CreateNoteIdeasActivity extends AppCompatActivity {
     String noteDescription;
     String noteDate;
 
+    IdeaDTO ideaDTO;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_note_ideas);
+
+        isSavedFlagIdea = false;
 
         //для работы с БД.
         dbHelper = new DBHelper(this);
@@ -117,7 +127,7 @@ public class CreateNoteIdeasActivity extends AppCompatActivity {
 
 
         if (isCardForUpdate == true && getIntent() != null) {
-            IdeaDTO ideaDTO = (IdeaDTO) getIntent().getSerializableExtra(KEY_UPDATE_IDEAS);
+            ideaDTO = (IdeaDTO) getIntent().getSerializableExtra(KEY_UPDATE_IDEAS);
             etCreateNoteTitle.setText(ideaDTO.getTitle());
             etNoteDescription.setText(ideaDTO.getDescription());
         }
@@ -126,6 +136,9 @@ public class CreateNoteIdeasActivity extends AppCompatActivity {
         btnCreateNoteSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (isCardForUpdate == true) {
+                    deleteItemFromTable(ideaDTO);
+                }
                 isCardForUpdate = false;
 
 ////////////////
@@ -165,6 +178,7 @@ public class CreateNoteIdeasActivity extends AppCompatActivity {
                 //закрываем соединение с БД.
                 dbHelper.close();
 ////////////////////////
+                isSavedFlagIdea = true;
 
             }
         });
@@ -175,10 +189,32 @@ public class CreateNoteIdeasActivity extends AppCompatActivity {
             public void onClick(View v) {
                 isCardForUpdate = false;
                 onBackPressed();
+                finish();
             }
         });
     }
 
+
+    private void deleteItemFromTable(IdeaDTO ideaDTO) {
+        //////////////////---------------------->
+        //для работы с БД.
+        DBHelper dbHelper = new DBHelper(this);
+        SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
+
+        sqLiteDatabase.delete(TABLE_NOTES_IDEAS_NAME,
+                TABLE_NOTES_IDEAS_KEY_TITLE + " = ? AND "
+                        + TABLE_NOTES_IDEAS_KEY_DATE + " = ? AND "
+                        + TABLE_NOTES_IDEAS_KEY_DESCRIPTION + " = ? ",
+                new String[]{
+                        ideaDTO.getTitle(),
+                        String.valueOf(ideaDTO.getDate()),
+                        String.valueOf(ideaDTO.getDescription())
+                });
+
+        //закрываем соединение с БД.
+        dbHelper.close();
+//////////////////---------------------->
+    }
 
     private TextWatcher onTextChangedListener() {
         return new TextWatcher() {
@@ -494,5 +530,27 @@ public class CreateNoteIdeasActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         isCardForUpdate = false;
+
+
+        if (isSavedFlagIdea) {
+            IdeaDTO newIdeaDTO = new IdeaDTO(
+                    etCreateNoteTitle.getText().toString(),
+                    etNoteDescription.getText().toString(),
+                    tvCreateNoteDate.getText().toString()
+
+            );
+
+            Intent intent = new Intent(this, IdeaActivity.class);
+            intent.putExtra(KEY_IDEA_DTO, newIdeaDTO);
+            startActivity(intent);
+            Toast.makeText(this, newIdeaDTO.getTitle(), Toast.LENGTH_SHORT).show();
+            finish();
+        } else {
+            Intent intent = new Intent(this, IdeaActivity.class);
+            intent.putExtra(KEY_IDEA_DTO, ideaDTO);
+            startActivity(intent);
+            Toast.makeText(this, ideaDTO.getTitle(), Toast.LENGTH_SHORT).show();
+            finish();
+        }
     }
 }

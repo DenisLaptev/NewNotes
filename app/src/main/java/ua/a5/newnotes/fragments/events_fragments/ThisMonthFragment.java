@@ -25,6 +25,7 @@ import ua.a5.newnotes.activities.events_activities.EventActivity;
 import ua.a5.newnotes.adapter.eventsListAdapters.EventsListAdapter;
 import ua.a5.newnotes.dto.eventsDTO.EventCRUD;
 import ua.a5.newnotes.dto.eventsDTO.EventDTO;
+import ua.a5.newnotes.dto.eventsDTO.EventDTOCollection;
 import ua.a5.newnotes.fragments.AbstractTabFragment;
 
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_BEGIN_DAY;
@@ -42,6 +43,8 @@ import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_LOCATION;
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_STRING_BEGIN_MONTH;
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_TITLE;
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_NAME;
+import static ua.a5.newnotes.utils.Constants.KEY_EVENT_DTO;
+import static ua.a5.newnotes.utils.Constants.LOG_TAG;
 import static ua.a5.newnotes.utils.utils_spannable_string.UtilsDates.getCurrentMonth;
 
 
@@ -50,8 +53,6 @@ import static ua.a5.newnotes.utils.utils_spannable_string.UtilsDates.getCurrentM
  */
 
 public class ThisMonthFragment extends AbstractTabFragment implements EventsListAdapter.EventClickListener {
-    public static final String KEY_EVENT_DTO = "key event dto";
-    public static final String LOG_TAG = "log";
 
     FloatingActionsMenu menuMultipleActions;
 
@@ -70,18 +71,22 @@ public class ThisMonthFragment extends AbstractTabFragment implements EventsList
 
 
     public static ThisMonthFragment getInstance(Context context) {
+    //public  ThisMonthFragment getInstance(Context context) {
         Bundle args = new Bundle();
         ThisMonthFragment fragment = new ThisMonthFragment();
         fragment.setArguments(args);
         fragment.setContext(context);
         fragment.setTitle(context.getString(R.string.menu_events_item_thismonth));
+
         return fragment;
     }
 
     @Override
     public void onResume() {
         super.onResume();
+
         adapter = new EventsListAdapter(context, getThisMonthEventsList(), this);
+        adapter.notifyDataSetChanged();
         recyclerView.setAdapter(adapter);
     }
 
@@ -91,6 +96,7 @@ public class ThisMonthFragment extends AbstractTabFragment implements EventsList
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(LAYOUT, container, false);
 
+        eventCRUD = new EventCRUD(EventDTOCollection.getEventDTOs());
         recyclerView = (RecyclerView) view.findViewById(R.id.recycle_view_events);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         adapter = new EventsListAdapter(context, getThisMonthEventsList(), this);

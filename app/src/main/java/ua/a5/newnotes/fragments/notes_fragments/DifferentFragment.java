@@ -25,13 +25,14 @@ import ua.a5.newnotes.adapter.notesListAdapters.DifferentListAdapter;
 import ua.a5.newnotes.dto.notesDTO.DifferentDTO;
 import ua.a5.newnotes.fragments.AbstractTabFragment;
 
+import static ua.a5.newnotes.utils.Constants.KEY_DIFFERENT_DTO;
+import static ua.a5.newnotes.utils.Constants.LOG_TAG;
+
 /**
  * Created by A5 Android Intern 2 on 28.04.2017.
  */
 
 public class DifferentFragment extends AbstractTabFragment implements DifferentListAdapter.DifferentClickListener {
-    public static final String KEY_DIFFERENT_DTO = "key different dto";
-    public static final String LOG_TAG = "log";
 
     FloatingActionsMenu menuMultipleActions;
 

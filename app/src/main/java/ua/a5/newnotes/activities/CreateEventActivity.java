@@ -25,6 +25,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -35,6 +36,7 @@ import java.util.regex.Pattern;
 
 import ua.a5.newnotes.DAO.DBHelper;
 import ua.a5.newnotes.R;
+import ua.a5.newnotes.activities.events_activities.EventActivity;
 import ua.a5.newnotes.dto.eventsDTO.EventDTO;
 
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_BEGIN_DAY;
@@ -49,7 +51,10 @@ import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_END_MINUTE;
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_END_MONTH;
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_LOCATION;
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_TITLE;
-import static ua.a5.newnotes.adapter.eventsListAdapters.EventsListAdapter.KEY_UPDATE_EVENTS;
+import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_NAME;
+import static ua.a5.newnotes.utils.Constants.KEY_EVENT_DTO;
+import static ua.a5.newnotes.utils.Constants.KEY_UPDATE_EVENTS;
+import static ua.a5.newnotes.utils.Constants.LOG_TAG;
 import static ua.a5.newnotes.utils.Constants.isCardForUpdate;
 import static ua.a5.newnotes.utils.utils_spannable_string.UtilsDates.DATE_REGEXPS;
 import static ua.a5.newnotes.utils.utils_spannable_string.UtilsDates.DAYS_OF_THE_WEEK;
@@ -64,14 +69,14 @@ import static ua.a5.newnotes.utils.utils_spannable_string.UtilsWords.getIntMonth
 
 public class CreateEventActivity extends AppCompatActivity {
 
+    boolean isSavedFlagEvent;
+
     private int mYear;
     private int mMonth;
     private int mDay;
     private TextView tvEventsDeadline;
     private Button btnEventsDeadline;
     static final int DATE_DIALOG_ID = 2;
-
-    public static final String LOG_TAG = "log";
 
     public static SpannableString bufferSpannableString = null;
 
@@ -111,10 +116,16 @@ public class CreateEventActivity extends AppCompatActivity {
     String description;
 
 
+    EventDTO eventDTO;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_event);
+
+        isSavedFlagEvent = false;
+
+
         description = null;
 
         //для работы с БД.
@@ -164,7 +175,7 @@ public class CreateEventActivity extends AppCompatActivity {
         });
 
         if (isCardForUpdate == true && getIntent() != null) {
-            EventDTO eventDTO = (EventDTO) getIntent().getSerializableExtra(KEY_UPDATE_EVENTS);
+            eventDTO = (EventDTO) getIntent().getSerializableExtra(KEY_UPDATE_EVENTS);
             etCreateEventTitle.setText(eventDTO.getTitle());
             etEventDescription.setText(eventDTO.getDescription());
             tvEventsDeadline.setText(
@@ -179,6 +190,10 @@ public class CreateEventActivity extends AppCompatActivity {
         btnCreateEventSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if (isCardForUpdate == true) {
+                    deleteItemFromTable(eventDTO);
+                }
                 isCardForUpdate = false;
                 ////////////////
                 //заполняем БД данными.
@@ -244,6 +259,8 @@ public class CreateEventActivity extends AppCompatActivity {
                 dbHelper.close();
 
 ////////////////////////
+
+                isSavedFlagEvent = true;
             }
         });
 
@@ -322,6 +339,32 @@ public class CreateEventActivity extends AppCompatActivity {
 
     }
 
+
+    private void deleteItemFromTable(EventDTO eventDTO) {
+
+        //////////////////---------------------->
+        //для работы с БД.
+        DBHelper dbHelper = new DBHelper(this);
+        SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
+
+        sqLiteDatabase.delete(TABLE_EVENTS_NAME,
+                TABLE_EVENTS_KEY_TITLE + " = ? AND "
+                        + TABLE_EVENTS_KEY_BEGIN_DAY + " = ? AND "
+                        + TABLE_EVENTS_KEY_BEGIN_MONTH + " = ? AND "
+                        + TABLE_EVENTS_KEY_BEGIN_YEAR + " = ? AND "
+                        + TABLE_EVENTS_KEY_DESCRIPTION + " = ? ",
+                new String[]{
+                        eventDTO.getTitle(),
+                        String.valueOf(eventDTO.getDay()),
+                        String.valueOf(eventDTO.getMonth()),
+                        String.valueOf(eventDTO.getYear()),
+                        eventDTO.getDescription()
+                });
+
+        //закрываем соединение с БД.
+        dbHelper.close();
+//////////////////---------------------->
+    }
 
     //метод, для убирания клавиатуры EditText при нажатии на пустое пространство.
     public void hideKeyboard(View view) {
@@ -609,5 +652,27 @@ public class CreateEventActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         isCardForUpdate = false;
+
+        if (isSavedFlagEvent) {
+            EventDTO newEventDTO = new EventDTO(
+                    etCreateEventTitle.getText().toString(),
+                    etEventDescription.getText().toString(),
+                    mDay,
+                    mMonth,
+                    mYear
+            );
+
+            Intent intent = new Intent(this, EventActivity.class);
+            intent.putExtra(KEY_EVENT_DTO, newEventDTO);
+            startActivity(intent);
+            Toast.makeText(this, newEventDTO.getTitle(), Toast.LENGTH_SHORT).show();
+            finish();
+        } else {
+            Intent intent = new Intent(this, EventActivity.class);
+            intent.putExtra(KEY_EVENT_DTO, eventDTO);
+            startActivity(intent);
+            Toast.makeText(this, eventDTO.getTitle(), Toast.LENGTH_SHORT).show();
+            finish();
+        }
     }
 }

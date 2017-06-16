@@ -15,7 +15,6 @@ import ua.a5.newnotes.fragments.events_fragments.TodayFragment;
 
 import static ua.a5.newnotes.utils.Constants.MAP_INDEX_ALL_EVENTS;
 import static ua.a5.newnotes.utils.Constants.MAP_INDEX_THIS_MONTH;
-
 import static ua.a5.newnotes.utils.Constants.MAP_INDEX_TODAY;
 
 /**
@@ -47,9 +46,12 @@ public class EventsTabsFragmentAdapter extends FragmentPagerAdapter {
     }
 
     private void initEventsTabsMap(Context context) {
+        notifyDataSetChanged();
         //eventsTabs = new HashMap<>();
         eventsTabs.put(MAP_INDEX_TODAY, TodayFragment.getInstance(context));
         eventsTabs.put(MAP_INDEX_THIS_MONTH, ThisMonthFragment.getInstance(context));
         eventsTabs.put(MAP_INDEX_ALL_EVENTS, AllEventsFragment.getInstance(context));
     }
+
+
 }

@@ -27,6 +27,7 @@ import static ua.a5.newnotes.DAO.DBHelper.TABLE_NOTES_DIFFERENT_KEY_TITLE;
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_NOTES_DIFFERENT_NAME;
 import static ua.a5.newnotes.R.id.delete_item;
 import static ua.a5.newnotes.R.id.update_item;
+import static ua.a5.newnotes.utils.Constants.KEY_UPDATE_DIFFERENT;
 import static ua.a5.newnotes.utils.Constants.isCardForUpdate;
 
 /**
@@ -35,7 +36,7 @@ import static ua.a5.newnotes.utils.Constants.isCardForUpdate;
 
 public class DifferentListAdapter extends RecyclerView.Adapter<DifferentListAdapter.DifferentViewHolder> {
 
-    public static final String KEY_UPDATE_DIFFERENT = "key_update_different";
+
     public interface DifferentClickListener {
         void onClick(DifferentDTO differentDTO);
     }

@@ -22,6 +22,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -32,12 +33,16 @@ import java.util.regex.Pattern;
 
 import ua.a5.newnotes.DAO.DBHelper;
 import ua.a5.newnotes.R;
+import ua.a5.newnotes.activities.notes_activities.DifferentActivity;
 import ua.a5.newnotes.dto.notesDTO.DifferentDTO;
 
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_NOTES_DIFFERENT_KEY_DATE;
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_NOTES_DIFFERENT_KEY_DESCRIPTION;
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_NOTES_DIFFERENT_KEY_TITLE;
-import static ua.a5.newnotes.adapter.notesListAdapters.DifferentListAdapter.KEY_UPDATE_DIFFERENT;
+import static ua.a5.newnotes.DAO.DBHelper.TABLE_NOTES_DIFFERENT_NAME;
+import static ua.a5.newnotes.utils.Constants.KEY_DIFFERENT_DTO;
+import static ua.a5.newnotes.utils.Constants.KEY_UPDATE_DIFFERENT;
+import static ua.a5.newnotes.utils.Constants.LOG_TAG;
 import static ua.a5.newnotes.utils.Constants.isCardForUpdate;
 import static ua.a5.newnotes.utils.utils_spannable_string.UtilsDates.DATE_REGEXPS;
 import static ua.a5.newnotes.utils.utils_spannable_string.UtilsDates.DAYS_OF_THE_WEEK;
@@ -52,7 +57,7 @@ import static ua.a5.newnotes.utils.utils_spannable_string.UtilsWords.getIntMonth
 
 public class CreateNoteDifferentActivity extends AppCompatActivity {
 
-    public static final String LOG_TAG = "log";
+    boolean isSavedFlagDifferent;
 
     public static SpannableString bufferSpannableString = null;
 
@@ -77,11 +82,15 @@ public class CreateNoteDifferentActivity extends AppCompatActivity {
     String noteDescription;
     String noteDate;
 
+    DifferentDTO differentDTO;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_note_different);
+
+        isSavedFlagDifferent = false;
 
         //для работы с БД.
         dbHelper = new DBHelper(this);
@@ -116,7 +125,7 @@ public class CreateNoteDifferentActivity extends AppCompatActivity {
 
 
         if (isCardForUpdate == true && getIntent() != null) {
-            DifferentDTO differentDTO = (DifferentDTO) getIntent().getSerializableExtra(KEY_UPDATE_DIFFERENT);
+            differentDTO = (DifferentDTO) getIntent().getSerializableExtra(KEY_UPDATE_DIFFERENT);
             etCreateNoteTitle.setText(differentDTO.getTitle());
             etNoteDescription.setText(differentDTO.getDescription());
         }
@@ -125,6 +134,9 @@ public class CreateNoteDifferentActivity extends AppCompatActivity {
         btnCreateNoteSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (isCardForUpdate == true) {
+                    deleteItemFromTable(differentDTO);
+                }
                 isCardForUpdate = false;
 
 ////////////////
@@ -170,6 +182,7 @@ public class CreateNoteDifferentActivity extends AppCompatActivity {
                 dbHelper.close();
 ////////////////////////
 
+                isSavedFlagDifferent = true;
             }
         });
 
@@ -179,9 +192,31 @@ public class CreateNoteDifferentActivity extends AppCompatActivity {
             public void onClick(View v) {
                 isCardForUpdate = false;
                 onBackPressed();
+                finish();
             }
         });
 
+    }
+
+    private void deleteItemFromTable(DifferentDTO differentDTO) {
+        //////////////////---------------------->
+        //для работы с БД.
+        DBHelper dbHelper = new DBHelper(this);
+        SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
+
+        sqLiteDatabase.delete(TABLE_NOTES_DIFFERENT_NAME,
+                TABLE_NOTES_DIFFERENT_KEY_TITLE + " = ? AND "
+                        + TABLE_NOTES_DIFFERENT_KEY_DATE + " = ? AND "
+                        + TABLE_NOTES_DIFFERENT_KEY_DESCRIPTION + " = ? ",
+                new String[]{
+                        differentDTO.getTitle(),
+                        String.valueOf(differentDTO.getDate()),
+                        String.valueOf(differentDTO.getDescription())
+                });
+
+        //закрываем соединение с БД.
+        dbHelper.close();
+//////////////////---------------------->
     }
 
 
@@ -499,5 +534,26 @@ public class CreateNoteDifferentActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         isCardForUpdate = false;
+
+        if (isSavedFlagDifferent) {
+            DifferentDTO newDifferentDTO = new DifferentDTO(
+                    etCreateNoteTitle.getText().toString(),
+                    etNoteDescription.getText().toString(),
+                    tvCreateNoteDate.getText().toString()
+
+            );
+
+            Intent intent = new Intent(this, DifferentActivity.class);
+            intent.putExtra(KEY_DIFFERENT_DTO, newDifferentDTO);
+            startActivity(intent);
+            Toast.makeText(this, newDifferentDTO.getTitle(), Toast.LENGTH_SHORT).show();
+            finish();
+        } else {
+            Intent intent = new Intent(this, DifferentActivity.class);
+            intent.putExtra(KEY_DIFFERENT_DTO, differentDTO);
+            startActivity(intent);
+            Toast.makeText(this, differentDTO.getTitle(), Toast.LENGTH_SHORT).show();
+            finish();
+        }
     }
 }

@@ -29,6 +29,7 @@ import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_TITLE;
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_NAME;
 import static ua.a5.newnotes.R.id.delete_item;
 import static ua.a5.newnotes.R.id.update_item;
+import static ua.a5.newnotes.utils.Constants.KEY_UPDATE_EVENTS;
 import static ua.a5.newnotes.utils.Constants.isCardForUpdate;
 
 /**
@@ -37,7 +38,6 @@ import static ua.a5.newnotes.utils.Constants.isCardForUpdate;
 
 public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventsViewHolder> {
 
-    public static final String KEY_UPDATE_EVENTS = "key_update_event";
 
     public interface EventClickListener {
         void onClick(EventDTO eventDTO);
@@ -100,6 +100,7 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Ev
                             case delete_item:
                                 Toast.makeText(context, "delete", Toast.LENGTH_SHORT).show();
                                 deleteItem(position, eventsDTOList);
+                                notifyItemRemoved(position);
                                 break;
 
                             case update_item:
@@ -109,7 +110,7 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Ev
                                 intent.putExtra(KEY_UPDATE_EVENTS, item);
                                 context.startActivity(intent);
                                 Toast.makeText(context, it.getTitle(), Toast.LENGTH_SHORT).show();
-
+                                notifyDataSetChanged();
                                 break;
                         }
                         return true;

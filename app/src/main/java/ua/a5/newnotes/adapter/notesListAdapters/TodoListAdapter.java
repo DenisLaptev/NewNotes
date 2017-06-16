@@ -1,5 +1,6 @@
 package ua.a5.newnotes.adapter.notesListAdapters;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -11,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,12 +26,14 @@ import ua.a5.newnotes.dto.notesDTO.TodoDTO;
 
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_NOTES_TODO_KEY_DAY;
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_NOTES_TODO_KEY_DESCRIPTION;
+import static ua.a5.newnotes.DAO.DBHelper.TABLE_NOTES_TODO_KEY_ISDONE;
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_NOTES_TODO_KEY_MONTH;
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_NOTES_TODO_KEY_TITLE;
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_NOTES_TODO_KEY_YEAR;
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_NOTES_TODO_NAME;
 import static ua.a5.newnotes.R.id.delete_item;
 import static ua.a5.newnotes.R.id.update_item;
+import static ua.a5.newnotes.utils.Constants.KEY_UPDATE_TODO;
 import static ua.a5.newnotes.utils.Constants.isCardForUpdate;
 
 /**
@@ -38,7 +42,7 @@ import static ua.a5.newnotes.utils.Constants.isCardForUpdate;
 
 public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoViewHolder> {
 
-    public static final String KEY_UPDATE_TODO = "key_update_todo";
+
 
     public interface TodoClickListener {
         void onClick(TodoDTO todoDTO);
@@ -82,10 +86,24 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoVi
         holder.tvTitle.setText(item.getTitle());
         holder.chbxTodo.setText("ВЫПОЛНЕНО");
         if(item.getIsDone()==0){
-            holder.chbxTodo.setChecked(true);
+            holder.chbxTodo.setChecked(false);
         }else{
             holder.chbxTodo.setChecked(true);
         }
+        holder.chbxTodo.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    item.setIsDone(1);
+                    updateTodoCheckboxUIandDB(item);
+
+                }else{
+                    item.setIsDone(0);
+                    updateTodoCheckboxUIandDB(item);
+
+                }
+            }
+        });
 
         holder.tvDate.setText(item.getDay() + "-" + item.getMonth() + "-" +item.getYear());
 
@@ -122,6 +140,19 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoVi
                 cardPopupMenu.show();
             }
         });
+    }
+
+    private void updateTodoCheckboxUIandDB(TodoDTO item) {
+        DBHelper dbHelper = new DBHelper(context);
+        SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
+
+        ContentValues newValues = new ContentValues();
+        newValues.put(TABLE_NOTES_TODO_KEY_ISDONE, item.getIsDone());
+
+        sqLiteDatabase.update(DBHelper.TABLE_NOTES_TODO_NAME, newValues, TABLE_NOTES_TODO_KEY_TITLE + " = ? ", new String[]{item.getTitle()});
+
+        //закрываем соединение с БД.
+        dbHelper.close();
     }
 
     private void deleteItem(int position, List<TodoDTO> todoDTOList) {

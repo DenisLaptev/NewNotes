@@ -32,8 +32,23 @@ import ua.a5.newnotes.dto.eventsDTO.EventDTO;
 import ua.a5.newnotes.dto.eventsDTO.EventDTOCollection;
 import ua.a5.newnotes.fragments.AbstractTabFragment;
 
-import static ua.a5.newnotes.DAO.DBHelper.*;
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_BEGIN_DAY;
+import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_BEGIN_HOUR;
+import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_BEGIN_MINUTE;
+import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_BEGIN_MONTH;
+import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_BEGIN_YEAR;
+import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_DESCRIPTION;
+import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_END_DAY;
+import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_END_HOUR;
+import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_END_MINUTE;
+import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_END_MONTH;
+import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_ID;
+import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_LOCATION;
+import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_STRING_BEGIN_MONTH;
+import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_TITLE;
+import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_NAME;
+import static ua.a5.newnotes.utils.Constants.KEY_EVENT_DTO;
+import static ua.a5.newnotes.utils.Constants.LOG_TAG;
 import static ua.a5.newnotes.utils.utils_spannable_string.UtilsDates.getCurrentDay;
 
 
@@ -43,8 +58,7 @@ import static ua.a5.newnotes.utils.utils_spannable_string.UtilsDates.getCurrentD
 
 public class TodayFragment extends AbstractTabFragment implements EventsListAdapter.EventClickListener {
 
-    public static final String KEY_EVENT_DTO = "key event dto";
-    public static final String LOG_TAG = "log";
+
 
     FloatingActionsMenu menuMultipleActions;
 
@@ -63,12 +77,16 @@ public class TodayFragment extends AbstractTabFragment implements EventsListAdap
     EventsListAdapter adapter;
 
 
+
+
     public static TodayFragment getInstance(Context context) {
+    //public TodayFragment getInstance(Context context) {
         Bundle args = new Bundle();
         TodayFragment fragment = new TodayFragment();
         fragment.setArguments(args);
         fragment.setContext(context);
         fragment.setTitle(context.getString(R.string.menu_events_item_today));
+
         return fragment;
     }
 

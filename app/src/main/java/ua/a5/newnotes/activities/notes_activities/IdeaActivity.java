@@ -1,18 +1,23 @@
 package ua.a5.newnotes.activities.notes_activities;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.PopupMenu;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
@@ -22,10 +27,20 @@ import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import ua.a5.newnotes.DAO.DBHelper;
 import ua.a5.newnotes.R;
+import ua.a5.newnotes.activities.CreateNoteIdeasActivity;
 import ua.a5.newnotes.dto.notesDTO.IdeaDTO;
 
-import static ua.a5.newnotes.fragments.notes_fragments.IdeasFragment.KEY_IDEA_DTO;
+import static ua.a5.newnotes.DAO.DBHelper.TABLE_NOTES_IDEAS_KEY_DATE;
+import static ua.a5.newnotes.DAO.DBHelper.TABLE_NOTES_IDEAS_KEY_DESCRIPTION;
+import static ua.a5.newnotes.DAO.DBHelper.TABLE_NOTES_IDEAS_KEY_TITLE;
+import static ua.a5.newnotes.DAO.DBHelper.TABLE_NOTES_IDEAS_NAME;
+import static ua.a5.newnotes.R.id.delete_item;
+import static ua.a5.newnotes.R.id.update_item;
+import static ua.a5.newnotes.utils.Constants.KEY_IDEA_DTO;
+import static ua.a5.newnotes.utils.Constants.KEY_UPDATE_IDEAS;
+import static ua.a5.newnotes.utils.Constants.isCardForUpdate;
 import static ua.a5.newnotes.utils.utils_spannable_string.UtilsDates.DATE_REGEXPS;
 import static ua.a5.newnotes.utils.utils_spannable_string.UtilsDates.DAYS_OF_THE_WEEK;
 import static ua.a5.newnotes.utils.utils_spannable_string.UtilsDates.TIME_WORDS;
@@ -53,6 +68,9 @@ public class IdeaActivity extends AppCompatActivity {
     @BindView(R.id.tv_ideas_activity_description)
     TextView tvDescription;
 
+    @BindView(R.id.iv_idea_menu)
+    ImageView ivIdeaMenu;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,17 +79,14 @@ public class IdeaActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         if (getIntent() != null) {
-            IdeaDTO ideaDTO = (IdeaDTO) getIntent().getSerializableExtra(KEY_IDEA_DTO);
+            final IdeaDTO ideaDTO = (IdeaDTO) getIntent().getSerializableExtra(KEY_IDEA_DTO);
             tvTitle.setText(ideaDTO.getTitle());
             tvDate.setText(ideaDTO.getDate());
 
 
-
-
-
             try {
                 SpannableString spannableString = new SpannableString(ideaDTO.getDescription());
-                bufferSpannableString= new SpannableString(spannableString);
+                bufferSpannableString = new SpannableString(spannableString);
 
                 for (String days : DAYS_OF_THE_WEEK.keySet()) {
                     initialWord = days;
@@ -99,7 +114,66 @@ public class IdeaActivity extends AppCompatActivity {
             tvDescription.setLinksClickable(true);
             tvDescription.setMovementMethod(LinkMovementMethod.getInstance());
 
+
+            ivIdeaMenu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //deleteItem(position, todoDTOList);
+                    PopupMenu cardPopupMenu = new PopupMenu(IdeaActivity.this, ivIdeaMenu);
+                    cardPopupMenu.getMenuInflater().inflate(R.menu.menu_card, cardPopupMenu.getMenu());
+
+                    cardPopupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem it) {
+
+                            switch (it.getItemId()) {
+                                case delete_item:
+                                    Toast.makeText(IdeaActivity.this, "delete", Toast.LENGTH_SHORT).show();
+                                    deleteItemFromTable(ideaDTO);
+                                    IdeaActivity.this.finish();
+                                    break;
+
+                                case update_item:
+                                    Toast.makeText(IdeaActivity.this, "update", Toast.LENGTH_SHORT).show();
+
+
+                                    isCardForUpdate = true;
+                                    Intent intent = new Intent(IdeaActivity.this, CreateNoteIdeasActivity.class);
+                                    intent.putExtra(KEY_UPDATE_IDEAS, ideaDTO);
+                                    startActivity(intent);
+                                    Toast.makeText(IdeaActivity.this, it.getTitle(), Toast.LENGTH_SHORT).show();
+                                    finish();
+                                    break;
+                            }
+                            return true;
+                        }
+                    });
+                    cardPopupMenu.show();
+                }
+            });
         }
+    }
+
+    private void deleteItemFromTable(IdeaDTO ideaDTO) {
+
+        //////////////////---------------------->
+        //для работы с БД.
+        DBHelper dbHelper = new DBHelper(this);
+        SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
+
+        sqLiteDatabase.delete(TABLE_NOTES_IDEAS_NAME,
+                TABLE_NOTES_IDEAS_KEY_TITLE + " = ? AND "
+                        + TABLE_NOTES_IDEAS_KEY_DATE + " = ? AND "
+                        + TABLE_NOTES_IDEAS_KEY_DESCRIPTION + " = ? ",
+                new String[]{
+                        ideaDTO.getTitle(),
+                        String.valueOf(ideaDTO.getDate()),
+                        String.valueOf(ideaDTO.getDescription())
+                });
+
+        //закрываем соединение с БД.
+        dbHelper.close();
+//////////////////---------------------->
     }
 
     @Override
@@ -107,17 +181,6 @@ public class IdeaActivity extends AppCompatActivity {
         super.onBackPressed();
         finish();
     }
-
-
-
-
-
-
-
-
-
-
-
 
 
     public SpannableString convertDateRegExps(SpannableString initialSpannableString, String strRegExp) {

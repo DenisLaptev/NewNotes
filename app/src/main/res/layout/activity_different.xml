@@ -58,21 +58,27 @@
         android:layout_centerHorizontal="true">
 
         <ImageView
-            android:layout_width="50dp"
+            android:layout_width="0dp"
             android:layout_height="50dp"
-            android:src="@drawable/ic_star" />
+            android:src="@drawable/ic_star"
+            android:layout_weight="1"/>
 
         <TextView
             android:id="@+id/tv_different_activity_title"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:hint="Different Title"
             android:textColor="@color/color_marker_different"
             android:textSize="@dimen/item_activity_title_size"
             android:gravity="center"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_weight="4"/>
+
+        <ImageView
+            android:id="@+id/iv_different_menu"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_menu"
+            android:layout_weight="1"/>
     </LinearLayout>
 
 </RelativeLayout>

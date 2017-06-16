@@ -20,18 +20,27 @@
         android:layout_marginRight="16dp">
 
         <ImageView
-            android:layout_width="50dp"
+            android:layout_width="0dp"
             android:layout_height="50dp"
-            android:src="@drawable/ic_check_circle_outline" />
+            android:src="@drawable/ic_check_circle_outline"
+            android:layout_weight="1"/>
 
         <TextView
             android:id="@+id/tv_todo_activity_title"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:hint="Todo Title"
             android:textColor="@color/color_marker_todo"
-            android:textSize="@dimen/item_activity_title_size" />
+            android:textSize="@dimen/item_activity_title_size"
+            android:layout_weight="4"/>
+
+        <ImageView
+            android:id="@+id/iv_todo_menu"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_menu"
+            android:layout_weight="1"/>
 
     </LinearLayout>
 

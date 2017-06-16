@@ -26,14 +26,15 @@ import ua.a5.newnotes.adapter.notesListAdapters.BirthdaysListAdapter;
 import ua.a5.newnotes.dto.notesDTO.BirthdayDTO;
 import ua.a5.newnotes.fragments.AbstractTabFragment;
 
+import static ua.a5.newnotes.utils.Constants.KEY_BIRTHDAY_DTO;
+import static ua.a5.newnotes.utils.Constants.LOG_TAG;
+
 
 /**
  * Created by A5 Android Intern 2 on 28.04.2017.
  */
 
 public class BirthdaysFragment extends AbstractTabFragment implements BirthdaysListAdapter.BirthdayClickListener {
-    public static final String KEY_BIRTHDAY_DTO = "key birthday dto";
-    public static final String LOG_TAG = "log";
 
     FloatingActionsMenu menuMultipleActions;
 

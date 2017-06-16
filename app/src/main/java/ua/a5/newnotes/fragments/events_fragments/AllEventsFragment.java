@@ -41,6 +41,8 @@ import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_LOCATION;
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_STRING_BEGIN_MONTH;
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_TITLE;
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_NAME;
+import static ua.a5.newnotes.utils.Constants.KEY_EVENT_DTO;
+import static ua.a5.newnotes.utils.Constants.LOG_TAG;
 
 
 /**
@@ -48,8 +50,6 @@ import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_NAME;
  */
 
 public class AllEventsFragment extends AbstractTabFragment implements EventsListAdapter.EventClickListener {
-    public static final String KEY_EVENT_DTO = "key event dto";
-    public static final String LOG_TAG = "log";
 
     FloatingActionsMenu menuMultipleActions;
 
@@ -68,11 +68,16 @@ public class AllEventsFragment extends AbstractTabFragment implements EventsList
 
 
     public static AllEventsFragment getInstance(Context context) {
+        //public AllEventsFragment getInstance(Context context) {
         Bundle args = new Bundle();
         AllEventsFragment fragment = new AllEventsFragment();
         fragment.setArguments(args);
         fragment.setContext(context);
         fragment.setTitle(context.getString(R.string.menu_events_item_all_events));
+
+        //adapter = new EventsListAdapter(context, getThisMonthEventsList(), this);
+        //recyclerView.setAdapter(adapter);
+
         return fragment;
     }
 

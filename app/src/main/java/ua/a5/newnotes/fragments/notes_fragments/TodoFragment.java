@@ -32,14 +32,16 @@ import ua.a5.newnotes.adapter.notesListAdapters.TodoListAdapter;
 import ua.a5.newnotes.dto.notesDTO.TodoDTO;
 import ua.a5.newnotes.fragments.AbstractTabFragment;
 
+import static ua.a5.newnotes.utils.Constants.KEY_TODO_DTO;
+import static ua.a5.newnotes.utils.Constants.LOG_TAG;
+
 
 /**
  * Created by A5 Android Intern 2 on 28.04.2017.
  */
 
 public class TodoFragment extends AbstractTabFragment implements TodoListAdapter.TodoClickListener {
-    public static final String KEY_TODO_DTO = "key todo dto";
-    public static final String LOG_TAG = "log";
+
 
     FloatingActionsMenu menuMultipleActions;
 

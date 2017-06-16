@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -14,21 +15,28 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Calendar;
 
 import ua.a5.newnotes.DAO.DBHelper;
 import ua.a5.newnotes.R;
+import ua.a5.newnotes.activities.notes_activities.BirthdayActivity;
 import ua.a5.newnotes.dto.notesDTO.BirthdayDTO;
 
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_NOTES_BIRTHDAYS_KEY_DAY;
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_NOTES_BIRTHDAYS_KEY_MONTH;
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_NOTES_BIRTHDAYS_KEY_NAME;
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_NOTES_BIRTHDAYS_KEY_YEAR;
-import static ua.a5.newnotes.adapter.notesListAdapters.BirthdaysListAdapter.KEY_UPDATE_BIRTHDAYS;
+import static ua.a5.newnotes.DAO.DBHelper.TABLE_NOTES_BIRTHDAYS_NAME;
+import static ua.a5.newnotes.utils.Constants.KEY_BIRTHDAY_DTO;
+import static ua.a5.newnotes.utils.Constants.KEY_UPDATE_BIRTHDAYS;
+import static ua.a5.newnotes.utils.Constants.LOG_TAG;
 import static ua.a5.newnotes.utils.Constants.isCardForUpdate;
 
 public class CreateNoteBirthdaysActivity extends AppCompatActivity {
+
+    boolean isSavedFlagBirthday;
 
     private int mYear;
     private int mMonth;
@@ -37,8 +45,6 @@ public class CreateNoteBirthdaysActivity extends AppCompatActivity {
     private Button btnPickDate;
     static final int DATE_DIALOG_ID = 0;
 
-
-    public static final String LOG_TAG = "log";
 
     EditText etName;
 
@@ -55,11 +61,15 @@ public class CreateNoteBirthdaysActivity extends AppCompatActivity {
     int noteMonth;
     int noteYear;
 
+    BirthdayDTO birthdayDTO;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_note_birthdays);
+
+        isSavedFlagBirthday = false;
 
         //для работы с БД.
         dbHelper = new DBHelper(this);
@@ -98,7 +108,7 @@ public class CreateNoteBirthdaysActivity extends AppCompatActivity {
 
 
         if (isCardForUpdate == true && getIntent() != null) {
-            BirthdayDTO birthdayDTO = (BirthdayDTO) getIntent().getSerializableExtra(KEY_UPDATE_BIRTHDAYS);
+            birthdayDTO = (BirthdayDTO) getIntent().getSerializableExtra(KEY_UPDATE_BIRTHDAYS);
             etName.setText(birthdayDTO.getName());
             dateDisplay.setText(
                     new StringBuilder()
@@ -112,6 +122,10 @@ public class CreateNoteBirthdaysActivity extends AppCompatActivity {
         btnSaveBirthdayNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if (isCardForUpdate == true) {
+                    deleteItemFromTable(birthdayDTO);
+                }
                 isCardForUpdate = false;
 
 ////////////////
@@ -154,6 +168,7 @@ public class CreateNoteBirthdaysActivity extends AppCompatActivity {
                 dbHelper.close();
 ////////////////////////
 
+                isSavedFlagBirthday = true;
             }
         });
 
@@ -163,8 +178,33 @@ public class CreateNoteBirthdaysActivity extends AppCompatActivity {
             public void onClick(View v) {
                 isCardForUpdate = false;
                 onBackPressed();
+                finish();
             }
         });
+    }
+
+
+    private void deleteItemFromTable(BirthdayDTO birthdayDTO) {
+        //////////////////---------------------->
+        //для работы с БД.
+        DBHelper dbHelper = new DBHelper(this);
+        SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
+
+        sqLiteDatabase.delete(TABLE_NOTES_BIRTHDAYS_NAME,
+                TABLE_NOTES_BIRTHDAYS_KEY_NAME + " = ? AND "
+                        + TABLE_NOTES_BIRTHDAYS_KEY_DAY + " = ? AND "
+                        + TABLE_NOTES_BIRTHDAYS_KEY_MONTH + " = ? AND "
+                        + TABLE_NOTES_BIRTHDAYS_KEY_YEAR + " = ? ",
+                new String[]{
+                        birthdayDTO.getName(),
+                        String.valueOf(birthdayDTO.getDay()),
+                        String.valueOf(birthdayDTO.getMonth()),
+                        String.valueOf(birthdayDTO.getYear())
+                });
+
+        //закрываем соединение с БД.
+        dbHelper.close();
+//////////////////---------------------->
     }
 
 
@@ -211,5 +251,26 @@ public class CreateNoteBirthdaysActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         isCardForUpdate = false;
+
+        if (isSavedFlagBirthday) {
+            BirthdayDTO newBirthdayDTO = new BirthdayDTO(
+                    etName.getText().toString(),
+                    mDay,
+                    mMonth,
+                    mYear
+            );
+
+            Intent intent = new Intent(this, BirthdayActivity.class);
+            intent.putExtra(KEY_BIRTHDAY_DTO, newBirthdayDTO);
+            startActivity(intent);
+            Toast.makeText(this, newBirthdayDTO.getName(), Toast.LENGTH_SHORT).show();
+            finish();
+        } else {
+            Intent intent = new Intent(this, BirthdayActivity.class);
+            intent.putExtra(KEY_BIRTHDAY_DTO, birthdayDTO);
+            startActivity(intent);
+            Toast.makeText(this, birthdayDTO.getName(), Toast.LENGTH_SHORT).show();
+            finish();
+        }
     }
 }

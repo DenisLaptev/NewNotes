@@ -25,6 +25,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -35,6 +36,7 @@ import java.util.regex.Pattern;
 
 import ua.a5.newnotes.DAO.DBHelper;
 import ua.a5.newnotes.R;
+import ua.a5.newnotes.activities.notes_activities.TodoActivity;
 import ua.a5.newnotes.dto.notesDTO.TodoDTO;
 
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_NOTES_TODO_KEY_DAY;
@@ -43,7 +45,10 @@ import static ua.a5.newnotes.DAO.DBHelper.TABLE_NOTES_TODO_KEY_ISDONE;
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_NOTES_TODO_KEY_MONTH;
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_NOTES_TODO_KEY_TITLE;
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_NOTES_TODO_KEY_YEAR;
-import static ua.a5.newnotes.adapter.notesListAdapters.TodoListAdapter.KEY_UPDATE_TODO;
+import static ua.a5.newnotes.DAO.DBHelper.TABLE_NOTES_TODO_NAME;
+import static ua.a5.newnotes.utils.Constants.KEY_TODO_DTO;
+import static ua.a5.newnotes.utils.Constants.KEY_UPDATE_TODO;
+import static ua.a5.newnotes.utils.Constants.LOG_TAG;
 import static ua.a5.newnotes.utils.Constants.isCardForUpdate;
 import static ua.a5.newnotes.utils.utils_spannable_string.UtilsDates.DATE_REGEXPS;
 import static ua.a5.newnotes.utils.utils_spannable_string.UtilsDates.DAYS_OF_THE_WEEK;
@@ -58,14 +63,14 @@ import static ua.a5.newnotes.utils.utils_spannable_string.UtilsWords.getIntMonth
 
 public class CreateNoteTODOActivity extends AppCompatActivity {
 
+    boolean isSavedFlagTODO;
+
     private int mYear;
     private int mMonth;
     private int mDay;
     private TextView tvTodoDeadline;
     private Button btnDeadline;
     static final int DATE_DIALOG_ID = 1;
-
-    public static final String LOG_TAG = "log";
 
     public static SpannableString bufferSpannableString = null;
 
@@ -90,11 +95,15 @@ public class CreateNoteTODOActivity extends AppCompatActivity {
     int noteYear;
     String noteDescription;
 
+    TodoDTO todoDTO;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_note_todo);
+
+        isSavedFlagTODO = false;
 
         //для работы с БД.
         dbHelper = new DBHelper(this);
@@ -113,7 +122,7 @@ public class CreateNoteTODOActivity extends AppCompatActivity {
             }
         });
 
-        btnDeadline = (Button)findViewById(R.id.btn_todo_date_picker);
+        btnDeadline = (Button) findViewById(R.id.btn_todo_date_picker);
         btnDeadline.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 showDialog(DATE_DIALOG_ID);
@@ -123,10 +132,10 @@ public class CreateNoteTODOActivity extends AppCompatActivity {
         // get the current date
         final Calendar c = Calendar.getInstance();
         mYear = c.get(Calendar.YEAR);
-        mMonth = c.get(Calendar.MONTH)+1;
+        mMonth = c.get(Calendar.MONTH) + 1;
         mDay = c.get(Calendar.DAY_OF_MONTH);
 
-        tvTodoDeadline = (TextView)findViewById(R.id.tv_todo_deadline_date) ;
+        tvTodoDeadline = (TextView) findViewById(R.id.tv_todo_deadline_date);
         // display the current date
         updateDisplay();
 
@@ -145,7 +154,7 @@ public class CreateNoteTODOActivity extends AppCompatActivity {
 
 
         if (isCardForUpdate == true && getIntent() != null) {
-            TodoDTO todoDTO = (TodoDTO) getIntent().getSerializableExtra(KEY_UPDATE_TODO);
+            todoDTO = (TodoDTO) getIntent().getSerializableExtra(KEY_UPDATE_TODO);
             etCreateNoteTitle.setText(todoDTO.getTitle());
             etNoteDescription.setText(todoDTO.getDescription());
             tvTodoDeadline.setText(
@@ -161,6 +170,9 @@ public class CreateNoteTODOActivity extends AppCompatActivity {
         btnCreateNoteSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (isCardForUpdate == true) {
+                    deleteItemFromTable(todoDTO);
+                }
                 isCardForUpdate = false;
 
 ////////////////
@@ -184,12 +196,11 @@ public class CreateNoteTODOActivity extends AppCompatActivity {
                 noteTitle = etCreateNoteTitle.getText().toString();
                 isDone = 0;
                 noteDay = mDay;
-                noteMonth = mMonth+1;
+                noteMonth = mMonth + 1;
                 noteYear = mYear;
                 noteDescription = etNoteDescription.getText().toString();
 
                 note = new TodoDTO(noteTitle, isDone, noteDay, noteMonth, noteYear, noteDescription);
-
 
 
                 contentValues.put(TABLE_NOTES_TODO_KEY_TITLE, noteTitle);
@@ -208,7 +219,7 @@ public class CreateNoteTODOActivity extends AppCompatActivity {
                 //закрываем соединение с БД.
                 dbHelper.close();
 ////////////////////////
-
+                isSavedFlagTODO = true;
 
             }
         });
@@ -219,12 +230,39 @@ public class CreateNoteTODOActivity extends AppCompatActivity {
             public void onClick(View v) {
                 isCardForUpdate = false;
                 onBackPressed();
+                finish();
             }
         });
 
 
     }
 
+
+    private void deleteItemFromTable(TodoDTO todoDTO) {
+
+        //////////////////---------------------->
+        //для работы с БД.
+        DBHelper dbHelper = new DBHelper(this);
+        SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
+
+        sqLiteDatabase.delete(TABLE_NOTES_TODO_NAME,
+                TABLE_NOTES_TODO_KEY_TITLE + " = ? AND "
+                        + TABLE_NOTES_TODO_KEY_DAY + " = ? AND "
+                        + TABLE_NOTES_TODO_KEY_MONTH + " = ? AND "
+                        + TABLE_NOTES_TODO_KEY_YEAR + " = ? AND "
+                        + TABLE_NOTES_TODO_KEY_DESCRIPTION + " = ? ",
+                new String[]{
+                        todoDTO.getTitle(),
+                        String.valueOf(todoDTO.getDay()),
+                        String.valueOf(todoDTO.getMonth()),
+                        String.valueOf(todoDTO.getYear()),
+                        String.valueOf(todoDTO.getDescription())
+                });
+
+        //закрываем соединение с БД.
+        dbHelper.close();
+//////////////////---------------------->
+    }
 
     private TextWatcher onTextChangedListener() {
         return new TextWatcher() {
@@ -474,7 +512,6 @@ public class CreateNoteTODOActivity extends AppCompatActivity {
     }
 
 
-
     //For DatePicker
     private void updateDisplay() {
         this.tvTodoDeadline.setText(
@@ -511,5 +548,30 @@ public class CreateNoteTODOActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         isCardForUpdate = false;
+
+
+        if (isSavedFlagTODO) {
+            TodoDTO newTodoDTO = new TodoDTO(
+                    etCreateNoteTitle.getText().toString(),
+                    0,
+                    mDay,
+                    mMonth,
+                    mYear,
+                    etNoteDescription.getText().toString()
+
+            );
+
+            Intent intent = new Intent(this, TodoActivity.class);
+            intent.putExtra(KEY_TODO_DTO, newTodoDTO);
+            startActivity(intent);
+            Toast.makeText(this, newTodoDTO.getTitle(), Toast.LENGTH_SHORT).show();
+            finish();
+        } else {
+            Intent intent = new Intent(this, TodoActivity.class);
+            intent.putExtra(KEY_TODO_DTO, todoDTO);
+            startActivity(intent);
+            Toast.makeText(this, todoDTO.getTitle(), Toast.LENGTH_SHORT).show();
+            finish();
+        }
     }
 }

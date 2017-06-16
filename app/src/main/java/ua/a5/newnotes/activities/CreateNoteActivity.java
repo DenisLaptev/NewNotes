@@ -41,6 +41,7 @@ import static ua.a5.newnotes.DAO.DBHelper.TABLE_NOTES_KEY_CATEGORY;
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_NOTES_KEY_IMPORTANCE;
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_NOTES_KEY_NOTETEXT;
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_NOTES_KEY_TITLE;
+import static ua.a5.newnotes.utils.Constants.LOG_TAG;
 import static ua.a5.newnotes.utils.utils_spannable_string.UtilsDates.DATE_REGEXPS;
 import static ua.a5.newnotes.utils.utils_spannable_string.UtilsDates.DAYS_OF_THE_WEEK;
 import static ua.a5.newnotes.utils.utils_spannable_string.UtilsDates.TIME_WORDS;
@@ -53,8 +54,6 @@ import static ua.a5.newnotes.utils.utils_spannable_string.UtilsDates.getDifferen
 import static ua.a5.newnotes.utils.utils_spannable_string.UtilsWords.getIntMonthFromString;
 
 public class CreateNoteActivity extends AppCompatActivity {
-
-    public static final String LOG_TAG = "log";
 
     public static SpannableString bufferSpannableString = null;
 

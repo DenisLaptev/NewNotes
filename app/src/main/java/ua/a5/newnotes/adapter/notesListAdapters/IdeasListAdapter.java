@@ -27,6 +27,7 @@ import static ua.a5.newnotes.DAO.DBHelper.TABLE_NOTES_IDEAS_KEY_TITLE;
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_NOTES_IDEAS_NAME;
 import static ua.a5.newnotes.R.id.delete_item;
 import static ua.a5.newnotes.R.id.update_item;
+import static ua.a5.newnotes.utils.Constants.KEY_UPDATE_IDEAS;
 import static ua.a5.newnotes.utils.Constants.isCardForUpdate;
 
 /**
@@ -35,7 +36,7 @@ import static ua.a5.newnotes.utils.Constants.isCardForUpdate;
 
 public class IdeasListAdapter extends RecyclerView.Adapter<IdeasListAdapter.IdeasViewHolder> {
 
-    public static final String KEY_UPDATE_IDEAS = "key_update_ideas";
+
 
     public interface IdeaClickListener {
         void onClick(IdeaDTO ideaDTO);

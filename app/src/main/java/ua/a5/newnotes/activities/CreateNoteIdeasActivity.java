@@ -130,6 +130,16 @@ public class CreateNoteIdeasActivity extends AppCompatActivity {
             ideaDTO = (IdeaDTO) getIntent().getSerializableExtra(KEY_UPDATE_IDEAS);
             etCreateNoteTitle.setText(ideaDTO.getTitle());
             etNoteDescription.setText(ideaDTO.getDescription());
+        } else {
+            ideaDTO = new IdeaDTO(
+                    new String(""),
+                    new String(""),
+                    new String(
+                            getCurrentDay() + "-" +
+                            getCurrentMonth() + "-" +
+                            getCurrentYear()
+                    )
+            );
         }
 
         btnCreateNoteSave = (Button) findViewById(R.id.note_btnCreateNoteIdeasSave);

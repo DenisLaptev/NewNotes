@@ -12,6 +12,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.util.GregorianCalendar;
 
@@ -101,14 +102,17 @@ public class EventsActivity extends AppCompatActivity {
                 switch (menuItem.getItemId()) {
                     case R.id.todayItem:
                         viewPagerEvents.setCurrentItem(MAP_INDEX_TODAY);
+                        Toast.makeText(EventsActivity.this, "Today_test", Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.thisMonthItem:
                         viewPagerEvents.setCurrentItem(MAP_INDEX_THIS_MONTH);
+                        Toast.makeText(EventsActivity.this, "Thismonth_test", Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.allEventsItem:
                         viewPagerEvents.setCurrentItem(MAP_INDEX_ALL_EVENTS);
+                        Toast.makeText(EventsActivity.this, "All_test", Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.mainmenuItem:

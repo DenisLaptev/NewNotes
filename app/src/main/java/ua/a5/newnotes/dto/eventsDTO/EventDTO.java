@@ -120,4 +120,11 @@ public class EventDTO implements Serializable {
         }
         return stringMonth;
     }
+
+    @Override
+    public String toString() {
+        return "EventDTO{" +
+                "title='" + title +
+                '}';
+    }
 }

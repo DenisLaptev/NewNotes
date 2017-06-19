@@ -23,12 +23,13 @@ import static ua.a5.newnotes.utils.Constants.MAP_INDEX_TODAY;
 
 public class EventsTabsFragmentAdapter extends FragmentPagerAdapter {
 
-    private Map<Integer, AbstractTabFragment> eventsTabs = new HashMap<>();
+    public static Map<Integer, AbstractTabFragment> eventsTabs = new HashMap<>();
 
     public EventsTabsFragmentAdapter(Context context, FragmentManager fm) {
         super(fm);
         initEventsTabsMap(context);
     }
+
 
     @Override
     public CharSequence getPageTitle(int position) {
@@ -37,7 +38,9 @@ public class EventsTabsFragmentAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
+
         return eventsTabs.get(position);
+
     }
 
     @Override

@@ -185,6 +185,14 @@ public class CreateEventActivity extends AppCompatActivity {
                             .append(eventDTO.getMonth() + 1).append("-")
                             .append(eventDTO.getYear()).append(" "));
 
+        } else {
+            eventDTO = new EventDTO(
+                    new String(""),
+                    new String(""),
+                    getCurrentDay(),
+                    getCurrentMonth(),
+                    getCurrentYear()
+            );
         }
         btnCreateEventSave = (Button) findViewById(R.id.event_btnCreateEventSave);
         btnCreateEventSave.setOnClickListener(new View.OnClickListener() {

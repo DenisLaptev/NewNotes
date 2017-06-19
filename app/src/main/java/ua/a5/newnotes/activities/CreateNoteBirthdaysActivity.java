@@ -33,6 +33,9 @@ import static ua.a5.newnotes.utils.Constants.KEY_BIRTHDAY_DTO;
 import static ua.a5.newnotes.utils.Constants.KEY_UPDATE_BIRTHDAYS;
 import static ua.a5.newnotes.utils.Constants.LOG_TAG;
 import static ua.a5.newnotes.utils.Constants.isCardForUpdate;
+import static ua.a5.newnotes.utils.utils_spannable_string.UtilsDates.getCurrentDay;
+import static ua.a5.newnotes.utils.utils_spannable_string.UtilsDates.getCurrentMonth;
+import static ua.a5.newnotes.utils.utils_spannable_string.UtilsDates.getCurrentYear;
 
 public class CreateNoteBirthdaysActivity extends AppCompatActivity {
 
@@ -116,6 +119,13 @@ public class CreateNoteBirthdaysActivity extends AppCompatActivity {
                             .append(birthdayDTO.getDay()).append("-")
                             .append(birthdayDTO.getMonth() + 1).append("-")
                             .append(birthdayDTO.getYear()).append(" "));
+        } else {
+            birthdayDTO = new BirthdayDTO(
+                    new String(""),
+                    getCurrentDay(),
+                    getCurrentMonth(),
+                    getCurrentYear()
+            );
         }
 
         btnSaveBirthdayNote = (Button) findViewById(R.id.btn_save);

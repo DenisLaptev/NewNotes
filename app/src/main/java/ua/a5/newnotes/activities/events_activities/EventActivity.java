@@ -56,8 +56,6 @@ import static ua.a5.newnotes.utils.utils_spannable_string.UtilsWords.getIntMonth
 
 public class EventActivity extends AppCompatActivity {
 
-
-
     public static SpannableString bufferSpannableString = null;
 
     String initialWord;
@@ -77,6 +75,12 @@ public class EventActivity extends AppCompatActivity {
     @BindView(R.id.iv_event_menu)
     ImageView ivEventMenu;
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        Toast.makeText(this, "onResume-EventActivity",Toast.LENGTH_SHORT).show();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -376,4 +380,7 @@ public class EventActivity extends AppCompatActivity {
         }
         return indexesOfFirstLetters;
     }
+
+
+
 }

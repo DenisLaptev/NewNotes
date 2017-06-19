@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -26,7 +27,7 @@ import ua.a5.newnotes.DAO.DBHelper;
 import ua.a5.newnotes.R;
 import ua.a5.newnotes.activities.CreateEventActivity;
 import ua.a5.newnotes.activities.events_activities.EventActivity;
-import ua.a5.newnotes.adapter.eventsListAdapters.EventsListAdapter;
+import ua.a5.newnotes.adapter.eventsListAdapters.TodayEventsListAdapter;
 import ua.a5.newnotes.dto.eventsDTO.EventCRUD;
 import ua.a5.newnotes.dto.eventsDTO.EventDTO;
 import ua.a5.newnotes.dto.eventsDTO.EventDTOCollection;
@@ -49,6 +50,7 @@ import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_TITLE;
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_NAME;
 import static ua.a5.newnotes.utils.Constants.KEY_EVENT_DTO;
 import static ua.a5.newnotes.utils.Constants.LOG_TAG;
+import static ua.a5.newnotes.utils.Constants.flagWhenItemDeletedToday;
 import static ua.a5.newnotes.utils.utils_spannable_string.UtilsDates.getCurrentDay;
 
 
@@ -56,13 +58,11 @@ import static ua.a5.newnotes.utils.utils_spannable_string.UtilsDates.getCurrentD
  * Created by A5 Android Intern 2 on 28.04.2017.
  */
 
-public class TodayFragment extends AbstractTabFragment implements EventsListAdapter.EventClickListener {
-
-
+public class TodayFragment extends AbstractTabFragment implements TodayEventsListAdapter.EventClickListener {
 
     FloatingActionsMenu menuMultipleActions;
 
-    private static final int LAYOUT = R.layout.fragment_events;
+    private static final int LAYOUT = R.layout.fragment_events_today;
 
     //для работы с БД.
     DBHelper dbHelper;
@@ -71,30 +71,27 @@ public class TodayFragment extends AbstractTabFragment implements EventsListAdap
     String orderBy;
     String strConsoleOutput = "";
 
-
     EventCRUD eventCRUD;
     RecyclerView recyclerView;
-    EventsListAdapter adapter;
-
-
-
+    TodayEventsListAdapter adapter;
 
     public static TodayFragment getInstance(Context context) {
-    //public TodayFragment getInstance(Context context) {
+        //public TodayFragment getInstance(Context context) {
         Bundle args = new Bundle();
         TodayFragment fragment = new TodayFragment();
         fragment.setArguments(args);
         fragment.setContext(context);
         fragment.setTitle(context.getString(R.string.menu_events_item_today));
-
         return fragment;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        adapter = new EventsListAdapter(context, getTodayEventsList(), this);
+        adapter = new TodayEventsListAdapter(context, getTodayEventsList(), this);
+        //adapter = new TodayEventsListAdapter(context, eventsTodayStatic, this);
         recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 
     @Nullable
@@ -103,9 +100,10 @@ public class TodayFragment extends AbstractTabFragment implements EventsListAdap
         view = inflater.inflate(LAYOUT, container, false);
 
         eventCRUD = new EventCRUD(EventDTOCollection.getEventDTOs());
-        recyclerView = (RecyclerView) view.findViewById(R.id.recycle_view_events);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recycle_view_events_today);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        adapter = new EventsListAdapter(context, getTodayEventsList(), this);
+        adapter = new TodayEventsListAdapter(context, getTodayEventsList(), this);
+        //adapter = new TodayEventsListAdapter(context, eventsTodayStatic, this);
         recyclerView.setAdapter(adapter);
 
 
@@ -152,16 +150,22 @@ public class TodayFragment extends AbstractTabFragment implements EventsListAdap
                 frameLayout.setOnTouchListener(null);
             }
         });
+
+        if (flagWhenItemDeletedToday) {
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.detach(this).attach(this).commit();
+            flagWhenItemDeletedToday = false;
+        }
         return view;
     }
 
 
-    private List<EventDTO> getTodayEventsList() {
-        List<EventDTO> eventsData = new ArrayList<>();
+    public List<EventDTO> getTodayEventsList() {
+
 
 
         //////////////////---------------------->
-
+        List<EventDTO> eventsData = new ArrayList<>();
         //для работы с БД.
         dbHelper = new DBHelper(getActivity());
 
@@ -179,7 +183,7 @@ public class TodayFragment extends AbstractTabFragment implements EventsListAdap
         cursor = sqLiteDatabase.rawQuery(
                 "SELECT * FROM "
                         + TABLE_EVENTS_NAME
-                        + " WHERE " + TABLE_EVENTS_KEY_BEGIN_DAY +" = ? ", new String[]{String.valueOf(getCurrentDay())});
+                        + " WHERE " + TABLE_EVENTS_KEY_BEGIN_DAY + " = ? ", new String[]{String.valueOf(getCurrentDay())});
         //метод cursor.moveToFirst() делает 1-ю запись в cursor активной
         //и проверяет, есть ли в cursor что-то.
         if (cursor.moveToFirst()) {

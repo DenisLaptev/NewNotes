@@ -165,6 +165,9 @@ public class CreateNoteTODOActivity extends AppCompatActivity {
                             .append(todoDTO.getYear()).append(" "));
 
         }
+        else{
+            todoDTO = new TodoDTO(new String(""),0,getCurrentDay(),getCurrentMonth(),getCurrentYear(),new String(""));
+        }
 
         btnCreateNoteSave = (Button) findViewById(R.id.note_btnCreateNoteTODOSave);
         btnCreateNoteSave.setOnClickListener(new View.OnClickListener() {

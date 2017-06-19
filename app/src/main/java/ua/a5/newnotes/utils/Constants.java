@@ -1,5 +1,10 @@
 package ua.a5.newnotes.utils;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import ua.a5.newnotes.dto.eventsDTO.EventDTO;
+
 /**
  * Created by A5 Android Intern 2 on 12.05.2017.
  */
@@ -16,6 +21,9 @@ public class Constants {
 
 
     public static boolean isCardForUpdate = false;
+    public static boolean flagWhenItemDeletedToday = false;
+    public static boolean flagWhenItemDeletedThisMonth = false;
+    public static boolean flagWhenItemDeletedAll = false;
 
     public static final String KEY_UPDATE_EVENTS = "key_update_event";
     public static final String KEY_UPDATE_TODO = "key_update_todo";
@@ -32,5 +40,12 @@ public class Constants {
     public static final String KEY_DIFFERENT_DTO = "key different dto";
 
     public static final String LOG_TAG = "log";
+
+
+
+
+    public static List<EventDTO> eventsTodayStatic = new ArrayList<>();
+    public static List<EventDTO> eventsThisMonthStatic = new ArrayList<>();
+    public static List<EventDTO> eventsAllStatic = new ArrayList<>();
 
 }

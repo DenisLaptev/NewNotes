@@ -128,6 +128,16 @@ public class CreateNoteDifferentActivity extends AppCompatActivity {
             differentDTO = (DifferentDTO) getIntent().getSerializableExtra(KEY_UPDATE_DIFFERENT);
             etCreateNoteTitle.setText(differentDTO.getTitle());
             etNoteDescription.setText(differentDTO.getDescription());
+        }else {
+            differentDTO = new DifferentDTO(
+                    new String(""),
+                    new String(""),
+                    new String(
+                            getCurrentDay() + "-" +
+                                    getCurrentMonth() + "-" +
+                                    getCurrentYear()
+                    )
+            );
         }
 
         btnCreateNoteSave = (Button) findViewById(R.id.btn_diff_save);

@@ -1,8 +1,10 @@
 package ua.a5.newnotes.adapter.eventsListAdapters;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -30,13 +32,16 @@ import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_NAME;
 import static ua.a5.newnotes.R.id.delete_item;
 import static ua.a5.newnotes.R.id.update_item;
 import static ua.a5.newnotes.utils.Constants.KEY_UPDATE_EVENTS;
+import static ua.a5.newnotes.utils.Constants.flagWhenItemDeletedAll;
+import static ua.a5.newnotes.utils.Constants.flagWhenItemDeletedThisMonth;
+import static ua.a5.newnotes.utils.Constants.flagWhenItemDeletedToday;
 import static ua.a5.newnotes.utils.Constants.isCardForUpdate;
 
 /**
  * Created by A5 Android Intern 2 on 15.05.2017.
  */
 
-public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventsViewHolder> {
+public class AllEventsListAdapter extends RecyclerView.Adapter<AllEventsListAdapter.EventsViewHolder> {
 
 
     public interface EventClickListener {
@@ -61,23 +66,23 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Ev
         }
     };
 
-    public EventsListAdapter(Context context,
-                             List<EventDTO> eventsDTOList,
-                             EventClickListener eventClickListener) {
+    public AllEventsListAdapter(Context context,
+                                List<EventDTO> eventsDTOList,
+                                EventClickListener eventClickListener) {
         this.context = context;
         this.eventsDTOList = eventsDTOList;
         this.eventClickListener = eventClickListener;
     }
 
     @Override
-    public EventsListAdapter.EventsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_events, parent, false);
-        return new EventsListAdapter.EventsViewHolder(view, itemClickListener);
+    public AllEventsListAdapter.EventsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_events_all, parent, false);
+        return new AllEventsListAdapter.EventsViewHolder(view, itemClickListener);
 
     }
 
     @Override
-    public void onBindViewHolder(final EventsListAdapter.EventsViewHolder holder, final int position) {
+    public void onBindViewHolder(final AllEventsListAdapter.EventsViewHolder holder, final int position) {
 
         final EventDTO item = eventsDTOList.get(position);
         holder.tvTitle.setText(item.getTitle());
@@ -98,13 +103,39 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Ev
 
                         switch (it.getItemId()) {
                             case delete_item:
-                                Toast.makeText(context, "delete", Toast.LENGTH_SHORT).show();
-                                deleteItem(position, eventsDTOList);
-                                notifyItemRemoved(position);
+
+                                //AlertDialog.Builder builder = new AlertDialog.Builder(StartMenuActivity.this, R.style.MyAlertDialogStyle);
+                                AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.MyAlertDialogStyle);
+                                builder.setTitle("Delete?");
+                                builder.setMessage("Do You Really Want To Delete?");
+
+                                //positive button.
+                                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Toast.makeText(context, "delete", Toast.LENGTH_SHORT).show();
+                                        deleteItem(position, eventsDTOList);
+                                        notifyItemRemoved(position);
+                                    }
+
+                                });
+
+                                //negative button.
+                                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                    }
+
+                                });
+                                builder.show();
+
+                                flagWhenItemDeletedToday = true;
+                                flagWhenItemDeletedThisMonth = true;
+                                flagWhenItemDeletedAll = true;
                                 break;
 
                             case update_item:
-                                Toast.makeText(context, "update", Toast.LENGTH_SHORT).show();
                                 isCardForUpdate = true;
                                 Intent intent = new Intent(context, CreateEventActivity.class);
                                 intent.putExtra(KEY_UPDATE_EVENTS, item);
@@ -129,6 +160,8 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Ev
         notifyItemRemoved(currentPosition);
         eventsDTOList.remove(currentPosition);
         notifyItemRemoved(currentPosition);
+        //setEventsDTOList(AllEventsFragment.getInstance(context).getAllEventsList());
+
     }
 
 
@@ -178,10 +211,10 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Ev
         public EventsViewHolder(View itemView, final ItemClickListener itemClickListener) {
             super(itemView);
 
-            cardView = (CardView) itemView.findViewById(R.id.card_view_events);
-            tvTitle = (TextView) itemView.findViewById(R.id.title_events);
-            tvDescription = (TextView) itemView.findViewById(R.id.tv_description_events);
-            tvDate = (TextView) itemView.findViewById(R.id.tv_date_events);
+            cardView = (CardView) itemView.findViewById(R.id.card_view_events_all);
+            tvTitle = (TextView) itemView.findViewById(R.id.title_events_all);
+            tvDescription = (TextView) itemView.findViewById(R.id.tv_description_events_all);
+            tvDate = (TextView) itemView.findViewById(R.id.tv_date_events_all);
             ivPictureEventMenu = (ImageView) itemView.findViewById(R.id.event_card_menu);
 
             this.itemClickListener = itemClickListener;
@@ -195,7 +228,8 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Ev
         }
     }
 
-    public void setEventsDTOList(List<EventDTO> eventsDTOList) {
-        this.eventsDTOList = eventsDTOList;
+    public void setEventsDTOList() {
+
+
     }
 }

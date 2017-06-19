@@ -22,7 +22,7 @@ import java.util.List;
 import ua.a5.newnotes.DAO.DBHelper;
 import ua.a5.newnotes.R;
 import ua.a5.newnotes.activities.events_activities.EventActivity;
-import ua.a5.newnotes.adapter.eventsListAdapters.EventsListAdapter;
+import ua.a5.newnotes.adapter.eventsListAdapters.TodayEventsListAdapter;
 import ua.a5.newnotes.dto.eventsDTO.EventCRUD;
 import ua.a5.newnotes.dto.eventsDTO.EventDTO;
 import ua.a5.newnotes.dto.eventsDTO.EventDTOCollection;
@@ -52,11 +52,11 @@ import static ua.a5.newnotes.utils.utils_spannable_string.UtilsDates.getCurrentM
  * Created by A5 Android Intern 2 on 28.04.2017.
  */
 
-public class ThisMonthFragment extends AbstractTabFragment implements EventsListAdapter.EventClickListener {
+public class ThisMonthFragment extends AbstractTabFragment implements TodayEventsListAdapter.EventClickListener {
 
     FloatingActionsMenu menuMultipleActions;
 
-    private static final int LAYOUT = R.layout.fragment_events;
+    private static final int LAYOUT = R.layout.fragment_events_thismonth;
 
     //для работы с БД.
     DBHelper dbHelper;
@@ -67,11 +67,13 @@ public class ThisMonthFragment extends AbstractTabFragment implements EventsList
 
     EventCRUD eventCRUD;
     RecyclerView recyclerView;
-    EventsListAdapter adapter;
+    TodayEventsListAdapter adapter;
+
+
 
 
     public static ThisMonthFragment getInstance(Context context) {
-    //public  ThisMonthFragment getInstance(Context context) {
+        //public  ThisMonthFragment getInstance(Context context) {
         Bundle args = new Bundle();
         ThisMonthFragment fragment = new ThisMonthFragment();
         fragment.setArguments(args);
@@ -85,10 +87,17 @@ public class ThisMonthFragment extends AbstractTabFragment implements EventsList
     public void onResume() {
         super.onResume();
 
-        adapter = new EventsListAdapter(context, getThisMonthEventsList(), this);
-        adapter.notifyDataSetChanged();
+        adapter = new TodayEventsListAdapter(context, getThisMonthEventsList(), this);
+        //adapter = new TodayEventsListAdapter(context, eventsThisMonthStatic, this);
         recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+        recyclerView.invalidate();
+
+     //  Toast.makeText(context, "onResumeThisMonth", Toast.LENGTH_SHORT).show();
+
     }
+
+
 
 
     @Nullable
@@ -97,17 +106,19 @@ public class ThisMonthFragment extends AbstractTabFragment implements EventsList
         view = inflater.inflate(LAYOUT, container, false);
 
         eventCRUD = new EventCRUD(EventDTOCollection.getEventDTOs());
-        recyclerView = (RecyclerView) view.findViewById(R.id.recycle_view_events);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recycle_view_events_thismonth);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        adapter = new EventsListAdapter(context, getThisMonthEventsList(), this);
+        adapter = new TodayEventsListAdapter(context, getThisMonthEventsList(), this);
+        //adapter = new TodayEventsListAdapter(context, eventsThisMonthStatic, this);
         recyclerView.setAdapter(adapter);
 
         menuMultipleActions = (FloatingActionsMenu) getActivity().findViewById(R.id.multiple_actions_events);
 
+
         return view;
     }
 
-    private List<EventDTO> getThisMonthEventsList() {
+    public List<EventDTO> getThisMonthEventsList() {
         List<EventDTO> eventsData = new ArrayList<>();
 
 
@@ -132,6 +143,10 @@ public class ThisMonthFragment extends AbstractTabFragment implements EventsList
                         + TABLE_EVENTS_NAME
                         + " WHERE " + TABLE_EVENTS_KEY_BEGIN_MONTH + " = ? ", new String[]{String.valueOf(getCurrentMonth())});
         Toast.makeText(getContext(), TABLE_EVENTS_KEY_BEGIN_MONTH + "-" + String.valueOf(getCurrentMonth()), Toast.LENGTH_SHORT).show();
+
+
+        //cursor = sqLiteDatabase.query(TABLE_EVENTS_NAME,null,null,null,null,null,null);
+
         //метод cursor.moveToFirst() делает 1-ю запись в cursor активной
         //и проверяет, есть ли в cursor что-то.
         if (cursor.moveToFirst()) {
@@ -152,18 +167,19 @@ public class ThisMonthFragment extends AbstractTabFragment implements EventsList
             int endminuteIndex = cursor.getColumnIndex(TABLE_EVENTS_KEY_END_MINUTE);
             int descriptionIndex = cursor.getColumnIndex(TABLE_EVENTS_KEY_DESCRIPTION);
 
+            //if (cursor.getInt(beginmonthIndex) == getCurrentMonth()) {
+                //с помощью метода .moveToNext() перебираем все строки в cursor-е.
+                do {
+                    eventsData.add(new EventDTO(
+                            cursor.getString(titleIndex),
+                            cursor.getString(descriptionIndex),
+                            cursor.getInt(begindayIndex),
+                            cursor.getInt(beginmonthIndex),
+                            cursor.getInt(beginyearIndex)
+                    ));
+                } while (cursor.moveToNext());
 
-            //с помощью метода .moveToNext() перебираем все строки в cursor-е.
-            do {
-                eventsData.add(new EventDTO(
-                        cursor.getString(titleIndex),
-                        cursor.getString(descriptionIndex),
-                        cursor.getInt(begindayIndex),
-                        cursor.getInt(beginmonthIndex),
-                        cursor.getInt(beginyearIndex)
-                ));
-            } while (cursor.moveToNext());
-
+            //}
         } else {
             Log.d(LOG_TAG, "0 rows");
         }
@@ -179,6 +195,31 @@ public class ThisMonthFragment extends AbstractTabFragment implements EventsList
 
         return eventsData;
     }
+
+
+
+    public List<EventDTO> getThisMonthEventsList2() {
+        List<EventDTO> eventsData2 = new ArrayList<>();
+
+
+        //////////////////---------------------->
+
+        for (int i = 0; i < 10; i++) {
+            eventsData2.add(new EventDTO("title"+i,"desc"+i,i,i*10,i*100));
+        }
+
+//////////////////---------------------->
+
+        return eventsData2;
+    }
+
+
+
+
+
+
+
+
 
 
     @Override

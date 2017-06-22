@@ -1,8 +1,10 @@
 package ua.a5.newnotes.adapter.notesListAdapters;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -35,7 +37,6 @@ import static ua.a5.newnotes.utils.Constants.isCardForUpdate;
  */
 
 public class DifferentListAdapter extends RecyclerView.Adapter<DifferentListAdapter.DifferentViewHolder> {
-
 
     public interface DifferentClickListener {
         void onClick(DifferentDTO differentDTO);
@@ -94,18 +95,36 @@ public class DifferentListAdapter extends RecyclerView.Adapter<DifferentListAdap
 
                         switch (it.getItemId()) {
                             case delete_item:
-                                Toast.makeText(context, "delete", Toast.LENGTH_SHORT).show();
-                                deleteItem(position, differentDTOList);
+                                AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.MyAlertDialogStyle);
+                                builder.setTitle("Delete?");
+                                builder.setMessage("Do You Really Want To Delete?");
+
+                                //positive button.
+                                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                        deleteItem(position, differentDTOList);
+                                        notifyItemRemoved(position);
+                                    }
+
+                                });
+
+                                //negative button.
+                                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                    }
+                                });
+                                builder.show();
                                 break;
 
                             case update_item:
-                                Toast.makeText(context, "update", Toast.LENGTH_SHORT).show();
-
                                 isCardForUpdate = true;
                                 Intent intent = new Intent(context, CreateNoteDifferentActivity.class);
                                 intent.putExtra(KEY_UPDATE_DIFFERENT, item);
                                 context.startActivity(intent);
-                                Toast.makeText(context, it.getTitle(), Toast.LENGTH_SHORT).show();
                                 break;
                         }
                         return true;
@@ -118,7 +137,6 @@ public class DifferentListAdapter extends RecyclerView.Adapter<DifferentListAdap
 
     private void deleteItem(int position, List<DifferentDTO> differentDTOList) {
         int currentPosition = position;
-        //
         deleteItemFromTable(position, differentDTOList);
         notifyItemRemoved(currentPosition);
         differentDTOList.remove(currentPosition);
@@ -129,7 +147,7 @@ public class DifferentListAdapter extends RecyclerView.Adapter<DifferentListAdap
     private void deleteItemFromTable(int position, List<DifferentDTO> differentDTOList) {
         int currentPosition = position;
 
-        //////////////////---------------------->
+//////////////////---------------------->
         //для работы с БД.
         DBHelper dbHelper = new DBHelper(context);
         SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();

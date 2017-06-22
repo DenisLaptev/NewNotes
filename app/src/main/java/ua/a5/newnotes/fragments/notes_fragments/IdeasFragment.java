@@ -71,22 +71,18 @@ public class IdeasFragment extends AbstractTabFragment implements IdeasListAdapt
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(LAYOUT, container, false);
-
         recyclerView = (RecyclerView) view.findViewById(R.id.recycle_view_ideas);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         adapter = new IdeasListAdapter(context, createIdeasNotesList(), this);
         recyclerView.setAdapter(adapter);
-
         menuMultipleActions = (FloatingActionsMenu) getActivity().findViewById(R.id.multiple_actions_notes);
-
         return view;
     }
 
     private List<IdeaDTO> createIdeasNotesList() {
         List<IdeaDTO> ideasNotes = new ArrayList<>();
 
-
-        //////////////////---------------------->
+//////////////////---------------------->
 
         //для работы с БД.
         dbHelper = new DBHelper(getActivity());
@@ -135,7 +131,6 @@ public class IdeasFragment extends AbstractTabFragment implements IdeasListAdapt
 
 //////////////////---------------------->
 
-
         return ideasNotes;
     }
 
@@ -156,7 +151,6 @@ public class IdeasFragment extends AbstractTabFragment implements IdeasListAdapt
         Intent intent = new Intent(getContext(), IdeaActivity.class);
         intent.putExtra(KEY_IDEA_DTO, ideaDTO);
         startActivity(intent);
-        Toast.makeText(getContext(), ideaDTO.getTitle(), Toast.LENGTH_SHORT).show();
     }
 
     @Override

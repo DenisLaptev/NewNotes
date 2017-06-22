@@ -70,12 +70,10 @@ public class DifferentFragment extends AbstractTabFragment implements DifferentL
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(LAYOUT, container, false);
-
         recyclerView = (RecyclerView) view.findViewById(R.id.recycle_view_different);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         adapter = new DifferentListAdapter(context, createDifferentNotesList(), this);
         recyclerView.setAdapter(adapter);
-
         menuMultipleActions = (FloatingActionsMenu) getActivity().findViewById(R.id.multiple_actions_notes);
         return view;
     }
@@ -83,7 +81,7 @@ public class DifferentFragment extends AbstractTabFragment implements DifferentL
     private List<DifferentDTO> createDifferentNotesList() {
         List<DifferentDTO> differentNotes = new ArrayList<>();
 
-        //////////////////---------------------->
+//////////////////---------------------->
 
         //для работы с БД.
         dbHelper = new DBHelper(getActivity());
@@ -130,7 +128,6 @@ public class DifferentFragment extends AbstractTabFragment implements DifferentL
         dbHelper.close();
 
 //////////////////---------------------->
-
 
         return differentNotes;
     }

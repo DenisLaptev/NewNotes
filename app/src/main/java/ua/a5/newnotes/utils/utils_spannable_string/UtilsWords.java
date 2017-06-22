@@ -25,13 +25,11 @@ public class UtilsWords {
         String regExp2 = "(\\d{1,2})(\\.|-)(\\d{1,2})(\\.|-){0,1}(\\d{2,4}){0,1}";
         dateRegExps.add(regExp2);
 
-
         return dateRegExps;
     }
 
     public static Map<String, Integer> generateTimeWords() {
         Map<String, Integer> timeWords = new HashMap<>();
-
 
         timeWords.put("позавчера", getCurrentDay() - 2);
         timeWords.put("Позавчера", getCurrentDay() - 2);
@@ -167,8 +165,6 @@ public class UtilsWords {
         daysOfTheWeek.put(" TUE", 2);
         daysOfTheWeek.put(" TUES", 2);
         daysOfTheWeek.put(" TUESDAY", 2);
-
-
 
 
         daysOfTheWeek.put("вт ", 2);

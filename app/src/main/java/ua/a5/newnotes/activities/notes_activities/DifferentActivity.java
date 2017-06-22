@@ -1,5 +1,6 @@
 package ua.a5.newnotes.activities.notes_activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.text.SpannableString;
@@ -83,7 +85,6 @@ public class DifferentActivity extends AppCompatActivity {
             tvTitle.setText(differentDTO.getTitle());
             tvDate.setText(differentDTO.getDate());
 
-
             try {
                 SpannableString spannableString = new SpannableString(differentDTO.getDescription());
                 bufferSpannableString = new SpannableString(spannableString);
@@ -94,13 +95,11 @@ public class DifferentActivity extends AppCompatActivity {
                     bufferSpannableString = spannableString;
                 }
 
-
                 for (String timeWords : TIME_WORDS.keySet()) {
                     initialWord = timeWords;
                     spannableString = convertString(bufferSpannableString, initialWord);
                     bufferSpannableString = spannableString;
                 }
-
 
                 for (String dateRegExp : DATE_REGEXPS) {
                     strRegExp = dateRegExp;
@@ -114,11 +113,9 @@ public class DifferentActivity extends AppCompatActivity {
             tvDescription.setLinksClickable(true);
             tvDescription.setMovementMethod(LinkMovementMethod.getInstance());
 
-
             ivDifferentMenu.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //deleteItem(position, todoDTOList);
                     PopupMenu cardPopupMenu = new PopupMenu(DifferentActivity.this, ivDifferentMenu);
                     cardPopupMenu.getMenuInflater().inflate(R.menu.menu_card, cardPopupMenu.getMenu());
 
@@ -128,20 +125,37 @@ public class DifferentActivity extends AppCompatActivity {
 
                             switch (it.getItemId()) {
                                 case delete_item:
-                                    Toast.makeText(DifferentActivity.this, "delete", Toast.LENGTH_SHORT).show();
-                                    deleteItemFromTable(differentDTO);
-                                    DifferentActivity.this.finish();
+
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(DifferentActivity.this, R.style.MyAlertDialogStyle);
+                                    builder.setTitle("Delete?");
+                                    builder.setMessage("Do You Really Want To Delete?");
+
+                                    //positive button.
+                                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+
+                                            deleteItemFromTable(differentDTO);
+                                            DifferentActivity.this.finish();
+                                        }
+
+                                    });
+
+                                    //negative button.
+                                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                        }
+
+                                    });
+                                    builder.show();
                                     break;
 
                                 case update_item:
-                                    Toast.makeText(DifferentActivity.this, "update", Toast.LENGTH_SHORT).show();
-
-
                                     isCardForUpdate = true;
                                     Intent intent = new Intent(DifferentActivity.this, CreateNoteDifferentActivity.class);
                                     intent.putExtra(KEY_UPDATE_DIFFERENT, differentDTO);
                                     startActivity(intent);
-                                    Toast.makeText(DifferentActivity.this, it.getTitle(), Toast.LENGTH_SHORT).show();
                                     finish();
                                     break;
                             }
@@ -157,7 +171,7 @@ public class DifferentActivity extends AppCompatActivity {
 
     private void deleteItemFromTable(DifferentDTO differentDTO) {
 
-        //////////////////---------------------->
+//////////////////---------------------->
         //для работы с БД.
         DBHelper dbHelper = new DBHelper(this);
         SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();

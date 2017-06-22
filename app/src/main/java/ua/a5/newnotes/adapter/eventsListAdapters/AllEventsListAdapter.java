@@ -129,10 +129,6 @@ public class AllEventsListAdapter extends RecyclerView.Adapter<AllEventsListAdap
 
                                 });
                                 builder.show();
-
-                                flagWhenItemDeletedToday = true;
-                                flagWhenItemDeletedThisMonth = true;
-                                flagWhenItemDeletedAll = true;
                                 break;
 
                             case update_item:
@@ -140,7 +136,6 @@ public class AllEventsListAdapter extends RecyclerView.Adapter<AllEventsListAdap
                                 Intent intent = new Intent(context, CreateEventActivity.class);
                                 intent.putExtra(KEY_UPDATE_EVENTS, item);
                                 context.startActivity(intent);
-                                Toast.makeText(context, it.getTitle(), Toast.LENGTH_SHORT).show();
                                 notifyDataSetChanged();
                                 break;
                         }
@@ -155,20 +150,17 @@ public class AllEventsListAdapter extends RecyclerView.Adapter<AllEventsListAdap
 
     private void deleteItem(int position, List<EventDTO> eventsDTOList) {
         int currentPosition = position;
-        //
         deleteItemFromTable(position, eventsDTOList);
         notifyItemRemoved(currentPosition);
         eventsDTOList.remove(currentPosition);
         notifyItemRemoved(currentPosition);
-        //setEventsDTOList(AllEventsFragment.getInstance(context).getAllEventsList());
-
     }
 
 
     private void deleteItemFromTable(int position, List<EventDTO> eventsDTOList) {
         int currentPosition = position;
 
-        //////////////////---------------------->
+//////////////////---------------------->
         //для работы с БД.
         DBHelper dbHelper = new DBHelper(context);
         SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
@@ -229,7 +221,6 @@ public class AllEventsListAdapter extends RecyclerView.Adapter<AllEventsListAdap
     }
 
     public void setEventsDTOList() {
-
 
     }
 }

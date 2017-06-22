@@ -89,8 +89,6 @@ public class ThisMonthEventsListAdapter extends RecyclerView.Adapter<ThisMonthEv
             @Override
             public void onClick(View v) {
 
-                //deleteItem(position, eventsDTOList);
-
                 PopupMenu cardPopupMenu = new PopupMenu(context, holder.ivPictureEventMenu);
                 cardPopupMenu.getMenuInflater().inflate(R.menu.menu_card, cardPopupMenu.getMenu());
 
@@ -101,7 +99,6 @@ public class ThisMonthEventsListAdapter extends RecyclerView.Adapter<ThisMonthEv
                         switch (it.getItemId()) {
                             case delete_item:
 
-                                //AlertDialog.Builder builder = new AlertDialog.Builder(StartMenuActivity.this, R.style.MyAlertDialogStyle);
                                 AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.MyAlertDialogStyle);
                                 builder.setTitle("Delete?");
                                 builder.setMessage("Do You Really Want To Delete?");
@@ -110,7 +107,6 @@ public class ThisMonthEventsListAdapter extends RecyclerView.Adapter<ThisMonthEv
                                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        Toast.makeText(context, "delete", Toast.LENGTH_SHORT).show();
                                         deleteItem(position, eventsDTOList);
                                         notifyItemRemoved(position);
                                     }
@@ -134,7 +130,6 @@ public class ThisMonthEventsListAdapter extends RecyclerView.Adapter<ThisMonthEv
                                 Intent intent = new Intent(context, CreateEventActivity.class);
                                 intent.putExtra(KEY_UPDATE_EVENTS, item);
                                 context.startActivity(intent);
-                                Toast.makeText(context, it.getTitle(), Toast.LENGTH_SHORT).show();
                                 notifyDataSetChanged();
                                 break;
                         }
@@ -149,20 +144,17 @@ public class ThisMonthEventsListAdapter extends RecyclerView.Adapter<ThisMonthEv
 
     private void deleteItem(int position, List<EventDTO> eventsDTOList) {
         int currentPosition = position;
-        //
         deleteItemFromTable(position, eventsDTOList);
         notifyItemRemoved(currentPosition);
         eventsDTOList.remove(currentPosition);
         notifyItemRemoved(currentPosition);
-        //setEventsDTOList(AllEventsFragment.getInstance(context).getAllEventsList());
-
     }
 
 
     private void deleteItemFromTable(int position, List<EventDTO> eventsDTOList) {
         int currentPosition = position;
 
-        //////////////////---------------------->
+//////////////////---------------------->
         //для работы с БД.
         DBHelper dbHelper = new DBHelper(context);
         SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
@@ -223,7 +215,6 @@ public class ThisMonthEventsListAdapter extends RecyclerView.Adapter<ThisMonthEv
     }
 
     public void setEventsDTOList() {
-
 
     }
 }

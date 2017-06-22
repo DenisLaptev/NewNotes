@@ -1,5 +1,6 @@
 package ua.a5.newnotes.activities.events_activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.text.SpannableString;
@@ -61,8 +63,6 @@ public class EventActivity extends AppCompatActivity {
     String initialWord;
     String strRegExp;
 
-
-
     @BindView(R.id.tv_event_activity_title)
     TextView tvTitle;
 
@@ -76,13 +76,6 @@ public class EventActivity extends AppCompatActivity {
     ImageView ivEventMenu;
 
     @Override
-    protected void onResume() {
-        super.onResume();
-
-        Toast.makeText(this, "onResume-EventActivity",Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event);
@@ -94,7 +87,6 @@ public class EventActivity extends AppCompatActivity {
             tvTitle.setText(eventDTO.getTitle());
             tvDate.setText(eventDTO.getDay() + "-" + eventDTO.generateStringMonth(eventDTO.getMonth()) + "-" + eventDTO.getYear());
 
-
             try {
                 SpannableString spannableString = new SpannableString(eventDTO.getDescription());
                 bufferSpannableString= new SpannableString(spannableString);
@@ -105,13 +97,11 @@ public class EventActivity extends AppCompatActivity {
                     bufferSpannableString = spannableString;
                 }
 
-
                 for (String timeWords : TIME_WORDS.keySet()) {
                     initialWord = timeWords;
                     spannableString = convertString(bufferSpannableString, initialWord);
                     bufferSpannableString = spannableString;
                 }
-
 
                 for (String dateRegExp : DATE_REGEXPS) {
                     strRegExp = dateRegExp;
@@ -139,21 +129,38 @@ public class EventActivity extends AppCompatActivity {
 
                             switch (it.getItemId()) {
                                 case delete_item:
-                                    Toast.makeText(EventActivity.this, "delete", Toast.LENGTH_SHORT).show();
-                                    deleteItemFromTable(eventDTO);
-                                    EventActivity.this.finish();
+
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(EventActivity.this, R.style.MyAlertDialogStyle);
+                                    builder.setTitle("Delete?");
+                                    builder.setMessage("Do You Really Want To Delete?");
+
+                                    //positive button.
+                                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            deleteItemFromTable(eventDTO);
+                                            EventActivity.this.finish();
+
+                                        }
+
+                                    });
+
+                                    //negative button.
+                                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+
+                                        }
+                                    });
+                                    builder.show();
 
                                     break;
 
                                 case update_item:
-                                    Toast.makeText(EventActivity.this, "update", Toast.LENGTH_SHORT).show();
-
-
                                     isCardForUpdate = true;
                                     Intent intent = new Intent(EventActivity.this, CreateEventActivity.class);
                                     intent.putExtra(KEY_UPDATE_EVENTS, eventDTO);
                                     startActivity(intent);
-                                    Toast.makeText(EventActivity.this, it.getTitle(), Toast.LENGTH_SHORT).show();
                                     finish();
                                     break;
                             }
@@ -169,7 +176,7 @@ public class EventActivity extends AppCompatActivity {
 
     private void deleteItemFromTable(EventDTO eventDTO) {
 
-        //////////////////---------------------->
+//////////////////---------------------->
         //для работы с БД.
         DBHelper dbHelper = new DBHelper(this);
         SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
@@ -380,7 +387,4 @@ public class EventActivity extends AppCompatActivity {
         }
         return indexesOfFirstLetters;
     }
-
-
-
 }

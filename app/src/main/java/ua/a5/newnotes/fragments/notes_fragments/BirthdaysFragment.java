@@ -67,12 +67,10 @@ public class BirthdaysFragment extends AbstractTabFragment implements BirthdaysL
         recyclerView.setAdapter(adapter);
     }
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(LAYOUT, container, false);
-
         recyclerView = (RecyclerView) view.findViewById(R.id.recycle_view_birthdays);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         adapter = new BirthdaysListAdapter(context, createBirthdaysNotesList(), this);
@@ -86,7 +84,7 @@ public class BirthdaysFragment extends AbstractTabFragment implements BirthdaysL
     private List<BirthdayDTO> createBirthdaysNotesList() {
         List<BirthdayDTO> birthdaysNotes = new ArrayList<>();
 
-        //////////////////---------------------->
+//////////////////---------------------->
 
         //для работы с БД.
         dbHelper = new DBHelper(getActivity());
@@ -138,7 +136,6 @@ public class BirthdaysFragment extends AbstractTabFragment implements BirthdaysL
 
 //////////////////---------------------->
 
-
         return birthdaysNotes;
     }
 
@@ -147,7 +144,6 @@ public class BirthdaysFragment extends AbstractTabFragment implements BirthdaysL
         Intent intent = new Intent(getContext(), BirthdayActivity.class);
         intent.putExtra(KEY_BIRTHDAY_DTO, birthdayDTO);
         startActivity(intent);
-        Toast.makeText(getContext(), birthdayDTO.getName(), Toast.LENGTH_SHORT).show();
     }
 
     @Override

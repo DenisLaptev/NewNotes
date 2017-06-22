@@ -76,7 +76,6 @@ public class TodayFragment extends AbstractTabFragment implements TodayEventsLis
     TodayEventsListAdapter adapter;
 
     public static TodayFragment getInstance(Context context) {
-        //public TodayFragment getInstance(Context context) {
         Bundle args = new Bundle();
         TodayFragment fragment = new TodayFragment();
         fragment.setArguments(args);
@@ -89,7 +88,6 @@ public class TodayFragment extends AbstractTabFragment implements TodayEventsLis
     public void onResume() {
         super.onResume();
         adapter = new TodayEventsListAdapter(context, getTodayEventsList(), this);
-        //adapter = new TodayEventsListAdapter(context, eventsTodayStatic, this);
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
@@ -103,7 +101,6 @@ public class TodayFragment extends AbstractTabFragment implements TodayEventsLis
         recyclerView = (RecyclerView) view.findViewById(R.id.recycle_view_events_today);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         adapter = new TodayEventsListAdapter(context, getTodayEventsList(), this);
-        //adapter = new TodayEventsListAdapter(context, eventsTodayStatic, this);
         recyclerView.setAdapter(adapter);
 
 
@@ -162,13 +159,10 @@ public class TodayFragment extends AbstractTabFragment implements TodayEventsLis
 
     public List<EventDTO> getTodayEventsList() {
 
-
-
-        //////////////////---------------------->
+//////////////////---------------------->
         List<EventDTO> eventsData = new ArrayList<>();
         //для работы с БД.
         dbHelper = new DBHelper(getActivity());
-
 
         //класс SQLiteDatabase предназначен для управления БД SQLite.
         //если БД не существует, dbHelper вызовет метод onCreate(),
@@ -230,7 +224,6 @@ public class TodayFragment extends AbstractTabFragment implements TodayEventsLis
 
 //////////////////---------------------->
 
-
         return eventsData;
     }
 
@@ -239,7 +232,6 @@ public class TodayFragment extends AbstractTabFragment implements TodayEventsLis
         Intent intent = new Intent(getContext(), EventActivity.class);
         intent.putExtra(KEY_EVENT_DTO, eventDTO);
         startActivity(intent);
-        Toast.makeText(getContext(), eventDTO.getTitle(), Toast.LENGTH_SHORT).show();
     }
 
 

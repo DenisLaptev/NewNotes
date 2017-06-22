@@ -87,7 +87,13 @@ public class TodayEventsListAdapter extends RecyclerView.Adapter<TodayEventsList
         final EventDTO item = eventsDTOList.get(position);
         holder.tvTitle.setText(item.getTitle());
         holder.tvDescription.setText(item.getDescription());
-        holder.tvDate.setText(item.getDay() + "-" + (item.getMonth() + 1) + "-" + item.getYear());
+
+
+        if(item.getMonth() + 1 < 10) {
+            holder.tvDate.setText(item.getDay() + "-0" + (item.getMonth() + 1) + "-" + item.getYear());
+        }else{
+            holder.tvDate.setText(item.getDay() + "-" + (item.getMonth() + 1) + "-" + item.getYear());
+        }
         holder.ivPictureEventMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,7 +110,6 @@ public class TodayEventsListAdapter extends RecyclerView.Adapter<TodayEventsList
                         switch (it.getItemId()) {
                             case delete_item:
 
-                                //AlertDialog.Builder builder = new AlertDialog.Builder(StartMenuActivity.this, R.style.MyAlertDialogStyle);
                                 AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.MyAlertDialogStyle);
                                 builder.setTitle("Delete?");
                                 builder.setMessage("Do You Really Want To Delete?");
@@ -113,7 +118,6 @@ public class TodayEventsListAdapter extends RecyclerView.Adapter<TodayEventsList
                                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        Toast.makeText(context, "delete", Toast.LENGTH_SHORT).show();
                                         deleteItem(position, eventsDTOList);
                                         notifyItemRemoved(position);
                                     }
@@ -129,10 +133,6 @@ public class TodayEventsListAdapter extends RecyclerView.Adapter<TodayEventsList
 
                                 });
                                 builder.show();
-
-                                flagWhenItemDeletedToday = true;
-                                flagWhenItemDeletedThisMonth = true;
-                                flagWhenItemDeletedAll = true;
                                 break;
 
                             case update_item:
@@ -140,7 +140,6 @@ public class TodayEventsListAdapter extends RecyclerView.Adapter<TodayEventsList
                                 Intent intent = new Intent(context, CreateEventActivity.class);
                                 intent.putExtra(KEY_UPDATE_EVENTS, item);
                                 context.startActivity(intent);
-                                Toast.makeText(context, it.getTitle(), Toast.LENGTH_SHORT).show();
                                 notifyDataSetChanged();
                                 break;
                         }
@@ -155,20 +154,17 @@ public class TodayEventsListAdapter extends RecyclerView.Adapter<TodayEventsList
 
     private void deleteItem(int position, List<EventDTO> eventsDTOList) {
         int currentPosition = position;
-        //
         deleteItemFromTable(position, eventsDTOList);
         notifyItemRemoved(currentPosition);
         eventsDTOList.remove(currentPosition);
         notifyItemRemoved(currentPosition);
-        //setEventsDTOList(AllEventsFragment.getInstance(context).getAllEventsList());
-
     }
 
 
     private void deleteItemFromTable(int position, List<EventDTO> eventsDTOList) {
         int currentPosition = position;
 
-        //////////////////---------------------->
+//////////////////---------------------->
         //для работы с БД.
         DBHelper dbHelper = new DBHelper(context);
         SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
@@ -229,7 +225,5 @@ public class TodayEventsListAdapter extends RecyclerView.Adapter<TodayEventsList
     }
 
     public void setEventsDTOList() {
-
-
     }
 }

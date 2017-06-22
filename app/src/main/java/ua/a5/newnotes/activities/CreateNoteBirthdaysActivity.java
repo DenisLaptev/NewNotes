@@ -113,12 +113,24 @@ public class CreateNoteBirthdaysActivity extends AppCompatActivity {
         if (isCardForUpdate == true && getIntent() != null) {
             birthdayDTO = (BirthdayDTO) getIntent().getSerializableExtra(KEY_UPDATE_BIRTHDAYS);
             etName.setText(birthdayDTO.getName());
-            dateDisplay.setText(
-                    new StringBuilder()
-                            // Month is 0 based so add 1
-                            .append(birthdayDTO.getDay()).append("-")
-                            .append(birthdayDTO.getMonth() + 1).append("-")
-                            .append(birthdayDTO.getYear()).append(" "));
+
+
+            if(birthdayDTO.getMonth() + 1 < 10) {
+                dateDisplay.setText(
+                        new StringBuilder()
+                                // Month is 0 based so add 1
+                                .append(birthdayDTO.getDay()).append("-0")
+                                .append(birthdayDTO.getMonth() + 1).append("-")
+                                .append(birthdayDTO.getYear()).append(" "));
+            }else{
+                dateDisplay.setText(
+                        new StringBuilder()
+                                // Month is 0 based so add 1
+                                .append(birthdayDTO.getDay()).append("-")
+                                .append(birthdayDTO.getMonth() + 1).append("-")
+                                .append(birthdayDTO.getYear()).append(" "));
+            }
+
         } else {
             birthdayDTO = new BirthdayDTO(
                     new String(""),
@@ -195,7 +207,7 @@ public class CreateNoteBirthdaysActivity extends AppCompatActivity {
 
 
     private void deleteItemFromTable(BirthdayDTO birthdayDTO) {
-        //////////////////---------------------->
+//////////////////---------------------->
         //для работы с БД.
         DBHelper dbHelper = new DBHelper(this);
         SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
@@ -227,12 +239,23 @@ public class CreateNoteBirthdaysActivity extends AppCompatActivity {
 
     //For DatePicker
     private void updateDisplay() {
-        this.dateDisplay.setText(
-                new StringBuilder()
-                        // Month is 0 based so add 1
-                        .append(mDay).append("-")
-                        .append(mMonth + 1).append("-")
-                        .append(mYear).append(" "));
+
+        if(mMonth + 1 < 10) {
+            this.dateDisplay.setText(
+                    new StringBuilder()
+                            // Month is 0 based so add 1
+                            .append(mDay).append("-0")
+                            .append(mMonth + 1).append("-")
+                            .append(mYear).append(" "));
+        }else{
+            this.dateDisplay.setText(
+                    new StringBuilder()
+                            // Month is 0 based so add 1
+                            .append(mDay).append("-")
+                            .append(mMonth + 1).append("-")
+                            .append(mYear).append(" "));
+        }
+
     }
 
     private DatePickerDialog.OnDateSetListener mDateSetListener =
@@ -273,13 +296,11 @@ public class CreateNoteBirthdaysActivity extends AppCompatActivity {
             Intent intent = new Intent(this, BirthdayActivity.class);
             intent.putExtra(KEY_BIRTHDAY_DTO, newBirthdayDTO);
             startActivity(intent);
-            Toast.makeText(this, newBirthdayDTO.getName(), Toast.LENGTH_SHORT).show();
             finish();
         } else {
             Intent intent = new Intent(this, BirthdayActivity.class);
             intent.putExtra(KEY_BIRTHDAY_DTO, birthdayDTO);
             startActivity(intent);
-            Toast.makeText(this, birthdayDTO.getName(), Toast.LENGTH_SHORT).show();
             finish();
         }
     }

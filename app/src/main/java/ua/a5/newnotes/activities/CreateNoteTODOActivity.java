@@ -129,14 +129,14 @@ public class CreateNoteTODOActivity extends AppCompatActivity {
             }
         });
 
-        // get the current date
+        //get the current date
         final Calendar c = Calendar.getInstance();
         mYear = c.get(Calendar.YEAR);
-        mMonth = c.get(Calendar.MONTH) + 1;
+        mMonth = c.get(Calendar.MONTH);
         mDay = c.get(Calendar.DAY_OF_MONTH);
 
         tvTodoDeadline = (TextView) findViewById(R.id.tv_todo_deadline_date);
-        // display the current date
+        //display the current date
         updateDisplay();
 
         etNoteDescription = (EditText) findViewById(R.id.et_note_todo_description);
@@ -157,13 +157,22 @@ public class CreateNoteTODOActivity extends AppCompatActivity {
             todoDTO = (TodoDTO) getIntent().getSerializableExtra(KEY_UPDATE_TODO);
             etCreateNoteTitle.setText(todoDTO.getTitle());
             etNoteDescription.setText(todoDTO.getDescription());
-            tvTodoDeadline.setText(
-                    new StringBuilder()
-                            // Month is 0 based so add 1
-                            .append(todoDTO.getDay()).append("-")
-                            .append(todoDTO.getMonth() + 1).append("-")
-                            .append(todoDTO.getYear()).append(" "));
 
+            if(todoDTO.getMonth() + 1 < 10) {
+                tvTodoDeadline.setText(
+                        new StringBuilder()
+                                //Month is 0 based so add 1
+                                .append(todoDTO.getDay()).append("-0")
+                                .append(todoDTO.getMonth() + 1).append("-")
+                                .append(todoDTO.getYear()).append(" "));
+            }else{
+                tvTodoDeadline.setText(
+                        new StringBuilder()
+                                //Month is 0 based so add 1
+                                .append(todoDTO.getDay()).append("-")
+                                .append(todoDTO.getMonth() + 1).append("-")
+                                .append(todoDTO.getYear()).append(" "));
+            }
         }
         else{
             todoDTO = new TodoDTO(new String(""),0,getCurrentDay(),getCurrentMonth(),getCurrentYear(),new String(""));
@@ -199,7 +208,7 @@ public class CreateNoteTODOActivity extends AppCompatActivity {
                 noteTitle = etCreateNoteTitle.getText().toString();
                 isDone = 0;
                 noteDay = mDay;
-                noteMonth = mMonth + 1;
+                noteMonth = mMonth;
                 noteYear = mYear;
                 noteDescription = etNoteDescription.getText().toString();
 
@@ -243,7 +252,7 @@ public class CreateNoteTODOActivity extends AppCompatActivity {
 
     private void deleteItemFromTable(TodoDTO todoDTO) {
 
-        //////////////////---------------------->
+//////////////////---------------------->
         //для работы с БД.
         DBHelper dbHelper = new DBHelper(this);
         SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
@@ -517,12 +526,22 @@ public class CreateNoteTODOActivity extends AppCompatActivity {
 
     //For DatePicker
     private void updateDisplay() {
-        this.tvTodoDeadline.setText(
-                new StringBuilder()
-                        // Month is 0 based so add 1
-                        .append(mDay).append("-")
-                        .append(mMonth + 1).append("-")
-                        .append(mYear).append(" "));
+
+        if(mMonth + 1 < 10) {
+            this.tvTodoDeadline.setText(
+                    new StringBuilder()
+                            // Month is 0 based so add 1
+                            .append(mDay).append("-0")
+                            .append(mMonth + 1).append("-")
+                            .append(mYear).append(" "));
+        }else{
+            this.tvTodoDeadline.setText(
+                    new StringBuilder()
+                            // Month is 0 based so add 1
+                            .append(mDay).append("-")
+                            .append(mMonth + 1).append("-")
+                            .append(mYear).append(" "));
+        }
     }
 
     private DatePickerDialog.OnDateSetListener mDateSetListener =
@@ -552,7 +571,6 @@ public class CreateNoteTODOActivity extends AppCompatActivity {
         super.onBackPressed();
         isCardForUpdate = false;
 
-
         if (isSavedFlagTODO) {
             TodoDTO newTodoDTO = new TodoDTO(
                     etCreateNoteTitle.getText().toString(),
@@ -567,13 +585,11 @@ public class CreateNoteTODOActivity extends AppCompatActivity {
             Intent intent = new Intent(this, TodoActivity.class);
             intent.putExtra(KEY_TODO_DTO, newTodoDTO);
             startActivity(intent);
-            Toast.makeText(this, newTodoDTO.getTitle(), Toast.LENGTH_SHORT).show();
             finish();
         } else {
             Intent intent = new Intent(this, TodoActivity.class);
             intent.putExtra(KEY_TODO_DTO, todoDTO);
             startActivity(intent);
-            Toast.makeText(this, todoDTO.getTitle(), Toast.LENGTH_SHORT).show();
             finish();
         }
     }

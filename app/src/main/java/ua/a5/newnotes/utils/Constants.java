@@ -40,12 +40,4 @@ public class Constants {
     public static final String KEY_DIFFERENT_DTO = "key different dto";
 
     public static final String LOG_TAG = "log";
-
-
-
-
-    public static List<EventDTO> eventsTodayStatic = new ArrayList<>();
-    public static List<EventDTO> eventsThisMonthStatic = new ArrayList<>();
-    public static List<EventDTO> eventsAllStatic = new ArrayList<>();
-
 }

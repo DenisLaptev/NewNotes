@@ -93,7 +93,7 @@ public class CreateEventActivity extends AppCompatActivity {
 
 
     //для работы с БД.
-    DBHelper dbHelper;
+    DBHelper dbHeper;
 
     EventDTO event;
     String title;
@@ -125,11 +125,10 @@ public class CreateEventActivity extends AppCompatActivity {
 
         isSavedFlagEvent = false;
 
-
         description = null;
 
         //для работы с БД.
-        dbHelper = new DBHelper(this);
+        dbHeper = new DBHelper(this);
 
         etCreateEventTitle = (EditText) findViewById(R.id.event_etCreateEventTitle);
         //этот слушатель позволяет убирать клавиатуру EditText
@@ -178,12 +177,21 @@ public class CreateEventActivity extends AppCompatActivity {
             eventDTO = (EventDTO) getIntent().getSerializableExtra(KEY_UPDATE_EVENTS);
             etCreateEventTitle.setText(eventDTO.getTitle());
             etEventDescription.setText(eventDTO.getDescription());
-            tvEventsDeadline.setText(
-                    new StringBuilder()
-                            // Month is 0 based so add 1
-                            .append(eventDTO.getDay()).append("-")
-                            .append(eventDTO.getMonth() + 1).append("-")
-                            .append(eventDTO.getYear()).append(" "));
+
+
+            if (eventDTO.getMonth() + 1 < 10) {
+                tvEventsDeadline.setText(new StringBuilder()
+                        // Month is 0 based so add 1
+                        .append(eventDTO.getDay()).append("-0")
+                        .append(eventDTO.getMonth() + 1).append("-")
+                        .append(eventDTO.getYear()).append(" "));
+            } else {
+                tvEventsDeadline.setText(new StringBuilder()
+                        // Month is 0 based so add 1
+                        .append(eventDTO.getDay()).append("-")
+                        .append(eventDTO.getMonth() + 1).append("-")
+                        .append(eventDTO.getYear()).append(" "));
+            }
 
         } else {
             eventDTO = new EventDTO(
@@ -203,7 +211,7 @@ public class CreateEventActivity extends AppCompatActivity {
                     deleteItemFromTable(eventDTO);
                 }
                 isCardForUpdate = false;
-                ////////////////
+////////////////
                 //заполняем БД данными.
 
                 //класс SQLiteDatabase предназначен для управления БД SQLite.
@@ -211,7 +219,7 @@ public class CreateEventActivity extends AppCompatActivity {
                 //если версия БД изменилась, dbHelper вызовет метод onUpgrade().
 
                 //в любом случае вернётся существующая, толькочто созданная или обновлённая БД.
-                SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
+                SQLiteDatabase sqLiteDatabase = dbHeper.getWritableDatabase();
 
                 //класс ContentValues используется для добавления новых строк в таблицу.
                 //каждый объект этого класса представляет собой одну строку таблицы и
@@ -264,7 +272,7 @@ public class CreateEventActivity extends AppCompatActivity {
 
                 System.out.println(contentValues);
                 //закрываем соединение с БД.
-                dbHelper.close();
+                dbHeper.close();
 
 ////////////////////////
 
@@ -277,8 +285,6 @@ public class CreateEventActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 isCardForUpdate = false;
-                //Intent intent = new Intent(CreateEventActivity.this, EventsActivity.class);
-                //startActivity(intent);
                 onBackPressed();
                 finish();
             }
@@ -293,14 +299,14 @@ public class CreateEventActivity extends AppCompatActivity {
                 title = etCreateEventTitle.getText().toString();
 
                 beginDay = mDay;
-                beginMonth = mMonth + 1;
+                beginMonth = mMonth;
                 beginYear = mYear;
                 beginHour = String.valueOf(getCurrentHour());
                 beginMinute = String.valueOf(getCurrentMinute());
 
 
                 endDay = mDay;
-                endMonth = mMonth + 1;
+                endMonth = mMonth;
                 endHour = String.valueOf(getCurrentHour());
                 endMinute = String.valueOf(getCurrentMinute());
 
@@ -350,7 +356,7 @@ public class CreateEventActivity extends AppCompatActivity {
 
     private void deleteItemFromTable(EventDTO eventDTO) {
 
-        //////////////////---------------------->
+//////////////////---------------------->
         //для работы с БД.
         DBHelper dbHelper = new DBHelper(this);
         SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
@@ -386,7 +392,6 @@ public class CreateEventActivity extends AppCompatActivity {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-
             }
 
             @Override
@@ -411,13 +416,11 @@ public class CreateEventActivity extends AppCompatActivity {
                         bufferSpannableString = spannableString;
                     }
 
-
                     for (String timeWords : TIME_WORDS.keySet()) {
                         initialWord = timeWords;
                         spannableString = convertString(bufferSpannableString, initialWord);
                         bufferSpannableString = spannableString;
                     }
-
 
                     for (String dateRegExp : DATE_REGEXPS) {
                         strRegExp = dateRegExp;
@@ -425,13 +428,11 @@ public class CreateEventActivity extends AppCompatActivity {
                         bufferSpannableString = spannableString;
                     }
 
-
                     etEventDescription.setText(bufferSpannableString);
 
                     etEventDescription.setLinksClickable(true);
                     etEventDescription.setMovementMethod(LinkMovementMethod.getInstance());
                     etEventDescription.setSelection(etEventDescription.getText().length());
-
 
                 } catch (NumberFormatException nfe) {
                     nfe.printStackTrace();
@@ -626,12 +627,22 @@ public class CreateEventActivity extends AppCompatActivity {
 
     //For DatePicker
     private void updateDisplay() {
-        this.tvEventsDeadline.setText(
-                new StringBuilder()
-                        // Month is 0 based so add 1
-                        .append(mDay).append("-")
-                        .append(mMonth + 1).append("-")
-                        .append(mYear).append(" "));
+
+        if (mMonth + 1 < 10) {
+            this.tvEventsDeadline.setText(
+                    new StringBuilder()
+                            // Month is 0 based so add 1
+                            .append(mDay).append("-0")
+                            .append(mMonth + 1).append("-")
+                            .append(mYear).append(" "));
+        } else {
+            this.tvEventsDeadline.setText(
+                    new StringBuilder()
+                            // Month is 0 based so add 1
+                            .append(mDay).append("-")
+                            .append(mMonth + 1).append("-")
+                            .append(mYear).append(" "));
+        }
     }
 
     private DatePickerDialog.OnDateSetListener mDateSetListener =
@@ -673,13 +684,11 @@ public class CreateEventActivity extends AppCompatActivity {
             Intent intent = new Intent(this, EventActivity.class);
             intent.putExtra(KEY_EVENT_DTO, newEventDTO);
             startActivity(intent);
-            Toast.makeText(this, newEventDTO.getTitle(), Toast.LENGTH_SHORT).show();
             finish();
         } else {
             Intent intent = new Intent(this, EventActivity.class);
             intent.putExtra(KEY_EVENT_DTO, eventDTO);
             startActivity(intent);
-            Toast.makeText(this, eventDTO.getTitle(), Toast.LENGTH_SHORT).show();
             finish();
         }
     }

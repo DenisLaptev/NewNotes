@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_todo"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/color_item_activity_date"
     android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -11,101 +13,115 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="ua.a5.newnotes.activities.events_activities.EventActivity">
 
-
-    <LinearLayout
-        android:id="@+id/top_linearLayout"
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view_ideas"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp">
+        android:layout_height="match_parent"
+        app:cardElevation="2dp"
+        app:cardUseCompatPadding="true">
 
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:src="@drawable/ic_check_circle_outline"
-            android:layout_weight="1"/>
-
-        <TextView
-            android:id="@+id/tv_todo_activity_title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:hint="Todo Title"
-            android:textColor="@color/color_marker_todo"
-            android:textSize="@dimen/item_activity_title_size"
-            android:layout_weight="4"/>
-
-        <ImageView
-            android:id="@+id/iv_todo_menu"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:src="@drawable/ic_menu"
-            android:layout_weight="1"/>
-
-    </LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="16dp">
 
 
-    <LinearLayout
-        android:id="@+id/deadline_linearlayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/top_linearLayout"
-        android:layout_marginTop="30dp"
-        android:orientation="horizontal">
+            <LinearLayout
+                android:id="@+id/top_linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="DEADLINE:"
-            android:textSize="@dimen/item_activity_date_size" />
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_check_circle_outline" />
 
-        <TextView
-            android:id="@+id/tv_todo_activity_date"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="Todo Date"
-            android:textColor="@color/color_item_activity_date"
-            android:textSize="@dimen/item_activity_date_size" />
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/tv_todo_activity_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:gravity="center"
+                    android:hint="Todo Title"
+                    android:textColor="@color/color_marker_todo"
+                    android:textSize="@dimen/item_activity_title_size" />
 
-    <CheckBox
-        android:id="@+id/chbx_todo_activity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/deadline_linearlayout"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center"
-        android:layout_marginTop="30dp"
-        android:text="ВЫПОЛНЕНО"
-        android:textSize="@dimen/item_activity_description_size" />
+                <ImageView
+                    android:id="@+id/iv_todo_menu"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_menu" />
 
-    <TextView
-        android:id="@+id/tv_todo_activity_description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/chbx_todo_activity"
-        android:layout_marginTop="30dp"
-        android:gravity="center"
-        android:hint="Todo Description"
-        android:textColor="@color/color_item_activity_description"
-        android:textSize="@dimen/item_activity_description_size" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:gravity="bottom|center"
-        android:text="TODO"
-        android:textColor="@color/color_marker_todo"
-        android:textSize="40sp"
-        android:textStyle="bold" />
+            </LinearLayout>
 
 
-</RelativeLayout>
+            <LinearLayout
+                android:id="@+id/deadline_linearlayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/top_linearLayout"
+                android:layout_marginTop="30dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="DEADLINE:"
+                    android:textSize="@dimen/item_activity_date_size" />
+
+                <TextView
+                    android:id="@+id/tv_todo_activity_date"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="Todo Date"
+                    android:textColor="@color/color_item_activity_date"
+                    android:textSize="@dimen/item_activity_date_size" />
+            </LinearLayout>
+
+            <CheckBox
+                android:id="@+id/chbx_todo_activity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/deadline_linearlayout"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="30dp"
+                android:text="ВЫПОЛНЕНО"
+                android:textSize="@dimen/item_activity_description_size" />
+
+            <TextView
+                android:id="@+id/tv_todo_activity_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/chbx_todo_activity"
+                android:layout_marginTop="30dp"
+                android:gravity="center"
+                android:hint="Todo Description"
+                android:textColor="@color/color_item_activity_description"
+                android:textSize="@dimen/item_activity_description_size" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:gravity="bottom|center"
+                android:text="TODO"
+                android:textColor="@color/color_marker_todo"
+                android:textSize="40sp"
+                android:textStyle="bold" />
+
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>

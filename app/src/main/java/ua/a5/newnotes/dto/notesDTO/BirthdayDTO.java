@@ -112,10 +112,7 @@ public class BirthdayDTO implements Serializable {
             case 11:
                 stringMonth = "декабря";
                 break;
-
-
         }
         return stringMonth;
     }
-
 }

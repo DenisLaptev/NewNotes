@@ -102,21 +102,17 @@ public class EventsActivity extends AppCompatActivity {
                 switch (menuItem.getItemId()) {
                     case R.id.todayItem:
                         viewPagerEvents.setCurrentItem(MAP_INDEX_TODAY);
-                        Toast.makeText(EventsActivity.this, "Today_test", Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.thisMonthItem:
                         viewPagerEvents.setCurrentItem(MAP_INDEX_THIS_MONTH);
-                        Toast.makeText(EventsActivity.this, "Thismonth_test", Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.allEventsItem:
                         viewPagerEvents.setCurrentItem(MAP_INDEX_ALL_EVENTS);
-                        Toast.makeText(EventsActivity.this, "All_test", Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.mainmenuItem:
-
                         onBackPressed();
                         finish();
                         break;
@@ -131,7 +127,6 @@ public class EventsActivity extends AppCompatActivity {
         viewPagerEvents = (ViewPager) findViewById(R.id.viewpager_events);
         adapterEvents = new EventsTabsFragmentAdapter(this, getSupportFragmentManager());
         viewPagerEvents.setAdapter(adapterEvents);
-
 
         tabLayoutEvents = (TabLayout) findViewById(R.id.tablayout_events);
         tabLayoutEvents.setupWithViewPager(viewPagerEvents);

@@ -1,8 +1,10 @@
 package ua.a5.newnotes.activities.notes_activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.view.MenuItem;
@@ -52,11 +54,9 @@ public class BirthdayActivity extends AppCompatActivity {
             tvTitle.setText(birthdayDTO.getName());
             tvDate.setText(birthdayDTO.getDay() + " " + birthdayDTO.getStringMonth());
 
-
             ivBirthdayMenu.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //deleteItem(position, todoDTOList);
                     PopupMenu cardPopupMenu = new PopupMenu(BirthdayActivity.this, ivBirthdayMenu);
                     cardPopupMenu.getMenuInflater().inflate(R.menu.menu_card, cardPopupMenu.getMenu());
 
@@ -66,20 +66,35 @@ public class BirthdayActivity extends AppCompatActivity {
 
                             switch (it.getItemId()) {
                                 case delete_item:
-                                    Toast.makeText(BirthdayActivity.this, "delete", Toast.LENGTH_SHORT).show();
-                                    deleteItemFromTable(birthdayDTO);
-                                    BirthdayActivity.this.finish();
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(BirthdayActivity.this, R.style.MyAlertDialogStyle);
+                                    builder.setTitle("Delete?");
+                                    builder.setMessage("Do You Really Want To Delete?");
+
+                                    //positive button.
+                                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            deleteItemFromTable(birthdayDTO);
+                                            BirthdayActivity.this.finish();
+                                        }
+
+                                    });
+
+                                    //negative button.
+                                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                        }
+
+                                    });
+                                    builder.show();
                                     break;
 
                                 case update_item:
-                                    Toast.makeText(BirthdayActivity.this, "update", Toast.LENGTH_SHORT).show();
-
-
                                     isCardForUpdate = true;
                                     Intent intent = new Intent(BirthdayActivity.this, CreateNoteBirthdaysActivity.class);
                                     intent.putExtra(KEY_UPDATE_BIRTHDAYS, birthdayDTO);
                                     startActivity(intent);
-                                    Toast.makeText(BirthdayActivity.this, it.getTitle(), Toast.LENGTH_SHORT).show();
                                     finish();
                                     break;
                             }
@@ -95,7 +110,7 @@ public class BirthdayActivity extends AppCompatActivity {
 
     private void deleteItemFromTable(BirthdayDTO birthdayDTO) {
 
-        //////////////////---------------------->
+//////////////////---------------------->
         //для работы с БД.
         DBHelper dbHelper = new DBHelper(this);
         SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();

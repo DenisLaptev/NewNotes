@@ -104,7 +104,6 @@ public class CreateNoteActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
 
@@ -225,20 +224,17 @@ public class CreateNoteActivity extends AppCompatActivity {
                         bufferSpannableString = spannableString;
                     }
 
-
                     for (String timeWords : TIME_WORDS.keySet()) {
                         initialWord = timeWords;
                         spannableString = convertString(bufferSpannableString, initialWord);
                         bufferSpannableString = spannableString;
                     }
 
-
                     for (String dateRegExp : DATE_REGEXPS) {
                         strRegExp = dateRegExp;
                         spannableString = convertDateRegExps(bufferSpannableString, strRegExp);
                         bufferSpannableString = spannableString;
                     }
-
 
                     etNoteDescription.setText(bufferSpannableString);
 
@@ -271,7 +267,6 @@ public class CreateNoteActivity extends AppCompatActivity {
             } else {
                 month = getCurrentMonth();
             }
-
 
             int year1 = getCurrentYear();
             if (m.group(5) != null) {
@@ -444,15 +439,12 @@ public class CreateNoteActivity extends AppCompatActivity {
 
 
     private void setDateAndTime() {
-
         setTime();
         setDate();
-
     }
 
     private void setDate() {
         Calendar cal;
-
 
         cal = Calendar.getInstance();
         int dayofyear = cal.get(Calendar.DAY_OF_YEAR);
@@ -474,7 +466,6 @@ public class CreateNoteActivity extends AppCompatActivity {
         String strDayOfMonth = String.valueOf(dayofmonth);
 
         System.out.println("Date: (" + dayofweek + ") " + dayofmonth + "-" + (++month) + "-" + year);
-
 
         tvCreateNoteDate = (TextView) findViewById(R.id.note_tvCreateNoteDate);
         tvCreateNoteDate.setText(strDayOfMonth + "-" + strMonth + "-" + strYear);

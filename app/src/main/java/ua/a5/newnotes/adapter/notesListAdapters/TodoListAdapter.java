@@ -2,8 +2,10 @@ package ua.a5.newnotes.adapter.notesListAdapters;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -41,8 +43,6 @@ import static ua.a5.newnotes.utils.Constants.isCardForUpdate;
  */
 
 public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoViewHolder> {
-
-
 
     public interface TodoClickListener {
         void onClick(TodoDTO todoDTO);
@@ -96,16 +96,18 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoVi
                 if(isChecked){
                     item.setIsDone(1);
                     updateTodoCheckboxUIandDB(item);
-
                 }else{
                     item.setIsDone(0);
                     updateTodoCheckboxUIandDB(item);
-
                 }
             }
         });
 
-        holder.tvDate.setText(item.getDay() + "-" + item.getMonth() + "-" +item.getYear());
+        if(item.getMonth()+1 < 10) {
+            holder.tvDate.setText(item.getDay() + "-0" + (item.getMonth()+1) + "-" +item.getYear());
+        }else{
+            holder.tvDate.setText(item.getDay() + "-" + (item.getMonth()+1) + "-" +item.getYear());
+        }
 
         holder.ivPictureTodoMenu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,18 +122,35 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoVi
 
                         switch (it.getItemId()) {
                             case delete_item:
-                                Toast.makeText(context, "delete", Toast.LENGTH_SHORT).show();
-                                deleteItem(position, todoDTOList);
+                                AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.MyAlertDialogStyle);
+                                builder.setTitle("Delete?");
+                                builder.setMessage("Do You Really Want To Delete?");
+
+                                //positive button.
+                                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        deleteItem(position, todoDTOList);
+                                        notifyItemRemoved(position);
+                                    }
+
+                                });
+
+                                //negative button.
+                                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                    }
+                                });
+                                builder.show();
                                 break;
 
                             case update_item:
-                                Toast.makeText(context, "update", Toast.LENGTH_SHORT).show();
-
                                 isCardForUpdate = true;
                                 Intent intent = new Intent(context, CreateNoteTODOActivity.class);
                                 intent.putExtra(KEY_UPDATE_TODO, item);
                                 context.startActivity(intent);
-                                Toast.makeText(context, it.getTitle(), Toast.LENGTH_SHORT).show();
                                 break;
                         }
                         return true;
@@ -157,7 +176,6 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoVi
 
     private void deleteItem(int position, List<TodoDTO> todoDTOList) {
         int currentPosition = position;
-        //
         deleteItemFromTable(position, todoDTOList);
         notifyItemRemoved(currentPosition);
         todoDTOList.remove(currentPosition);
@@ -168,7 +186,7 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoVi
     private void deleteItemFromTable(int position, List<TodoDTO> todoDTOList) {
         int currentPosition = position;
 
-        //////////////////---------------------->
+//////////////////---------------------->
         //для работы с БД.
         DBHelper dbHelper = new DBHelper(context);
         SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
@@ -232,6 +250,4 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoVi
     public void setData(List<TodoDTO> todoDTOList) {
         this.todoDTOList = todoDTOList;
     }
-
-
 }

@@ -209,7 +209,7 @@ public class CreateNoteDifferentActivity extends AppCompatActivity {
     }
 
     private void deleteItemFromTable(DifferentDTO differentDTO) {
-        //////////////////---------------------->
+//////////////////---------------------->
         //для работы с БД.
         DBHelper dbHelper = new DBHelper(this);
         SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
@@ -253,13 +253,11 @@ public class CreateNoteDifferentActivity extends AppCompatActivity {
                     SpannableString spannableString = new SpannableString(initialString);
                     bufferSpannableString = new SpannableString(spannableString);
 
-
                     for (String days : DAYS_OF_THE_WEEK.keySet()) {
                         initialWord = days;
                         spannableString = convertString(bufferSpannableString, initialWord);
                         bufferSpannableString = spannableString;
                     }
-
 
                     for (String timeWords : TIME_WORDS.keySet()) {
                         initialWord = timeWords;
@@ -267,13 +265,11 @@ public class CreateNoteDifferentActivity extends AppCompatActivity {
                         bufferSpannableString = spannableString;
                     }
 
-
                     for (String dateRegExp : DATE_REGEXPS) {
                         strRegExp = dateRegExp;
                         spannableString = convertDateRegExps(bufferSpannableString, strRegExp);
                         bufferSpannableString = spannableString;
                     }
-
 
                     etNoteDescription.setText(bufferSpannableString);
 
@@ -410,7 +406,6 @@ public class CreateNoteDifferentActivity extends AppCompatActivity {
 
                     Intent calIntent = new Intent(Intent.ACTION_INSERT);
                     calIntent.setType("vnd.android.cursor.item/event");
-
 
                     int beginDay = getCurrentDay();
                     int beginMonth = getCurrentMonth();
@@ -556,13 +551,11 @@ public class CreateNoteDifferentActivity extends AppCompatActivity {
             Intent intent = new Intent(this, DifferentActivity.class);
             intent.putExtra(KEY_DIFFERENT_DTO, newDifferentDTO);
             startActivity(intent);
-            Toast.makeText(this, newDifferentDTO.getTitle(), Toast.LENGTH_SHORT).show();
             finish();
         } else {
             Intent intent = new Intent(this, DifferentActivity.class);
             intent.putExtra(KEY_DIFFERENT_DTO, differentDTO);
             startActivity(intent);
-            Toast.makeText(this, differentDTO.getTitle(), Toast.LENGTH_SHORT).show();
             finish();
         }
     }

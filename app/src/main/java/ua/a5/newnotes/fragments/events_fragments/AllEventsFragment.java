@@ -70,15 +70,12 @@ public class AllEventsFragment extends AbstractTabFragment implements TodayEvent
 
 
     public static AllEventsFragment getInstance(Context context) {
-        //public AllEventsFragment getInstance(Context context) {
+
         Bundle args = new Bundle();
         AllEventsFragment fragment = new AllEventsFragment();
         fragment.setArguments(args);
         fragment.setContext(context);
         fragment.setTitle(context.getString(R.string.menu_events_item_all_events));
-
-        //adapter = new TodayEventsListAdapter(context, getThisMonthEventsList(), this);
-        //recyclerView.setAdapter(adapter);
 
         return fragment;
     }
@@ -88,7 +85,6 @@ public class AllEventsFragment extends AbstractTabFragment implements TodayEvent
     public void onResume() {
         super.onResume();
         adapter = new TodayEventsListAdapter(context, getAllEventsList(), this);
-        //adapter = new TodayEventsListAdapter(context, eventsAllStatic, this);
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
@@ -101,7 +97,6 @@ public class AllEventsFragment extends AbstractTabFragment implements TodayEvent
         recyclerView = (RecyclerView) view.findViewById(R.id.recycle_view_events_all);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         adapter = new TodayEventsListAdapter(context, getAllEventsList(), this);
-        //adapter = new TodayEventsListAdapter(context, eventsAllStatic, this);
         recyclerView.setAdapter(adapter);
 
         menuMultipleActions = (FloatingActionsMenu) getActivity().findViewById(R.id.multiple_actions_events);
@@ -120,8 +115,7 @@ public class AllEventsFragment extends AbstractTabFragment implements TodayEvent
     public  List<EventDTO> getAllEventsList() {
         List<EventDTO> eventsData = new ArrayList<>();
 
-
-        //////////////////---------------------->
+//////////////////---------------------->
 
         //для работы с БД.
         dbHelper = new DBHelper(getActivity());
@@ -191,7 +185,6 @@ public class AllEventsFragment extends AbstractTabFragment implements TodayEvent
         Intent intent = new Intent(getContext(), EventActivity.class);
         intent.putExtra(KEY_EVENT_DTO, eventDTO);
         startActivity(intent);
-        Toast.makeText(getContext(), eventDTO.getTitle(), Toast.LENGTH_SHORT).show();
     }
 
     @Override

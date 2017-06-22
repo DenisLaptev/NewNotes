@@ -85,7 +85,6 @@ public class CreateNoteIdeasActivity extends AppCompatActivity {
 
     IdeaDTO ideaDTO;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -206,7 +205,7 @@ public class CreateNoteIdeasActivity extends AppCompatActivity {
 
 
     private void deleteItemFromTable(IdeaDTO ideaDTO) {
-        //////////////////---------------------->
+//////////////////---------------------->
         //для работы с БД.
         DBHelper dbHelper = new DBHelper(this);
         SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
@@ -553,13 +552,11 @@ public class CreateNoteIdeasActivity extends AppCompatActivity {
             Intent intent = new Intent(this, IdeaActivity.class);
             intent.putExtra(KEY_IDEA_DTO, newIdeaDTO);
             startActivity(intent);
-            Toast.makeText(this, newIdeaDTO.getTitle(), Toast.LENGTH_SHORT).show();
             finish();
         } else {
             Intent intent = new Intent(this, IdeaActivity.class);
             intent.putExtra(KEY_IDEA_DTO, ideaDTO);
             startActivity(intent);
-            Toast.makeText(this, ideaDTO.getTitle(), Toast.LENGTH_SHORT).show();
             finish();
         }
     }

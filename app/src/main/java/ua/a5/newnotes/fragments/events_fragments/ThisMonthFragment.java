@@ -70,10 +70,7 @@ public class ThisMonthFragment extends AbstractTabFragment implements TodayEvent
     TodayEventsListAdapter adapter;
 
 
-
-
     public static ThisMonthFragment getInstance(Context context) {
-        //public  ThisMonthFragment getInstance(Context context) {
         Bundle args = new Bundle();
         ThisMonthFragment fragment = new ThisMonthFragment();
         fragment.setArguments(args);
@@ -88,13 +85,9 @@ public class ThisMonthFragment extends AbstractTabFragment implements TodayEvent
         super.onResume();
 
         adapter = new TodayEventsListAdapter(context, getThisMonthEventsList(), this);
-        //adapter = new TodayEventsListAdapter(context, eventsThisMonthStatic, this);
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
         recyclerView.invalidate();
-
-     //  Toast.makeText(context, "onResumeThisMonth", Toast.LENGTH_SHORT).show();
-
     }
 
 
@@ -109,11 +102,8 @@ public class ThisMonthFragment extends AbstractTabFragment implements TodayEvent
         recyclerView = (RecyclerView) view.findViewById(R.id.recycle_view_events_thismonth);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         adapter = new TodayEventsListAdapter(context, getThisMonthEventsList(), this);
-        //adapter = new TodayEventsListAdapter(context, eventsThisMonthStatic, this);
         recyclerView.setAdapter(adapter);
-
         menuMultipleActions = (FloatingActionsMenu) getActivity().findViewById(R.id.multiple_actions_events);
-
 
         return view;
     }
@@ -121,8 +111,7 @@ public class ThisMonthFragment extends AbstractTabFragment implements TodayEvent
     public List<EventDTO> getThisMonthEventsList() {
         List<EventDTO> eventsData = new ArrayList<>();
 
-
-        //////////////////---------------------->
+//////////////////---------------------->
 
         //для работы с БД.
         dbHelper = new DBHelper(getActivity());
@@ -142,10 +131,6 @@ public class ThisMonthFragment extends AbstractTabFragment implements TodayEvent
                 "SELECT * FROM "
                         + TABLE_EVENTS_NAME
                         + " WHERE " + TABLE_EVENTS_KEY_BEGIN_MONTH + " = ? ", new String[]{String.valueOf(getCurrentMonth())});
-        Toast.makeText(getContext(), TABLE_EVENTS_KEY_BEGIN_MONTH + "-" + String.valueOf(getCurrentMonth()), Toast.LENGTH_SHORT).show();
-
-
-        //cursor = sqLiteDatabase.query(TABLE_EVENTS_NAME,null,null,null,null,null,null);
 
         //метод cursor.moveToFirst() делает 1-ю запись в cursor активной
         //и проверяет, есть ли в cursor что-то.
@@ -167,9 +152,7 @@ public class ThisMonthFragment extends AbstractTabFragment implements TodayEvent
             int endminuteIndex = cursor.getColumnIndex(TABLE_EVENTS_KEY_END_MINUTE);
             int descriptionIndex = cursor.getColumnIndex(TABLE_EVENTS_KEY_DESCRIPTION);
 
-            //if (cursor.getInt(beginmonthIndex) == getCurrentMonth()) {
-                //с помощью метода .moveToNext() перебираем все строки в cursor-е.
-                do {
+            do {
                     eventsData.add(new EventDTO(
                             cursor.getString(titleIndex),
                             cursor.getString(descriptionIndex),
@@ -178,8 +161,6 @@ public class ThisMonthFragment extends AbstractTabFragment implements TodayEvent
                             cursor.getInt(beginyearIndex)
                     ));
                 } while (cursor.moveToNext());
-
-            //}
         } else {
             Log.d(LOG_TAG, "0 rows");
         }
@@ -192,33 +173,8 @@ public class ThisMonthFragment extends AbstractTabFragment implements TodayEvent
         dbHelper.close();
 
 //////////////////---------------------->
-
         return eventsData;
     }
-
-
-
-    public List<EventDTO> getThisMonthEventsList2() {
-        List<EventDTO> eventsData2 = new ArrayList<>();
-
-
-        //////////////////---------------------->
-
-        for (int i = 0; i < 10; i++) {
-            eventsData2.add(new EventDTO("title"+i,"desc"+i,i,i*10,i*100));
-        }
-
-//////////////////---------------------->
-
-        return eventsData2;
-    }
-
-
-
-
-
-
-
 
 
 
@@ -227,7 +183,6 @@ public class ThisMonthFragment extends AbstractTabFragment implements TodayEvent
         Intent intent = new Intent(getContext(), EventActivity.class);
         intent.putExtra(KEY_EVENT_DTO, eventDTO);
         startActivity(intent);
-        Toast.makeText(getContext(), eventDTO.getTitle(), Toast.LENGTH_SHORT).show();
     }
 
     @Override

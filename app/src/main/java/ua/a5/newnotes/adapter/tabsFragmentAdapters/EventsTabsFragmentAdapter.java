@@ -38,9 +38,7 @@ public class EventsTabsFragmentAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-
         return eventsTabs.get(position);
-
     }
 
     @Override
@@ -55,6 +53,4 @@ public class EventsTabsFragmentAdapter extends FragmentPagerAdapter {
         eventsTabs.put(MAP_INDEX_THIS_MONTH, ThisMonthFragment.getInstance(context));
         eventsTabs.put(MAP_INDEX_ALL_EVENTS, AllEventsFragment.getInstance(context));
     }
-
-
 }

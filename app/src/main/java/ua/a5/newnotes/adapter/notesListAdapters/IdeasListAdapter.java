@@ -1,8 +1,10 @@
 package ua.a5.newnotes.adapter.notesListAdapters;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -35,8 +37,6 @@ import static ua.a5.newnotes.utils.Constants.isCardForUpdate;
  */
 
 public class IdeasListAdapter extends RecyclerView.Adapter<IdeasListAdapter.IdeasViewHolder> {
-
-
 
     public interface IdeaClickListener {
         void onClick(IdeaDTO ideaDTO);
@@ -93,21 +93,35 @@ public class IdeasListAdapter extends RecyclerView.Adapter<IdeasListAdapter.Idea
 
                         switch (it.getItemId()) {
                             case delete_item:
-                                Toast.makeText(context, "delete", Toast.LENGTH_SHORT).show();
-                                deleteItem(position, ideasDTOList);
+                                AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.MyAlertDialogStyle);
+                                builder.setTitle("Delete?");
+                                builder.setMessage("Do You Really Want To Delete?");
+
+                                //positive button.
+                                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        deleteItem(position, ideasDTOList);
+                                        notifyItemRemoved(position);
+                                    }
+
+                                });
+
+                                //negative button.
+                                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                    }
+                                });
+                                builder.show();
                                 break;
 
                             case update_item:
-                                Toast.makeText(context, "update", Toast.LENGTH_SHORT).show();
-
                                 isCardForUpdate = true;
                                 Intent intent = new Intent(context, CreateNoteIdeasActivity.class);
                                 intent.putExtra(KEY_UPDATE_IDEAS, item);
                                 context.startActivity(intent);
-                                Toast.makeText(context, it.getTitle(), Toast.LENGTH_SHORT).show();
-
-
-
                                 break;
                         }
                         return true;
@@ -120,7 +134,6 @@ public class IdeasListAdapter extends RecyclerView.Adapter<IdeasListAdapter.Idea
 
     private void deleteItem(int position, List<IdeaDTO> ideasDTOList) {
         int currentPosition = position;
-        //
         deleteItemFromTable(position, ideasDTOList);
         notifyItemRemoved(currentPosition);
         ideasDTOList.remove(currentPosition);
@@ -131,7 +144,7 @@ public class IdeasListAdapter extends RecyclerView.Adapter<IdeasListAdapter.Idea
     private void deleteItemFromTable(int position, List<IdeaDTO> ideasDTOList) {
         int currentPosition = position;
 
-        //////////////////---------------------->
+//////////////////---------------------->
         //для работы с БД.
         DBHelper dbHelper = new DBHelper(context);
         SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();

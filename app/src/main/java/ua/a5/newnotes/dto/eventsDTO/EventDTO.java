@@ -63,10 +63,6 @@ public class EventDTO implements Serializable {
     }
 
 
-
-
-
-
     public String generateStringMonth(int month){
         String stringMonth = null;
         switch (month){

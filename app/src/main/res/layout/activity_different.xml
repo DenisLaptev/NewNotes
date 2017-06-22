@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_different"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/color_marker_different"
     android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -11,74 +14,88 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="ua.a5.newnotes.activities.events_activities.EventActivity">
 
-
-    <TextView
-        android:id="@+id/tv_different_activity_date"
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view_ideas"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Different Date"
-        android:textColor="@color/color_item_activity_date"
-        android:textSize="@dimen/item_activity_date_size"
-        android:gravity="center"
-        android:layout_below="@+id/linearLayout"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="30dp" />
+        android:layout_height="match_parent"
+        app:cardElevation="2dp"
+        app:cardUseCompatPadding="true">
 
-    <TextView
-        android:id="@+id/tv_different_activity_description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Different Description"
-        android:textColor="@color/color_item_activity_description"
-        android:textSize="@dimen/item_activity_description_size"
-        android:gravity="center"
-        android:layout_below="@+id/tv_different_activity_date"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="30dp" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="16dp">
 
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:gravity="bottom|center"
-        android:text="DIFFERENT"
-        android:textColor="@color/color_marker_different"
-        android:textSize="40sp"
-        android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tv_different_activity_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/linearLayout"
+                android:layout_marginTop="30dp"
+                android:gravity="center"
+                android:hint="Different Date"
+                android:textColor="@color/color_item_activity_date"
+                android:textSize="@dimen/item_activity_date_size" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/linearLayout"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true">
+            <TextView
+                android:id="@+id/tv_different_activity_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/tv_different_activity_date"
+                android:layout_marginTop="30dp"
+                android:gravity="center"
+                android:hint="Different Description"
+                android:textColor="@color/color_item_activity_description"
+                android:textSize="@dimen/item_activity_description_size" />
 
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:src="@drawable/ic_star"
-            android:layout_weight="1"/>
 
-        <TextView
-            android:id="@+id/tv_different_activity_title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="Different Title"
-            android:textColor="@color/color_marker_different"
-            android:textSize="@dimen/item_activity_title_size"
-            android:gravity="center"
-            android:layout_weight="4"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:gravity="bottom|center"
+                android:text="DIFFERENT"
+                android:textColor="@color/color_marker_different"
+                android:textSize="40sp"
+                android:textStyle="bold" />
 
-        <ImageView
-            android:id="@+id/iv_different_menu"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:src="@drawable/ic_menu"
-            android:layout_weight="1"/>
-    </LinearLayout>
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true">
 
-</RelativeLayout>
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_star" />
+
+                <TextView
+                    android:id="@+id/tv_different_activity_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:gravity="center"
+                    android:hint="Different Title"
+                    android:textColor="@color/color_marker_different"
+                    android:textSize="@dimen/item_activity_title_size" />
+
+                <ImageView
+                    android:id="@+id/iv_different_menu"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_menu" />
+            </LinearLayout>
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>

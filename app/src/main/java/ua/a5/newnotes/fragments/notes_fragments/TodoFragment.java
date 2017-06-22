@@ -42,7 +42,6 @@ import static ua.a5.newnotes.utils.Constants.LOG_TAG;
 
 public class TodoFragment extends AbstractTabFragment implements TodoListAdapter.TodoClickListener {
 
-
     FloatingActionsMenu menuMultipleActions;
 
     private static final int LAYOUT = R.layout.fragment_todo;
@@ -57,7 +56,6 @@ public class TodoFragment extends AbstractTabFragment implements TodoListAdapter
     RecyclerView recyclerView;
     TodoListAdapter adapter;
 
-
     public static TodoFragment getInstance(Context context) {
         Bundle args = new Bundle();
         TodoFragment fragment = new TodoFragment();
@@ -66,7 +64,6 @@ public class TodoFragment extends AbstractTabFragment implements TodoListAdapter
         fragment.setTitle(context.getString(R.string.tab_item_todo));
         return fragment;
     }
-
 
     @Override
     public void onResume() {
@@ -79,13 +76,10 @@ public class TodoFragment extends AbstractTabFragment implements TodoListAdapter
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(LAYOUT, container, false);
-
-
         recyclerView = (RecyclerView) view.findViewById(R.id.recycle_view_todo);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         adapter = new TodoListAdapter(context, createTodoNotesList(), this);
         recyclerView.setAdapter(adapter);
-
 
         FloatingActionButton actionTodo = (FloatingActionButton) getActivity().findViewById(R.id.action_todo);
         actionTodo.setTitle("new TODO Note");
@@ -98,14 +92,11 @@ public class TodoFragment extends AbstractTabFragment implements TodoListAdapter
         });
 
 
-
         FloatingActionButton actionIdea = (FloatingActionButton) getActivity().findViewById(R.id.action_ideas);
         actionIdea.setTitle("new IDEA Note");
         actionIdea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Toast.makeText(getContext(), "search", Toast.LENGTH_SHORT).show();
-
                 Intent intent = new Intent(getContext(), CreateNoteIdeasActivity.class);
                 startActivity(intent);
             }
@@ -116,7 +107,6 @@ public class TodoFragment extends AbstractTabFragment implements TodoListAdapter
         actionBirthday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Intent intent = new Intent(getContext(), CreateNoteBirthdaysActivity.class);
                 startActivity(intent);
             }
@@ -127,7 +117,6 @@ public class TodoFragment extends AbstractTabFragment implements TodoListAdapter
         actionDifferent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Intent intent = new Intent(getContext(), CreateNoteDifferentActivity.class);
                 startActivity(intent);
             }
@@ -138,7 +127,6 @@ public class TodoFragment extends AbstractTabFragment implements TodoListAdapter
         actionMainmenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 getActivity().onBackPressed();
             }
         });
@@ -171,16 +159,13 @@ public class TodoFragment extends AbstractTabFragment implements TodoListAdapter
     }
 
 
-
     private List<TodoDTO> createTodoNotesList() {
         List<TodoDTO> todoNotes = new ArrayList<>();
 
-
-        //////////////////---------------------->
+//////////////////---------------------->
 
         //для работы с БД.
         dbHelper = new DBHelper(getActivity());
-
 
         //класс SQLiteDatabase предназначен для управления БД SQLite.
         //если БД не существует, dbHelper вызовет метод onCreate(),

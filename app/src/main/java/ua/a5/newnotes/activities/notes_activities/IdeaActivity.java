@@ -1,5 +1,6 @@
 package ua.a5.newnotes.activities.notes_activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.text.SpannableString;
@@ -83,7 +85,6 @@ public class IdeaActivity extends AppCompatActivity {
             tvTitle.setText(ideaDTO.getTitle());
             tvDate.setText(ideaDTO.getDate());
 
-
             try {
                 SpannableString spannableString = new SpannableString(ideaDTO.getDescription());
                 bufferSpannableString = new SpannableString(spannableString);
@@ -118,7 +119,7 @@ public class IdeaActivity extends AppCompatActivity {
             ivIdeaMenu.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //deleteItem(position, todoDTOList);
+
                     PopupMenu cardPopupMenu = new PopupMenu(IdeaActivity.this, ivIdeaMenu);
                     cardPopupMenu.getMenuInflater().inflate(R.menu.menu_card, cardPopupMenu.getMenu());
 
@@ -128,20 +129,38 @@ public class IdeaActivity extends AppCompatActivity {
 
                             switch (it.getItemId()) {
                                 case delete_item:
-                                    Toast.makeText(IdeaActivity.this, "delete", Toast.LENGTH_SHORT).show();
-                                    deleteItemFromTable(ideaDTO);
-                                    IdeaActivity.this.finish();
+
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(IdeaActivity.this, R.style.MyAlertDialogStyle);
+                                    builder.setTitle("Delete?");
+                                    builder.setMessage("Do You Really Want To Delete?");
+
+                                    //positive button.
+                                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            deleteItemFromTable(ideaDTO);
+                                            IdeaActivity.this.finish();
+                                        }
+
+                                    });
+
+                                    //negative button.
+                                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+
+                                        }
+
+                                    });
+                                    builder.show();
                                     break;
 
                                 case update_item:
-                                    Toast.makeText(IdeaActivity.this, "update", Toast.LENGTH_SHORT).show();
-
 
                                     isCardForUpdate = true;
                                     Intent intent = new Intent(IdeaActivity.this, CreateNoteIdeasActivity.class);
                                     intent.putExtra(KEY_UPDATE_IDEAS, ideaDTO);
                                     startActivity(intent);
-                                    Toast.makeText(IdeaActivity.this, it.getTitle(), Toast.LENGTH_SHORT).show();
                                     finish();
                                     break;
                             }
@@ -156,7 +175,7 @@ public class IdeaActivity extends AppCompatActivity {
 
     private void deleteItemFromTable(IdeaDTO ideaDTO) {
 
-        //////////////////---------------------->
+//////////////////---------------------->
         //для работы с БД.
         DBHelper dbHelper = new DBHelper(this);
         SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();

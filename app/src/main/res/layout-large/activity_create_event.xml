@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackgroundMain"
+    android:clickable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
+
+    android:paddingLeft="36sp"
+    android:paddingRight="36sp"
+    android:paddingTop="36sp"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true">
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/ic_pillar" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:gravity="bottom|center"
+            android:text="EVENTS"
+            android:textColor="@color/color_marker_event"
+            android:textSize="70sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/event_title_linear_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/ItemTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Title:"
+            android:textSize="40sp"/>
+
+        <LinearLayout
+            android:layout_width="0px"
+            android:layout_height="0px"
+            android:focusable="true"
+            android:focusableInTouchMode="true" />
+
+        <EditText
+            android:id="@+id/event_etCreateEventTitle"
+            style="@style/UserDataTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Event Title"
+            android:textSize="40sp"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/btn_events_date_picker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Choose DEADLINE"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:paddingLeft="12dp"
+            android:id="@+id/tv_events_deadline_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Deadline Date"
+            android:textColor="@color/color_item_activity_date"
+            android:textSize="40sp" />
+    </LinearLayout>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="20dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Type Description of Event:"
+        style="@style/ItemTextStyle"
+        android:textSize="40sp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="20dp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="460dp"
+        android:background="@drawable/custom_et_background"
+        android:windowSoftInputMode="adjustPan"
+        android:isScrollContainer="true">
+
+        <EditText
+            android:id="@+id/et_event_description"
+            android:inputType="textNoSuggestions|textMultiLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:autoLink="all"
+            android:hint="enter some text"
+            android:linksClickable="true"
+            android:textSize="40sp"
+            android:background="@null"
+            android:layout_margin="12dp" />
+    </ScrollView>
+
+
+    <!--
+
+    <LinearLayout
+        android:id="@+id/event_location_linear_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/event_tvCreateEventLocation"
+            style="@style/ItemTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Location" />
+
+        <EditText
+            android:id="@+id/event_etCreateEventLocation"
+            style="@style/UserDataTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Event Location" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/event_isAllday_isImportant_linear_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        &lt;!&ndash;
+                <CheckBox
+                    android:id="@+id/event_chbCreateEventImportant"
+                    style="@style/ItemTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Important" />
+                &ndash;&gt;
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/event_begin_date_linear_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textView"
+            style="@style/ItemTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Begin. Date" />
+
+        <EditText
+            android:id="@+id/event_etCreateEventBeginDay"
+            style="@style/UserDataTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="dd"
+            android:inputType="number" />
+
+        <TextView
+            style="@style/ItemTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="." />
+
+        <EditText
+            android:id="@+id/event_etCreateEventBeginMonth"
+            style="@style/UserDataTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="mm"
+            android:inputType="number" />
+
+        <TextView
+            style="@style/ItemTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Time" />
+
+        <EditText
+            android:id="@+id/event_etCreateEventBeginHour"
+            style="@style/UserDataTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="hh"
+            android:inputType="number" />
+
+        <TextView
+            style="@style/ItemTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=":" />
+
+        <EditText
+            android:id="@+id/event_etCreateEventBeginMinute"
+            style="@style/UserDataTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="mm"
+            android:inputType="number" />
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/event_end_date_linear_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/ItemTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="End. Date" />
+
+        <EditText
+            android:id="@+id/event_etCreateEventEndDay"
+            style="@style/UserDataTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="dd"
+            android:inputType="number" />
+
+        <TextView
+            style="@style/ItemTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="." />
+
+        <EditText
+            android:id="@+id/event_etCreateEventEndMonth"
+            style="@style/UserDataTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="mm"
+            android:inputType="number" />
+
+        <TextView
+            style="@style/ItemTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Time" />
+
+        <EditText
+            android:id="@+id/event_etCreateEventEndHour"
+            style="@style/UserDataTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="hh"
+            android:inputType="number" />
+
+        <TextView
+            style="@style/ItemTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=":" />
+
+        <EditText
+            android:id="@+id/event_etCreateEventEndMinute"
+            style="@style/UserDataTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="mm"
+            android:inputType="number" />
+
+
+    </LinearLayout>
+
+
+-->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="15dp" />
+
+
+    <LinearLayout
+        android:id="@+id/event_buttons_linear_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/event_btnCreateEventSave"
+            style="@style/ButtonsTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Save"
+            android:textSize="20sp"/>
+
+        <Button
+            android:id="@+id/event_btnCreateEventEventsMenu"
+            style="@style/ButtonsTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="BACK"
+            android:textSize="20sp"/>
+
+        <Button
+            android:id="@+id/event_btnCreateEventCalendar"
+            style="@style/ButtonsTextStyle"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Calendar"
+            android:backgroundTint="@color/color_btn_calendar_white"
+            android:textSize="20sp"/>
+
+    </LinearLayout>
+
+    <!--admob-->
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center_horizontal|bottom"
+        android:layout_alignParentBottom="true">
+        <!--admob-->
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            ads:adSize="BANNER"
+            ads:adUnitId="@string/banner_home_footer">
+        </com.google.android.gms.ads.AdView>
+    </LinearLayout>
+</LinearLayout>

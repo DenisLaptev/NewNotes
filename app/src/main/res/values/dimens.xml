@@ -14,5 +14,7 @@
     <dimen name="item_activity_title_size">30sp</dimen>
     <dimen name="item_activity_description_size">20sp</dimen>
     <dimen name="item_activity_date_size">20sp</dimen>
+    <dimen name="title_height">90dp</dimen>
+    <dimen name="picture_height">170dp</dimen>
     <!--Dimensions in item activities-->
 </resources>

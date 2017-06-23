@@ -52,4 +52,22 @@
         <item>11</item>
         <item>12</item>
     </string-array>
+
+
+
+
+
+
+
+
+
+    <string name="admob_app_id">ca-app-pub-7986696519803132~8675083605</string>
+
+    <string name="banner_home_footer">ca-app-pub-7986696519803132/1151816806</string>
+
+    <string name="interstitial_full_screen">ca-app-pub-7986696519803132/2628550005</string>
+
+
+    <string name="billing_pubkey">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAr8+eB6Qqt1lCwICbytQQ/0i1pzpxujVywz3n0caLEvG51Ss1GzJxElj2mF+rLe5iuWfIe65Ix3b/eUCfVc2KVehDxYTtS66yTbXQSyt/Gg4rJ9blPipaNwRR4kQfCVRyphAVpCfiWMqiVEL7UB28Q6z47N1KyW4ImKClno62Hfu0TY91J3YRx4UHLHGmKwI3zY3qsNzEJ0OCxSdBmjNsKsDxfnNJvmO+6uHh355QAZre9ory9EeWemHEhfYPSixevpv5Kn2rLYrXWZwZSrSmHFFCmE6O25UOkDFK4IAb2kK57FLVGrmJ/WTz02eTs52oOfuMMqK2hqO0FdX/IMWjNwIDAQAB</string>
+
 </resources>

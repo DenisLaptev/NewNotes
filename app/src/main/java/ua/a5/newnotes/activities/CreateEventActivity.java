@@ -27,6 +27,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -52,6 +58,7 @@ import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_END_MONTH;
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_LOCATION;
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_KEY_TITLE;
 import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_NAME;
+import static ua.a5.newnotes.activities.OptionsMenuActivity.mIsPremium;
 import static ua.a5.newnotes.utils.Constants.KEY_EVENT_DTO;
 import static ua.a5.newnotes.utils.Constants.KEY_UPDATE_EVENTS;
 import static ua.a5.newnotes.utils.Constants.LOG_TAG;
@@ -118,10 +125,61 @@ public class CreateEventActivity extends AppCompatActivity {
 
     EventDTO eventDTO;
 
+
+    //для баннера////////////////////////////////////////////////////
+    protected AdView mAdView;
+    //для баннера////////////////////////////////////////////////////
+
+
+
+    //для Interstitial////////////////////////////////////////////////////
+    InterstitialAd mInterstitialAd;
+    //для Interstitial////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_event);
+
+        if (mIsPremium == false) {
+//Initializing the Google Mobile Ads SDK
+            MobileAds.initialize(getApplicationContext(), getString(R.string.admob_app_id));
+//Initializing the Google Mobile Ads SDK
+
+            //для баннера////////////////////////////////////////////////////
+            mAdView = (AdView) findViewById(R.id.adView);
+            AdRequest adRequest = new AdRequest.Builder()
+                    .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                    // Check the LogCat to get your test device ID
+                    .addTestDevice("9E89078D0DC2D94ADC3D89109C5B6E24")
+                    .build();
+            mAdView.loadAd(adRequest);
+            //для баннера////////////////////////////////////////////////////
+
+//для Interstitial////////////////////////////////////////////////////
+            mInterstitialAd = new InterstitialAd(this);
+            //set the ad unit ID
+            mInterstitialAd.setAdUnitId(getString(R.string.interstitial_full_screen));
+
+            //Load ads into Interstitial Ads
+            mInterstitialAd.loadAd(adRequest);
+            mInterstitialAd.setAdListener(new AdListener() {
+                public void onAdLoaded() {
+                    showInterstitial();
+                }
+            });
+//для Interstitial////////////////////////////////////////////////////
+
+        }
+
 
         isSavedFlagEvent = false;
 
@@ -353,6 +411,12 @@ public class CreateEventActivity extends AppCompatActivity {
 
     }
 
+
+    private void showInterstitial() {
+        if (mInterstitialAd.isLoaded()) {
+            mInterstitialAd.show();
+        }
+    }
 
     private void deleteItemFromTable(EventDTO eventDTO) {
 
@@ -691,5 +755,33 @@ public class CreateEventActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
+    }
+
+
+
+
+
+    @Override
+    public void onPause() {
+        if (mAdView != null) {
+            mAdView.pause();
+        }
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mAdView != null) {
+            mAdView.resume();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        if (mAdView != null) {
+            mAdView.destroy();
+        }
+        super.onDestroy();
     }
 }

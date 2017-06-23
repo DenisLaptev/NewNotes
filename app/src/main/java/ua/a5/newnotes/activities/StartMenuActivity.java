@@ -18,6 +18,7 @@ public class StartMenuActivity extends AppCompatActivity {
 
     Button btnStartMenuNotes;
     Button btnStartMenuEvents;
+    Button btnStartMenuOptions;
     Button btnStartMenuQuit;
 
     //Переменная для управления выходом кнопкой Back.
@@ -43,6 +44,15 @@ public class StartMenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(StartMenuActivity.this, EventsActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btnStartMenuOptions = (Button) findViewById(R.id.btnStartMenuOptions);
+        btnStartMenuOptions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(StartMenuActivity.this, OptionsMenuActivity.class);
                 startActivity(intent);
             }
         });
@@ -99,6 +109,7 @@ public class StartMenuActivity extends AppCompatActivity {
 //Date and Time
     }
 
+    //set white background to the Activity.
     @Override
     public void onResume() {
         super.onResume();

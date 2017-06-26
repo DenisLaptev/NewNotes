@@ -1,7 +1,6 @@
 package ua.a5.newnotes.adapter.tabsFragmentAdapters;
 
 import android.content.Context;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
@@ -37,7 +36,7 @@ public class EventsTabsFragmentAdapter extends FragmentPagerAdapter {
     }
 
     @Override
-    public Fragment getItem(int position) {
+    public AbstractTabFragment getItem(int position) {
         return eventsTabs.get(position);
     }
 

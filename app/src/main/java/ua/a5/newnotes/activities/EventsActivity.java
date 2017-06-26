@@ -12,7 +12,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import java.util.GregorianCalendar;
 
@@ -127,6 +126,22 @@ public class EventsActivity extends AppCompatActivity {
         viewPagerEvents = (ViewPager) findViewById(R.id.viewpager_events);
         adapterEvents = new EventsTabsFragmentAdapter(this, getSupportFragmentManager());
         viewPagerEvents.setAdapter(adapterEvents);
+        viewPagerEvents.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                adapterEvents.getItem(position).update();
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
         tabLayoutEvents = (TabLayout) findViewById(R.id.tablayout_events);
         tabLayoutEvents.setupWithViewPager(viewPagerEvents);

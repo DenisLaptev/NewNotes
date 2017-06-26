@@ -19,9 +19,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <meta-data
+        <!--<meta-data
             android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
+            android:value="@integer/google_play_services_version" />-->
 
 
         <activity
@@ -38,10 +38,10 @@
             android:name=".activities.NotesActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity
+       <!-- <activity
             android:name=".activities.CreateNoteActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />-->
         <activity
             android:name=".activities.EventsActivity"
             android:screenOrientation="portrait"
@@ -78,11 +78,6 @@
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".activities.OptionsMenuActivity" />
         <activity android:name=".activities.AboutActivity"></activity>
-
-
-
-
-
 
 
 

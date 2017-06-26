@@ -25,7 +25,6 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -130,19 +129,9 @@ public class CreateEventActivity extends AppCompatActivity {
     protected AdView mAdView;
     //для баннера////////////////////////////////////////////////////
 
-
-
     //для Interstitial////////////////////////////////////////////////////
     InterstitialAd mInterstitialAd;
     //для Interstitial////////////////////////////////////////////////////
-
-
-
-
-
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

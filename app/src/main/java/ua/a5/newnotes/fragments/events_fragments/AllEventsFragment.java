@@ -13,7 +13,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
@@ -88,6 +87,15 @@ public class AllEventsFragment extends AbstractTabFragment implements TodayEvent
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
+
+    @Override
+    public void update(){
+        adapter = new TodayEventsListAdapter(context, getAllEventsList(), this);
+        recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+        recyclerView.invalidate();
+    }
+
 
     @Nullable
     @Override

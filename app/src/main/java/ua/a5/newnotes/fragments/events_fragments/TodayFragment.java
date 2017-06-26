@@ -15,7 +15,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
@@ -90,6 +89,14 @@ public class TodayFragment extends AbstractTabFragment implements TodayEventsLis
         adapter = new TodayEventsListAdapter(context, getTodayEventsList(), this);
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void update(){
+        adapter = new TodayEventsListAdapter(context, getTodayEventsList(), this);
+        recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+        recyclerView.invalidate();
     }
 
     @Nullable

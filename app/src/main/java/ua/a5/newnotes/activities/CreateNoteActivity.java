@@ -1,3 +1,4 @@
+/*
 package ua.a5.newnotes.activities;
 
 import android.app.Activity;
@@ -499,3 +500,4 @@ public class CreateNoteActivity extends AppCompatActivity {
         tvCreateNoteTime.setText(strHourOfDay + " : " + strMinute + " : " + strSecond);
     }
 }
+*/

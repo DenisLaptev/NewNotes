@@ -6,6 +6,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -16,11 +17,15 @@ import com.chartboost.sdk.CBLocation;
 import com.chartboost.sdk.Chartboost;
 import com.google.android.gms.ads.MobileAds;
 
+import java.security.PublicKey;
+
+import ua.a5.newnotes.BuildConfig;
 import ua.a5.newnotes.R;
 import ua.a5.newnotes.util.IabHelper;
 import ua.a5.newnotes.util.IabResult;
 import ua.a5.newnotes.util.Inventory;
 import ua.a5.newnotes.util.Purchase;
+import ua.a5.newnotes.util.Security;
 
 
 public class OptionsMenuActivity extends AppCompatActivity {
@@ -47,6 +52,7 @@ public class OptionsMenuActivity extends AppCompatActivity {
     static final String ITEM_SKU_TEST = "android.test.purchased";
     static final int REQUEST_CODE_INT = 10001;
     IabHelper mHelper;
+    
     IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener
             = new IabHelper.OnIabPurchaseFinishedListener() {
         public void onIabPurchaseFinished(IabResult result,
@@ -56,8 +62,8 @@ public class OptionsMenuActivity extends AppCompatActivity {
                 // Handle error
                 return;
             }
-            //else if (purchase.getSku().equals(ITEM_SKU_TEST)) {
-            else if (purchase.getSku().equals(ITEM_SKU_PREMIUM)) {
+            else if (purchase.getSku().equals(ITEM_SKU_TEST)) {
+            //else if (purchase.getSku().equals(ITEM_SKU_PREMIUM)) {
                 consumeItem();
 
             }
@@ -77,8 +83,8 @@ public class OptionsMenuActivity extends AppCompatActivity {
             if (result.isFailure()) {
                 // Handle failure
             } else {
-                //mHelper.consumeAsync(inventory.getPurchase(ITEM_SKU_TEST),
-                mHelper.consumeAsync(inventory.getPurchase(ITEM_SKU_PREMIUM),
+                mHelper.consumeAsync(inventory.getPurchase(ITEM_SKU_TEST),
+                //mHelper.consumeAsync(inventory.getPurchase(ITEM_SKU_PREMIUM),
                         mConsumeFinishedListener);
             }
         }
@@ -182,8 +188,8 @@ public class OptionsMenuActivity extends AppCompatActivity {
                 } else {
                     Log.d(TAG, "In-app Billing is set up OK");
 
-                    //mHelper.launchPurchaseFlow(OptionsMenuActivity.this, ITEM_SKU_TEST, REQUEST_CODE_INT,
-                    mHelper.launchPurchaseFlow(OptionsMenuActivity.this, ITEM_SKU_PREMIUM, REQUEST_CODE_INT,
+                    mHelper.launchPurchaseFlow(OptionsMenuActivity.this, ITEM_SKU_TEST, REQUEST_CODE_INT,
+                    //mHelper.launchPurchaseFlow(OptionsMenuActivity.this, ITEM_SKU_PREMIUM, REQUEST_CODE_INT,
                             mPurchaseFinishedListener, "mypurchasetoken");
                 }
             }
@@ -207,6 +213,25 @@ public class OptionsMenuActivity extends AppCompatActivity {
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnected();
+    }
+
+//This will ensure that when the application is running in debug mode
+//the method does not report an error if the signature is missing
+//when a static response SKU purchase is verified.
+    public static boolean verifyPurchase(String base64PublicKey,
+                                         String signedData, String signature) {
+        if (TextUtils.isEmpty(signedData) ||
+                TextUtils.isEmpty(base64PublicKey) ||
+                TextUtils.isEmpty(signature)) {
+            Log.e(TAG, "Purchase verification failed: missing data.");
+            if (BuildConfig.DEBUG) {
+                return true;
+            }
+            return false;
+        }
+
+        PublicKey key = Security.generatePublicKey(base64PublicKey);
+        return Security.verify(key, signedData, signature);
     }
 
     @Override

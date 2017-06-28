@@ -2,24 +2,38 @@ package ua.a5.newnotes.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.drive.Drive;
+import com.google.android.gms.plus.Plus;
+
 import java.util.Calendar;
 
 import ua.a5.newnotes.R;
 
-public class StartMenuActivity extends AppCompatActivity {
+public class StartMenuActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     Button btnStartMenuNotes;
     Button btnStartMenuEvents;
     Button btnStartMenuOptions;
     Button btnStartMenuQuit;
+
+    public static GoogleApiClient mGoogleApiClient;  // initialized in onCreate
+
+
+    //переменная указывает, есть ли соединение с интернетом или нет.
+    boolean isOnLine = false;
 
     //Переменная для управления выходом кнопкой Back.
     private int quitIntFlag = 0;
@@ -29,6 +43,19 @@ public class StartMenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_menu);
+
+        //Create the Google Api Client with access to the Play Game and Drive services.
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(Plus.API, Plus.PlusOptions.builder().build())
+                .addScope(Plus.SCOPE_PLUS_LOGIN)
+                //.addApi(Games.API).addScope(Games.SCOPE_GAMES)
+                .addApi(Drive.API).addScope(Drive.SCOPE_APPFOLDER) // Drive API
+                .build();
+        //For billing
+
+        mGoogleApiClient.connect();
 
         btnStartMenuNotes = (Button) findViewById(R.id.btnStartMenuNotes);
         btnStartMenuNotes.setOnClickListener(new View.OnClickListener() {
@@ -113,6 +140,7 @@ public class StartMenuActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
+
         quitIntFlag = 0;
         RelativeLayout rl = (RelativeLayout)findViewById(R.id.start_menu_relative_layout);
         rl.setBackgroundColor(getResources().getColor(R.color.colorBackgroundWhite));
@@ -120,6 +148,7 @@ public class StartMenuActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+
         if (quitIntFlag == 0) {
             Toast.makeText(getApplicationContext(), "Press again for Quit",
                     Toast.LENGTH_LONG).show();
@@ -135,5 +164,32 @@ public class StartMenuActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         quitIntFlag = 0;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+    private ConnectionResult mConnectionResult;
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        if (connectionResult.hasResolution()) {
+            try {
+                connectionResult.startResolutionForResult(this, 0);
+            } catch (IntentSender.SendIntentException e) {
+                mGoogleApiClient.connect();
+            }
+        }
+        mConnectionResult = connectionResult;
     }
 }

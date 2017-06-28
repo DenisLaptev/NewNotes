@@ -57,9 +57,6 @@ dependencies {
     /*Floating Action Menu*/
     compile 'com.getbase:floatingactionbutton:1.10.1'
 
-    /*chartboost for More Apps*/
-    compile files('libs/chartboost.jar')
-
     //Dependency for Google Sign-In
     compile 'com.google.android.gms:play-services:10.2.0'
     compile 'com.android.support:multidex:1.0.1'

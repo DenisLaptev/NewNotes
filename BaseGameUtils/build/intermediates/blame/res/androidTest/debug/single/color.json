@@ -1,7 +1,23 @@
 [
     {
+        "merged": "D:\\Java\\Android\\MyProjects\\NewNotes\\NewNotes2\\BaseGameUtils\\build\\intermediates\\res\\merged\\androidTest\\debug\\color\\abc_search_url_text_holo.xml",
+        "source": "D:\\Java\\Android\\MyProjects\\NewNotes\\NewNotes2\\BaseGameUtils\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\20.0.0\\res\\color\\abc_search_url_text_holo.xml"
+    },
+    {
+        "merged": "D:\\Java\\Android\\MyProjects\\NewNotes\\NewNotes2\\BaseGameUtils\\build\\intermediates\\res\\merged\\androidTest\\debug\\color\\common_plus_signin_btn_text_light.xml",
+        "source": "D:\\Java\\Android\\MyProjects\\NewNotes\\NewNotes2\\BaseGameUtils\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\8.4.0\\res\\color\\common_plus_signin_btn_text_light.xml"
+    },
+    {
+        "merged": "D:\\Java\\Android\\MyProjects\\NewNotes\\NewNotes2\\BaseGameUtils\\build\\intermediates\\res\\merged\\androidTest\\debug\\color\\common_google_signin_btn_text_dark.xml",
+        "source": "D:\\Java\\Android\\MyProjects\\NewNotes\\NewNotes2\\BaseGameUtils\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\8.4.0\\res\\color\\common_google_signin_btn_text_dark.xml"
+    },
+    {
         "merged": "D:\\Java\\Android\\MyProjects\\NewNotes\\NewNotes\\BaseGameUtils\\build\\intermediates\\res\\merged\\androidTest\\debug\\color\\common_google_signin_btn_text_light.xml",
         "source": "D:\\Java\\Android\\MyProjects\\NewNotes\\NewNotes\\BaseGameUtils\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\8.4.0\\res\\color\\common_google_signin_btn_text_light.xml"
+    },
+    {
+        "merged": "D:\\Java\\Android\\MyProjects\\NewNotes\\NewNotes2\\BaseGameUtils\\build\\intermediates\\res\\merged\\androidTest\\debug\\color\\common_google_signin_btn_text_light.xml",
+        "source": "D:\\Java\\Android\\MyProjects\\NewNotes\\NewNotes2\\BaseGameUtils\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\8.4.0\\res\\color\\common_google_signin_btn_text_light.xml"
     },
     {
         "merged": "D:\\Java\\Android\\MyProjects\\NewNotes\\NewNotes\\BaseGameUtils\\build\\intermediates\\res\\merged\\androidTest\\debug\\color\\abc_search_url_text_holo.xml",
@@ -14,6 +30,10 @@
     {
         "merged": "D:\\Java\\Android\\MyProjects\\NewNotes\\NewNotes\\BaseGameUtils\\build\\intermediates\\res\\merged\\androidTest\\debug\\color\\common_google_signin_btn_text_dark.xml",
         "source": "D:\\Java\\Android\\MyProjects\\NewNotes\\NewNotes\\BaseGameUtils\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\8.4.0\\res\\color\\common_google_signin_btn_text_dark.xml"
+    },
+    {
+        "merged": "D:\\Java\\Android\\MyProjects\\NewNotes\\NewNotes2\\BaseGameUtils\\build\\intermediates\\res\\merged\\androidTest\\debug\\color\\common_plus_signin_btn_text_dark.xml",
+        "source": "D:\\Java\\Android\\MyProjects\\NewNotes\\NewNotes2\\BaseGameUtils\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\8.4.0\\res\\color\\common_plus_signin_btn_text_dark.xml"
     },
     {
         "merged": "D:\\Java\\Android\\MyProjects\\NewNotes\\NewNotes\\BaseGameUtils\\build\\intermediates\\res\\merged\\androidTest\\debug\\color\\common_plus_signin_btn_text_dark.xml",

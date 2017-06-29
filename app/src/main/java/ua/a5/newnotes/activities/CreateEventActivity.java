@@ -747,9 +747,6 @@ public class CreateEventActivity extends AppCompatActivity {
     }
 
 
-
-
-
     @Override
     public void onPause() {
         if (mAdView != null) {

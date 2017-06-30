@@ -15,7 +15,6 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -45,16 +44,25 @@ import static ua.a5.newnotes.utils.utils_spannable_string.UtilsDates.getCurrentM
 import static ua.a5.newnotes.utils.utils_spannable_string.UtilsDates.getCurrentYear;
 
 public class CreateNoteBirthdaysActivity extends AppCompatActivity {
+    static final int DATE_DIALOG_ID = 0;
 
     boolean isSavedFlagBirthday;
 
     private int mYear;
     private int mMonth;
     private int mDay;
+
+    BirthdayDTO birthdayDTO;
+    BirthdayDTO note;
+    String noteCategory;
+    String noteName;
+    int noteDay;
+    int noteMonth;
+    int noteYear;
+
+
     private TextView dateDisplay;
     private Button btnPickDate;
-    static final int DATE_DIALOG_ID = 0;
-
 
     EditText etName;
 
@@ -63,17 +71,6 @@ public class CreateNoteBirthdaysActivity extends AppCompatActivity {
 
     //для работы с БД.
     DBHelper dbHelper;
-
-    BirthdayDTO note;
-    String noteCategory;
-    String noteName;
-    int noteDay;
-    int noteMonth;
-    int noteYear;
-
-    BirthdayDTO birthdayDTO;
-
-
 
     //для баннера////////////////////////////////////////////////////
     protected AdView mAdView;

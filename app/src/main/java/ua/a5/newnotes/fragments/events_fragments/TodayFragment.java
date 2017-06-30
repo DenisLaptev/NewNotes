@@ -59,9 +59,12 @@ import static ua.a5.newnotes.utils.utils_spannable_string.UtilsDates.getCurrentD
 
 public class TodayFragment extends AbstractTabFragment implements TodayEventsListAdapter.EventClickListener {
 
-    FloatingActionsMenu menuMultipleActions;
-
     private static final int LAYOUT = R.layout.fragment_events_today;
+
+    EventCRUD eventCRUD;
+    RecyclerView recyclerView;
+    TodayEventsListAdapter adapter;
+    FloatingActionsMenu menuMultipleActions;
 
     //для работы с БД.
     DBHelper dbHelper;
@@ -69,10 +72,6 @@ public class TodayFragment extends AbstractTabFragment implements TodayEventsLis
     Cursor cursor;
     String orderBy;
     String strConsoleOutput = "";
-
-    EventCRUD eventCRUD;
-    RecyclerView recyclerView;
-    TodayEventsListAdapter adapter;
 
     public static TodayFragment getInstance(Context context) {
         Bundle args = new Bundle();

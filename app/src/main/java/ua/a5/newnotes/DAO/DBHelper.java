@@ -25,7 +25,6 @@ public class DBHelper extends SQLiteOpenHelper {
     //добавим константы для заголовков столбцов таблиц.
     //нижнее подчёркивание обязательно. Такая особенность Android.
     public static final String TABLE_NOTES_KEY_ID = "_id";
-    public static final String TABLE_NOTES_KEY_CATEGORY = "category";
     public static final String TABLE_NOTES_KEY_TITLE = "title";
     public static final String TABLE_NOTES_KEY_IMPORTANCE = "importance";
     public static final String TABLE_NOTES_KEY_NOTETEXT = "notetext";

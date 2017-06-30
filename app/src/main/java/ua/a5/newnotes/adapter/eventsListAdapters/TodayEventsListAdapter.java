@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -32,9 +31,6 @@ import static ua.a5.newnotes.DAO.DBHelper.TABLE_EVENTS_NAME;
 import static ua.a5.newnotes.R.id.delete_item;
 import static ua.a5.newnotes.R.id.update_item;
 import static ua.a5.newnotes.utils.Constants.KEY_UPDATE_EVENTS;
-import static ua.a5.newnotes.utils.Constants.flagWhenItemDeletedAll;
-import static ua.a5.newnotes.utils.Constants.flagWhenItemDeletedThisMonth;
-import static ua.a5.newnotes.utils.Constants.flagWhenItemDeletedToday;
 import static ua.a5.newnotes.utils.Constants.isCardForUpdate;
 
 /**
@@ -42,7 +38,6 @@ import static ua.a5.newnotes.utils.Constants.isCardForUpdate;
  */
 
 public class TodayEventsListAdapter extends RecyclerView.Adapter<TodayEventsListAdapter.EventsViewHolder> {
-
 
     public interface EventClickListener {
         void onClick(EventDTO eventDTO);
@@ -52,7 +47,6 @@ public class TodayEventsListAdapter extends RecyclerView.Adapter<TodayEventsList
     public interface ItemClickListener {
         void onClick(int position);
     }
-
 
     private Context context;
     //хранилище данных.
@@ -97,8 +91,6 @@ public class TodayEventsListAdapter extends RecyclerView.Adapter<TodayEventsList
         holder.ivPictureEventMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                //deleteItem(position, eventsDTOList);
 
                 PopupMenu cardPopupMenu = new PopupMenu(context, holder.ivPictureEventMenu);
                 cardPopupMenu.getMenuInflater().inflate(R.menu.menu_card, cardPopupMenu.getMenu());

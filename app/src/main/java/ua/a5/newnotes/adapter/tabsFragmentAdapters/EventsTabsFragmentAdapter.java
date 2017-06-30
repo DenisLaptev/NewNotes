@@ -29,7 +29,6 @@ public class EventsTabsFragmentAdapter extends FragmentPagerAdapter {
         initEventsTabsMap(context);
     }
 
-
     @Override
     public CharSequence getPageTitle(int position) {
         return eventsTabs.get(position).getTitle();

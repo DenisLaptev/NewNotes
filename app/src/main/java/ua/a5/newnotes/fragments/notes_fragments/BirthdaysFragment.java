@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
@@ -36,9 +35,11 @@ import static ua.a5.newnotes.utils.Constants.LOG_TAG;
 
 public class BirthdaysFragment extends AbstractTabFragment implements BirthdaysListAdapter.BirthdayClickListener {
 
-    FloatingActionsMenu menuMultipleActions;
-
     private static final int LAYOUT = R.layout.fragment_birthdays;
+
+    RecyclerView recyclerView;
+    BirthdaysListAdapter adapter;
+    FloatingActionsMenu menuMultipleActions;
 
     //для работы с БД.
     DBHelper dbHelper;
@@ -46,9 +47,6 @@ public class BirthdaysFragment extends AbstractTabFragment implements BirthdaysL
     Cursor cursor;
     String orderBy;
     String strConsoleOutput = "";
-
-    RecyclerView recyclerView;
-    BirthdaysListAdapter adapter;
 
 
     public static BirthdaysFragment getInstance(Context context) {

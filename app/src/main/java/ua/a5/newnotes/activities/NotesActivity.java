@@ -38,10 +38,6 @@ public class NotesActivity extends AppCompatActivity {
     NotesTabsFragmentAdapter adapterNotes;
 
 
-    //для баннера////////////////////////////////////////////////////
-    //protected AdView mAdView;
-    //для баннера////////////////////////////////////////////////////
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppDefault);
@@ -146,7 +142,6 @@ public class NotesActivity extends AppCompatActivity {
         tabLayoutNotes.setupWithViewPager(viewPagerNotes);
     }
    
-
 
     @Override
     public void onBackPressed() {

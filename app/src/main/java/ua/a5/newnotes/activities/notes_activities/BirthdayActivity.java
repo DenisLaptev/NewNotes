@@ -11,7 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -126,7 +125,6 @@ public class BirthdayActivity extends AppCompatActivity {
                         String.valueOf(birthdayDTO.getMonth()),
                         String.valueOf(birthdayDTO.getYear())
                 });
-
         //закрываем соединение с БД.
         dbHelper.close();
 //////////////////---------------------->

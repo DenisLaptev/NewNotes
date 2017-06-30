@@ -1,10 +1,5 @@
 package ua.a5.newnotes.utils;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import ua.a5.newnotes.dto.eventsDTO.EventDTO;
-
 /**
  * Created by A5 Android Intern 2 on 12.05.2017.
  */
@@ -30,7 +25,6 @@ public class Constants {
     public static final String KEY_UPDATE_IDEAS = "key_update_ideas";
     public static final String KEY_UPDATE_BIRTHDAYS = "key_update_birthdays";
     public static final String KEY_UPDATE_DIFFERENT = "key_update_different";
-
 
 
     public static final String KEY_EVENT_DTO = "key event dto";

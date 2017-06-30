@@ -120,8 +120,6 @@ public class OptionsMenuActivity
                     Intent i = new Intent(Intent.ACTION_VIEW);
                     i.setData(Uri.parse(url));
                     startActivity(i);
-
-
                 } else {
                     Toast.makeText(getApplicationContext(), "no Internet connection",
                             Toast.LENGTH_SHORT).show();
@@ -133,7 +131,6 @@ public class OptionsMenuActivity
         btnOptionsMenuUpgrade.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
 
                 isOnLine = isOnline();
 
@@ -368,11 +365,7 @@ public class OptionsMenuActivity
         PublicKey key = Security.generatePublicKey(base64PublicKey);
         return Security.verify(key, signedData, signature);
     }
-
-
 //For billing.
-
-
 }
 
 

@@ -42,9 +42,11 @@ import static ua.a5.newnotes.utils.Constants.LOG_TAG;
 
 public class TodoFragment extends AbstractTabFragment implements TodoListAdapter.TodoClickListener {
 
-    FloatingActionsMenu menuMultipleActions;
-
     private static final int LAYOUT = R.layout.fragment_todo;
+
+    RecyclerView recyclerView;
+    TodoListAdapter adapter;
+    FloatingActionsMenu menuMultipleActions;
 
     //для работы с БД.
     DBHelper dbHelper;
@@ -53,8 +55,6 @@ public class TodoFragment extends AbstractTabFragment implements TodoListAdapter
     String orderBy;
     String strConsoleOutput = "";
 
-    RecyclerView recyclerView;
-    TodoListAdapter adapter;
 
     public static TodoFragment getInstance(Context context) {
         Bundle args = new Bundle();

@@ -52,10 +52,11 @@ import static ua.a5.newnotes.utils.Constants.flagWhenItemDeletedAll;
 
 public class AllEventsFragment extends AbstractTabFragment implements TodayEventsListAdapter.EventClickListener {
 
-    FloatingActionsMenu menuMultipleActions;
-
     private static final int LAYOUT = R.layout.fragment_events_all;
 
+    FloatingActionsMenu menuMultipleActions;
+    RecyclerView recyclerView;
+    TodayEventsListAdapter adapter;
 
     //для работы с БД.
     DBHelper dbHelper;
@@ -63,10 +64,6 @@ public class AllEventsFragment extends AbstractTabFragment implements TodayEvent
     Cursor cursor;
     String orderBy;
     String strConsoleOutput = "";
-
-    RecyclerView recyclerView;
-    TodayEventsListAdapter adapter;
-
 
     public static AllEventsFragment getInstance(Context context) {
 

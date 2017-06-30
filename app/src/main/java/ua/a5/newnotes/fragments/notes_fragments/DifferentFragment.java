@@ -34,9 +34,11 @@ import static ua.a5.newnotes.utils.Constants.LOG_TAG;
 
 public class DifferentFragment extends AbstractTabFragment implements DifferentListAdapter.DifferentClickListener {
 
-    FloatingActionsMenu menuMultipleActions;
-
     private static final int LAYOUT = R.layout.fragment_different;
+
+    RecyclerView recyclerView;
+    DifferentListAdapter adapter;
+    FloatingActionsMenu menuMultipleActions;
 
     //для работы с БД.
     DBHelper dbHelper;
@@ -44,9 +46,6 @@ public class DifferentFragment extends AbstractTabFragment implements DifferentL
     Cursor cursor;
     String orderBy;
     String strConsoleOutput = "";
-
-    RecyclerView recyclerView;
-    DifferentListAdapter adapter;
 
 
     public static DifferentFragment getInstance(Context context) {

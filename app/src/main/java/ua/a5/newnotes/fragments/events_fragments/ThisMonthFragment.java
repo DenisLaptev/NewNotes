@@ -53,9 +53,12 @@ import static ua.a5.newnotes.utils.utils_spannable_string.UtilsDates.getCurrentM
 
 public class ThisMonthFragment extends AbstractTabFragment implements TodayEventsListAdapter.EventClickListener {
 
-    FloatingActionsMenu menuMultipleActions;
-
     private static final int LAYOUT = R.layout.fragment_events_thismonth;
+
+    EventCRUD eventCRUD;
+    RecyclerView recyclerView;
+    TodayEventsListAdapter adapter;
+    FloatingActionsMenu menuMultipleActions;
 
     //для работы с БД.
     DBHelper dbHelper;
@@ -63,11 +66,6 @@ public class ThisMonthFragment extends AbstractTabFragment implements TodayEvent
     Cursor cursor;
     String orderBy;
     String strConsoleOutput = "";
-
-    EventCRUD eventCRUD;
-    RecyclerView recyclerView;
-    TodayEventsListAdapter adapter;
-
 
     public static ThisMonthFragment getInstance(Context context) {
         Bundle args = new Bundle();
@@ -180,7 +178,6 @@ public class ThisMonthFragment extends AbstractTabFragment implements TodayEvent
 //////////////////---------------------->
         return eventsData;
     }
-
 
 
     @Override
